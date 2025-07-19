@@ -1,0 +1,17 @@
+<div id = "principal-container">
+  <header>
+        <div class = "head-containers">
+            <img src="/images/logoClinica.png" >
+            <h1>Clínica Médica Avellaneda</h1>
+        </div>
+        <div class = "head-containers login-register">
+            <a routerLink= "mi-perfil"class = "btn-head"><button>PERFIL</button></a>
+            <a routerLink= "mis-turnos-paciente"class = "btn-head"><button>MIS TURNOS</button></a>
+            <a routerLink= "solicitar-turno"class = "btn-head"><button>SOLICITAR TURNO</button></a>
+            <a routerLink= "mis-horarios"class = "btn-head"><button>mis horarios</button></a>
+        </div>
+    </header>
+   <main [@routeAnimations]="prepareRoute(outlet)">
+        <router-outlet #outlet="outlet"></router-outlet>
+    </main>
+</div>

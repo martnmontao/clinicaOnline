@@ -1,0 +1,43 @@
+<div id = "principal-container">
+    <header>
+        <div class = "head-containers">
+            <img src="/images/logoClinica.png" >
+            <h1>Clínica Médica Avellaneda</h1>
+        </div>
+        <div class = "head-containers login-register">
+            <button (click) = "goTo('welcome')">INICIO</button>
+            <button (click) = "goTo('register')">REGISTRARSE</button>
+            <button (click) = "goTo('login')">INICIAR SESIÓN</button>
+        </div>
+    </header>
+    <section>
+        <form> 
+             <div  class = "inputs-container">
+
+                        <div class = "container-form-inputs">
+                            <label>Correo electrónico</label>
+                            <input type="text" class="inputs-form" autocorrect="off" placeholder="Correo electrónico" [(ngModel)] = "emailUser" name = "emailUser">
+
+                        </div>
+                        <div class = "container-form-inputs">
+
+                            <label>Contraseña</label>
+                            <input type="password" class="inputs-form" autocorrect="off" placeholder="Contraseña" [(ngModel)] = "passwordUser" name = "password">
+                        </div>
+                        
+                        <div id = "btn-login-container">
+                            <button id="button-login" (click) = "loginUser()">INGRESAR</button>
+                        </div>
+            </div>
+            <div id = "second-container-form">
+                <p id ="p-speciality">Seleccione perfil:</p>
+                <button type = "button" class = "option-select"(click) = "toggleOptions()">{{optionsLogins}}⮟</button>
+                <div id = "options-speciality-container" [class.visible]="showOptions">
+                    <button type = "button" class="option-speciality-select" (click) = " changeOptionsSpecility('Paciente')">Paciente</button>
+                    <button type = "button" class="option-speciality-select" (click) = " changeOptionsSpecility('Especialista')" style="border-radius: 0px 0px 5px 5px;">Especialista</button>
+                </div>                               
+                
+            </div>
+        </form>
+    </section>
+</div>

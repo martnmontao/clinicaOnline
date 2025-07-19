@@ -1,0 +1,31 @@
+<div id = "horarios-container" >
+            <div id = "specialities-container" *ngIf = "user">
+              <button class = "btn-filters">{{user.speciality}}</button>
+              <button class = "btn-filters" *ngIf = "user.secondSpeciality != ''">{{user.secondSpeciality}}</button>
+
+            </div>
+
+
+          <div id="times-container">
+            <div class = "times-specialities-container" >
+                  <label for="hora-inicio">Comenzar</label>
+                   <input type="time"  [(ngModel)]="startHour">
+   
+                   <label for="hora-fin">Terminar</label>
+                   <input type="time" [(ngModel)]="endHour">
+  
+
+            </div>
+            <div  class = "times-specialities-container" *ngIf = "user.secondSpeciality != ''">
+                  <label for="hora-inicio">Comenzar</label>
+                   <input type="time"  [(ngModel)]="startHourSecondSpeciality">
+   
+                   <label for="hora-fin">Terminar</label>
+                   <input type="time" [(ngModel)]="endHourSecondSpeciality">
+   
+                  </div>
+                  
+                </div>
+                <button id = "btn-save-horario"(click)="saveSchedule()">Guardar</button>
+        
+</div>

@@ -1,0 +1,24 @@
+<div id = "user-profile-container" *ngIf = "user">
+    <div class = "data-user-container img-container">
+        <img [src] = "user.imagesUser[0]">
+    </div>
+    <div class = "data-user-container">
+        <p>Nombre: <br>{{user.nameUser}} </p>
+        <p>Documento: <br>{{user.documentUser}}</p>
+        <p>Correo electrónico: <br>{{user.emailUser}}</p>
+    </div>
+    <div class = "data-user-container">
+        <p>Apellido:<br> {{user.lastNameUser}} </p>
+        <p>Edad: <br>{{user.ageUser}}</p>
+        @if(user.profile == 'Especialista')
+        {
+        <p>Especialidad:<br> {{user.speciality}}<br>{{user.secondSpeciality}}</p>
+            
+        }
+         @if(user.profile == 'Paciente')
+         {
+             <p>Obra social:<br> {{user.socialWorkUser}}</p>
+
+         }
+    </div>
+</div>

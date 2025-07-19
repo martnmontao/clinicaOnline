@@ -1,0 +1,196 @@
+<div id = "principal-container">
+     <header>
+        <div class = "head-containers">
+            <img src="/images/logoClinica.png" >
+            <h1>Clínica Médica Avellaneda</h1>
+        </div>
+        <div class = "head-containers login-register">
+            <button>INICIO</button>
+        </div>
+    </header>
+    <section>
+
+        <div id = "table-users-container" *ngIf = "showTable">
+
+            <div id = "btn-filter-users-container">
+                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Paciente'" (click) = "selectFilter('Paciente')">PACIENTES</button>
+                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialista'" (click) = "selectFilter('Especialista')">ESPECIALISTAS</button>
+                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Admin'" (click) = "selectFilter('Admin')">ADMINISTRADORES</button>
+            </div>
+            <table *ngIf = "!loading && selectedFilter === 'Paciente'">
+            <thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Documento</th>
+                <th>Obra social</th>
+                <th>Perfil</th>
+                <th>Autorización</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of usersList">
+                <td>{{ user.nameUser }}</td>
+                <td>{{ user.lastNameUser }}</td>
+                <td>{{ user.emailUser }}</td>
+                <td>{{ user.ageUser }}</td>
+                <td>{{ user.documentUser }}</td>
+                <td>{{ user.socialWorkUser }}</td>
+                <td>{{ user.profile }}</td>
+                <td><button>ELIMINAR</button></td>
+                
+    
+                </tr>
+            </tbody>
+        </table>
+        <table *ngIf = "!loading && selectedFilter === 'Especialista'">
+            <thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Documento</th>
+                <th>Especialidad</th>
+                <th>Segunda especialidad</th>
+                <th>Perfil</th>
+                <th>Estado</th>
+                <th id = "th-autorization">Autorización</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of usersList">
+                <td>{{ user.nameUser }}</td>
+                <td>{{ user.lastNameUser }}</td>
+                <td>{{ user.emailUser }}</td>
+                <td>{{ user.ageUser }}</td>
+                <td>{{ user.documentUser }}</td>
+                <td>{{ user.speciality }}</td>
+                <td>{{ user.secondSpeciality }}</td>
+                <td>{{ user.profile }}</td>
+                <td>{{ user.autorization }}</td>
+
+                <td id = "td-autorizate-user"><button class="btn-autorizate-user btn-delete-user">ELIMINAR</button>
+                 @if(user.autorization == false)
+                 {
+                     <button class="btn-autorizate-user btn-accept-user" (click) = "autorizateUser(user.uid)">ACEPTAR</button>
+
+                 }   
+                </td>
+    
+                </tr>
+            </tbody>
+        </table>
+        <table *ngIf = "!loading && selectedFilter === 'Admin'">
+            <thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Documento</th>
+                <th>Perfil</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of usersList">
+                <td>{{ user.nameUser }}</td>
+                <td>{{ user.lastnameUser }}</td>
+                <td>{{ user.emailUser }}</td>
+                <td>{{ user.ageUser }}</td>
+                <td>{{ user.documentUser }}</td>
+                <td>{{ user.profile }}</td>
+                </tr>
+            </tbody>
+        </table>
+         <div *ngIf="loading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px; margin-top: 8%;">
+            <svg
+                width="80"
+                height="80"
+                viewBox="0 0 50 50"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="#3498db"
+            >
+                <g fill="none" fill-rule="evenodd" stroke-width="4" >
+                <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+                <path d="M45 25c0-11.046-8.954-20-20-20">
+                    <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 25 25"
+                    to="360 25 25"
+                    dur="1s"
+                    repeatCount="indefinite"/>
+                </path>
+                </g>
+            </svg>
+        </div>
+    </div>
+  
+
+        
+    <div id = "register-users-section" *ngIf = "showRegister">
+        <form>
+            <div id = "first-container-form">
+                <div id = "container-form-inputs">
+                    <div  class = "inputs-container">
+                        <label>Nombre</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Nombre" [(ngModel)] = "nameUser" name = "nameUser">
+                        <label>Apellido</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Apellido" [(ngModel)] = "lastNameUser" name = "lastNameUser">
+                        <label>Edad</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Edad" [(ngModel)] = "ageUser" name = "ageUser">
+                        
+                        <label >Documento</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="N° de documento"[(ngModel)] = "documentUser" name="document">
+                    </div>
+                    <div class = "inputs-container">
+                        <label>Correo electrónico</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Correo electrónico" [(ngModel)] = "emailUser" name="email">
+                        <label *ngIf = "optionsLogins != 'ADMIN'">{{labelInput}}</label>
+                        <input type="text" class="inputs-form" autocorrect="off" [placeholder]="labelInput" *ngIf = "!showSpecialities && optionsLogins != 'ADMIN'" [(ngModel)] = "socialWorkUser" name = "socialWork">
+                        <select *ngIf = "showSpecialities" [(ngModel)]="speciality" name = "speciality">
+                            <option [value]="'Clínica médica'">Clínica médica</option>
+                            <option [value]="'Cardiología'">Cardiología</option>
+                            <option [value]="'Cirugía General'">Cirugía General</option>
+                            <option [value]="'Ginecología'">Ginecología</option>
+                            <option [value]="'Pediatría'">Pediatría</option>
+                            <option [value]="'Dermatología'">Dermatología</option>
+                            <option [value]="'Neurología'">Neurología</option>
+                            <option [value]="'Traumatología'">Traumatología</option>
+                            <option [value]="'Otorrinolaringología'">Otorrinolaringología</option>
+                        </select>
+                        <label>Contraseña</label>
+                        <input type="password" class="inputs-form" autocorrect="off" placeholder="Contraseña"[(ngModel)] = "passwordUser" name="password">
+                        <label *ngIf = "showSpecialities">Agregar una especialidad</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Especialidad" *ngIf = "showSpecialities" [(ngModel)] = "secondSpeciality" name = "secondSpeciality">
+                    </div>
+                </div>
+                <div id = "second-container-form">
+                   
+                    <p id ="p-speciality">Seleccione perfil:</p>
+                    <button type = "button" class = "option-select"(click) = "toggleOptions()">{{optionsLogins}}⮟</button>
+                    <div id = "options-speciality-container" [class.visible]="showOptions">
+                        <button type = "button" class="option-speciality-select" (click) = " changeOptionsSpecility('Paciente')">Paciente</button>
+                        <button type = "button" class="option-speciality-select select-options" (click) = " changeOptionsSpecility('Especialista')">Especialista</button>
+                          <button type = "button" class="option-speciality-select select-options" (click) = " changeOptionsSpecility('Administrador')">Administrador</button>
+                    </div>           
+                    <label>Imagenes para su perfil</label>
+                    <input type="file" id = "input-file" hidden  (change)="onFileSelected($event)" multiple/>
+                    <button type="button"  id = "btn-input-file"(click)="openInput()">Subir imagen</button>
+                    
+                </div>
+            </div>
+            <div  id = "third-container-form">
+                <button id = "btn-register" (click) = "registerUser()" >REGISTRAR</button>
+            </div>
+        </form>
+        
+    </div>
+    <button class = "btn-open-register" (click) = "showContainer('register')" >REGISTRAR USUARIO</button>
+     <button class = "btn-open-register" (click) = "showContainer('table')" >ADMINISTRACIÓN</button>
+     
+    </section>
+</div>

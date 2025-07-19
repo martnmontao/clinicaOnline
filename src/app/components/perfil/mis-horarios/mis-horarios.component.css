@@ -1,0 +1,112 @@
+
+#horarios-container
+{
+
+    height: 500px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5% auto;
+    background-color: #1F2937;
+    border-radius: 10px;
+}
+
+#times-container
+{
+    
+    height: 50%;
+    display: flex;
+    
+   
+    justify-content: space-evenly;
+    width: 100%;
+    
+}
+
+label
+{
+    color: #E6F4F1;
+     font-size: clamp(0.8rem, 2vw, 1.5rem);
+    margin: 5px 0;
+}
+
+
+input
+{
+    width: 70%;
+    height: 25%;
+    border-radius: 10px;
+    border: none;
+    font-size: clamp(0.8rem, 2vw, 1.5rem);
+    text-align: center;
+    padding-left: 30px;
+}
+
+.btn-filters
+{
+  background-color: #29a9a3;
+  height: 70%;
+  margin: 0 10%;
+  width: 70%;
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  border-radius: 10px;
+}
+
+#specialities-container
+{
+  height: 20%;
+  display: flex;
+  justify-content: space-evenly;
+  
+  width: 100%;
+}
+
+input:focus
+{
+    outline: none;
+}
+#btn-save-horario
+{
+    width: 70%;
+    height: 60px;
+    border-radius: 10px;
+    font-size: clamp(0.8rem, 2vw, 1.5rem);
+    margin-top: 5%;
+    background-color: #47A5A1;
+    color: #1F2937;
+}
+
+button
+{
+    outline: none;
+    cursor: pointer;
+    border: none;
+}
+
+#btn-schedules
+{
+    height: 15%;
+    width: 90%;
+    font-size: clamp(0.8rem, 2vw, 1.3rem);
+    background-color: #58d9d2;
+    border-radius: 10px;
+    color: #1F2937;
+}
+
+
+#btn-schedules:hover
+{
+    background-color: #29a9a3;
+
+}
+
+.times-specialities-container
+{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

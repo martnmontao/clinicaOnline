@@ -1,0 +1,88 @@
+<div id = "principal-container">
+    <header>
+        <div class = "head-containers">
+            <img src="/images/logoClinica.png" >
+            <h1>Clínica Médica Avellaneda</h1>
+        </div>
+        <div class = "head-containers login-register">
+            <button (click) = "goTo('welcome')">INICIO</button>
+            <button (click) = "goTo('register')">REGISTRARSE</button>
+            <button (click) = "goTo('login')">INICIAR SESIÓN</button>
+        </div>
+    </header>
+    <section>
+        <form *ngIf = "!showCaptcha">
+            <div id = "first-container-form">
+                <div id = "container-form-inputs">
+                    <div  class = "inputs-container">
+                        <label>Nombre</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Nombre" [(ngModel)] = "nameUser" name = "nameUser">
+                        <label>Apellido</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Apellido" [(ngModel)] = "lastNameUser" name = "lastNameUser">
+                        <label>Edad</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Edad" [(ngModel)] = "ageUser" name = "ageUser">
+                        
+                        <label>Documento</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="N° de documento"[(ngModel)] = "documentUser" name="document">
+                    </div>
+                    <div class = "inputs-container">
+                        <label>Correo electrónico</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Correo electrónico" [(ngModel)] = "emailUser" name="email">
+                        <label>{{labelInput}}</label>
+                        <input type="text" class="inputs-form" autocorrect="off" [placeholder]="labelInput" *ngIf = "!showSpecialities" [(ngModel)] = "socialWorkUser" name = "socialWork">
+                        <select *ngIf = "showSpecialities" [(ngModel)]="speciality" name = "speciality">
+                            <option [value]="'Clínica médica'">Clínica médica</option>
+                            <option [value]="'Cardiología'">Cardiología</option>
+                            <option [value]="'Cirugía General'">Cirugía General</option>
+                            <option [value]="'Ginecología'">Ginecología</option>
+                            <option [value]="'Pediatría'">Pediatría</option>
+                            <option [value]="'Dermatología'">Dermatología</option>
+                            <option [value]="'Neurología'">Neurología</option>
+                            <option [value]="'Traumatología'">Traumatología</option>
+                            <option [value]="'Otorrinolaringología'">Otorrinolaringología</option>
+                        </select>
+                        
+                       
+                        <label>Contraseña</label>
+                        <input type="password" class="inputs-form" autocorrect="off" placeholder="Contraseña"[(ngModel)] = "passwordUser" name="password">
+                        <label *ngIf = "showSpecialities">Agregar una especialidad</label>
+                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Especialidad" *ngIf = "showSpecialities" [(ngModel)] = "secondSpeciality" name = "secondSpeciality">
+                    </div>
+                </div>
+                <div id = "second-container-form">
+                   
+                    <p id ="p-speciality">Seleccione perfil:</p>
+                    <button type = "button" class = "option-select"(click) = "toggleOptions()">{{optionsLogins}}⮟</button>
+                    <div id = "options-speciality-container" [class.visible]="showOptions">
+                        <button type = "button" class="option-speciality-select" (click) = " changeOptionsSpecility('Paciente')">Paciente</button>
+                        <button type = "button" class="option-speciality-select select-options" (click) = " changeOptionsSpecility('Especialista')" style="border-radius: 0px 0px 5px 5px;">Especialista</button>
+                      
+
+                    </div>           
+                    <label>Imagenes para su perfil</label>
+                    <input type="file" id = "input-file" hidden  (change)="onFileSelected($event)" multiple/>
+                    <button type="button"  id = "btn-input-file"(click)="openInput()">Subir imagen</button>
+                    
+                </div>
+            </div>
+            <div  id = "third-container-form">
+                <button id = "btn-register" (click) = "showContainer('captcha')" >REGISTRARSE</button>
+            </div>
+        </form>
+        <div class="captcha-container" *ngIf = "showCaptcha">
+        <h2>Verificación CAPTCHA</h2>
+        <p>¿Cuánto es {{ num1 }} + {{ num2 }}?</p>
+
+        <input
+            type="text"
+            [(ngModel)]="respuesta"
+            placeholder="Tu respuesta"
+            id = "input-captcha"
+        />
+
+        <button (click)="verificarCaptcha()">Verificar</button>
+
+        <p [style.color]="colorMensaje">{{ mensaje }}</p>
+        </div>
+    </section>
+</div>

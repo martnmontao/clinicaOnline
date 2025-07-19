@@ -1,0 +1,106 @@
+#principal-container
+{
+
+
+    height: 100vh;
+    background-image: url("/images/fondoClinica.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+}
+
+header
+{
+   
+    height: 10%;
+    border-radius: 10px;
+    box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    display: flex;
+    background-color: #F4F3F3;
+   
+}
+
+.head-containers
+{
+   
+    width: 50%;
+    height: 100%;
+    display: flex;
+   
+}
+
+h1
+{
+    font-size: 40px;
+    margin: 23px 20px;
+    color: #47A4A0;
+}
+
+
+.head-containers img
+{
+    height: 100%;
+}
+
+.login-register
+{
+   
+    justify-content: space-evenly;
+}
+
+.login-register button
+{
+    font-family: 'Roboto', sans-serif;
+    width: 250px;
+    font-size: 1.5rem;
+    border: none;
+    background-color: transparent;
+    color: #1F2937;
+    cursor: pointer;
+    
+}
+
+.login-register button:hover
+{
+    color: #47A4A0;
+}
+
+section
+{
+    
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    overflow-y: hidden;
+    background-color: rgba(0,0,0,0.2);
+}
+
+section p
+{
+    font-size: 60px;
+    font-family: 'Roboto', sans-serif;
+    color: #1F2937;
+    font-weight: 800;
+
+}
+
+section img
+{
+   
+    height: 100%;
+    width: 100%;
+    
+
+}
+
+p
+{
+    position: absolute;
+    top: 35%;
+    left: 10%;
+}
+

@@ -1,0 +1,36 @@
+#principal-container
+{
+    margin: 10% auto;
+    height: 400px;
+    width: 60%;
+   
+}
+
+
+#filters-container
+{
+    height: 20%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+#patients-shifts-container
+{
+    height: 80%;
+    background-color: #F4F4F3;
+    border-radius: 10px;
+}
+
+
+.btn-filter
+{
+    width: 25%;
+    height: 80%;
+    border-radius: 10px;
+    border: none;
+    background-color: #1F2937;
+    color: #F4F4F3;
+     font-size: clamp(1rem, 2vw, 5rem);
+}

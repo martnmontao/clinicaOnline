@@ -1,0 +1,213 @@
+#form-book-appointment {
+  margin: 3% auto;
+  width: 70%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  /* QUITÁ esto 👇 */
+   height: 600px;
+   background-color: red; 
+  /* overflow-y: auto; */
+  
+}
+
+
+select
+{
+    width: 70%;
+    height: 15%;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    font-size: clamp(0.8rem, 3vw, 2rem);
+
+    color: #F4F4F3;
+    background-color: #1F2937;
+    cursor: pointer;
+}
+
+select:focus
+{
+    outline: none;
+}
+
+#specialist-users-container {
+  background-color: #F4F4F3;
+  width: 100%;
+  position: relative;
+  border-radius: 10px;
+  /* QUITÁ esto 👇 */
+  height: 70%; 
+  overflow-y: auto; 
+}
+
+
+th, td
+{
+    padding: 10px;
+    
+    border-radius: 5px;
+    color: #1F2937;
+    text-align: center;
+    background-color: 	#E0E0DF ;
+     font-size: clamp(1rem, 1vw, 1.5rem);
+}
+
+
+
+
+table
+{
+    background-color: #F4F4F3;
+    border-radius: 10px;
+    padding: 1%;
+    width: 100%;
+    
+}
+
+img
+{
+      height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.btn-book
+{
+    background-color: #5db872;
+    height: 55px;
+    width: 100%;
+font-size: clamp(0.5rem, 2vw, 1.4rem);
+
+    border-radius: 10px;
+}
+
+.btn-book:hover
+{
+    background-color: #30bb50;
+
+}
+
+button
+{
+    border: none;
+    cursor: pointer;
+}
+
+.spinner-container
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+.info-appointment-container
+{
+    height: 100%;
+    
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+.btn-select-speciality
+{
+    background-color: #2B2F3B;
+    color: #F4F4F3;
+    height: 80px;
+    width: 40%;
+    border-radius: 10px;
+    font-size: clamp(0.5rem, 3vw, 1.4rem);
+
+}
+
+.btn-finish-book
+{
+    width: 30%;
+    height: 80px;
+    border-radius: 10px;
+    background-color: #2B2F3B;
+    color: #E0E0DF;
+    font-size: clamp(0.5rem, 3vw, 1.4rem);
+}
+
+.selected {
+  background-color: #2c85c0;
+  color: white;
+  font-weight: bold;
+}
+
+.info-specialist
+{
+    
+    height: 10%;
+    color: #E0E0DF;
+
+    font-size: clamp(0.5rem, 5vw, 2.5rem);
+}
+
+.p-info-specialist
+{
+    color: #E0E0DF;
+    font-size: clamp(0.5rem, 5vw, 1.5rem);
+}
+
+#book-appointment-container
+{   
+  
+    height: 80%;
+    width: 900px;
+
+    background-color: #1F2937;
+    border: 1px solid #2B2F3B;
+    margin: 1% auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+}
+
+.info-date-container
+{
+   
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.btn-select-day
+{
+    height: 60px;
+    margin: 5px;
+    width: 100px;
+    border-radius: 10px;
+    color: #1F2937;
+     font-size: clamp(0.5rem, 3vw, 1rem);
+}
+
+.date-buttons
+{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.hour-buttons
+{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+}

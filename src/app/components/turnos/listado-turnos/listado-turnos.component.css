@@ -1,0 +1,75 @@
+#principal-container
+{
+    height: 80%;
+    margin: 2% auto;
+    width: 100%;
+    background-color: #1F2937;
+    display: flex;
+  
+}
+#second-container
+{
+    width: 90%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#filters-specialists
+{
+    height: 30%;
+
+    border-bottom: 2px solid white;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+
+#appointment-container
+{
+    height: 100%;
+   
+}
+
+
+#filters-container
+{
+    
+    border-right: 2px solid white;
+    height: 100%;
+    width: 30%;
+    padding: 0 5px;
+    display: flex;
+    justify-content: space-evenly;
+  
+    flex-wrap: wrap;
+    align-items: center;
+    
+    
+}
+button
+{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-filters
+{
+    height: 55px;
+    width: 200px;
+    font-size: clamp(1rem, 1vw, 2.5rem);
+    border-radius: 10px;
+    background-color: #2B2F3B;
+    color: #E0E0DF;
+    padding: 10px;
+}
+
+.btn-filters.selected {
+  background-color: #007bff; /* azul */
+  color: white;
+
+}

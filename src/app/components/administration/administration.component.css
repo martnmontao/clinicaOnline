@@ -1,0 +1,414 @@
+#principal-container
+{
+    height: 100vh;
+    overflow-y: hidden;
+    background-image: url("/images/fondoClinica.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+}
+
+header
+{
+    height: 9vh;
+    border-radius: 10px;
+    box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    display: flex;
+    background-color: #F4F4F3;
+
+}
+
+.head-containers
+{
+   
+    width: 50%;
+    height: 5%;
+    display: flex;
+   
+}
+
+h1
+{
+    font-size: 40px;
+    margin: 23px 20px;
+    color: #1F2937;
+}
+
+
+.head-containers img
+{
+    height: 9vh;
+    
+}
+
+section
+{
+   
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 10%;
+    flex-direction: column;
+    gap: 2%;
+}
+
+th, td
+{
+    padding: 10px;
+   
+    border-radius: 5px;
+    color: #1F2937;
+    text-align: center;
+    background-color: 	#E0E0DF ;
+}
+
+
+
+
+table
+{
+    background-color: #F4F4F3;
+    border-radius: 10px;
+    padding: 1%;
+   
+    
+}
+
+#btn-filter-users-container
+{
+
+    width: 100%;
+    
+   
+    height: 15%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn-filter-users
+{
+    width: 30%;
+    border-radius: 10px;
+    font-size: 20px;
+    transition: 0.3s background ease;
+    
+}
+
+.btn-filter-users:hover
+{
+    background-color: #232324;
+    color: #E0E0DF;
+}
+
+button
+{
+    border: none;
+    cursor: pointer;
+}
+
+#table-users-container
+{
+    background-color: #1F2937;
+    border-radius: 10px;
+    margin-top: -7%;
+    padding: 20px;
+    height: 50%;
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+   
+}
+
+.btn-filter-users.selected {
+  background-color: #232324; /* color más oscuro */
+
+    color: #E0E0DF;
+
+}
+
+.btn-autorizate-user
+{
+    height: 50px;
+    width: 45%;
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #1F2937;
+    transition: 0.1s background ease;
+}
+
+#td-autorizate-user
+{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+td
+{
+   
+}
+
+
+#th-autorization
+{
+    width: 400px;
+}
+
+.btn-accept-user
+{
+    background-color: #7BD29B;
+}
+
+.btn-delete-user
+{
+    background-color: #F08080;
+}
+
+.btn-accept-user:hover
+{
+    background-color: #28a745;
+}
+
+.btn-delete-user:hover
+{
+    background-color: #dc3545;
+}
+
+form
+{
+    height: 600px;
+    width: 1200px;
+    background-color: #1F2937;
+    margin-top: -13%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0px 5px 25px 6px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 5px 25px 6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 5px 25px 6px rgba(0,0,0,0.75);
+}
+#container-form-inputs
+{
+    
+    display: flex;
+    justify-content: space-evenly;
+    
+    width: 80%;
+}
+
+.inputs-form:focus
+{
+    outline: none;
+}
+
+.inputs-container
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#first-container-form
+{
+    display: flex; 
+    width: 100%; 
+    height: 80%;
+}
+
+#second-container-form
+{
+    display: flex; 
+    flex-direction: column; 
+    justify-self: center; 
+    align-items: center; 
+    width: 30%; 
+    margin-right: 15px;
+}
+
+#third-container-form
+{
+    display: flex;
+    justify-content: center;
+}
+
+.inputs-form
+{
+    height: 50px;
+    width: 350px;
+    border-radius: 5px;
+    border: none;
+    padding-left: 10px;
+    font-size: 20px;
+    color: #1F2937;
+}
+
+label
+{
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+#btn-register
+{
+    font-family: 'Roboto', sans-serif;
+    border-radius: 5px;
+    color: lightblue;
+    font-size: 25px;
+    background-color: #005B79;
+    width: 450px;
+    height: 55px;
+    border: none;
+}
+
+
+
+select:focus
+{
+    outline: none;
+}
+
+
+#input-add-speciality
+{
+    position: absolute;
+    bottom: 160px;
+    left: 120px;
+    width: 600px;
+}
+#label-add-speciality
+{
+    margin-left: 75px;
+}
+
+#btn-input-file
+{
+   font-family: 'Roboto', sans-serif;
+    border-radius: 5px;
+    color: lightblue;
+    font-size: 25px;
+    background-color: #005B79;
+    width: 200px;
+    height: 55px;
+    border: none;
+    margin-top: 20px;
+}
+
+button
+{
+    cursor: pointer;
+}
+
+#btn-input-file:hover
+{
+    color: #F4F3F3;
+}
+
+.option-speciality-select:hover
+{
+    color: #F4F3F3;
+}
+
+.option-select:hover
+{
+    color: #F4F3F3;
+}
+
+#btn-register:hover
+{
+    color: #F4F3F3;
+}
+
+
+
+.btn-open-register
+{
+    width: 60%;
+    height: 70px;
+    border-radius: 10px;
+    background-color: #0993c1;
+    font-size: 35px;
+    color: #232324;
+    transition: 0.3 background ease;
+}
+
+.btn-open-register:hover
+{
+    background-color: #07a3d7;
+}
+
+#p-speciality
+{
+    margin: 0;
+    margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    font-size: 25px;
+}
+
+#options-speciality-container
+{
+    
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease, padding 0.5s ease;
+
+
+}
+
+
+
+.option-select
+{
+    text-align: center;
+    width: 250px;
+    border-radius: 5px 5px 0 0;
+    font-size: 30px;
+    background-color: #005B79;
+    color: lightblue;
+    border: none;
+    height: 55px;
+    padding: 10px;
+}
+
+.option-speciality-select
+{
+    width: 250px;
+    font-size: 30px;
+    background-color: #005B79;
+    height: 55px;
+    color: lightblue;
+    border: none;
+    
+}
+
+.select-options
+{
+    border-radius: 0px 0px 5px 5px;
+}
+
+
+#options-speciality-container.visible {
+  max-height: 600px; 
+}
+
+select
+{
+    height: 52px;
+    width: 363px;
+    border-radius: 5px;
+    border: none;
+    padding-left: 10px;
+    font-size: 20px;
+    color: #1F2937;
+}

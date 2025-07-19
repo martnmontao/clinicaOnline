@@ -1,0 +1,62 @@
+<div id = "principal-container">
+    <div id = "filters-container">
+        <button 
+        *ngFor = "let speciality of specialitiesList"
+        (click) = "selectSpeciality(speciality)"
+        class = "btn-filters"  
+        [class.selected]="selectedSpeciality === speciality"
+        >
+            {{speciality}}
+        </button>
+    </div>
+    <div id ="second-container">
+        <div id = "filters-specialists">
+            <button 
+            *ngFor = "let specialist of specialistsList" 
+            (click)="selectSpecialist(specialist)"
+            class = "btn-filters"    
+            [class.selected]="selectedSpecialistUid === specialist.uid" 
+            >
+                {{specialist.nameUser}} {{specialist.lastNameUser}}
+            </button>
+        </div>
+        <div id = "appointment-container">
+             <table >
+                <thead>
+                    <tr>
+                        <th>Especialista</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Especialidad</th>
+                        <th>Horario</th>
+                        <th>Segunda especialidad</th>
+                        <th>Horario</th>
+                        <th>Solicitud</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!isLoading">
+                    <tr *ngFor="let specialist of specialistsList">
+                        @if(specialist.startHour != ""){
+                            <td><img [src]="specialist.imagesUser[0]" ></td>
+                            <td>{{ specialist.nameUser }}</td>
+                            <td>{{ specialist.lastNameUser }}</td>
+                            <td>{{ specialist.speciality }}</td>
+                            <td>{{specialist.startHour}} - {{specialist.endHour}}</td>
+                            
+                            <td *ngIf = "specialist.secondSpeciality != ''">{{ specialist.secondSpeciality }}</td>
+    
+                            
+                            
+                            <td *ngIf = "specialist.secondSpeciality == ''">-</td>
+    
+                            
+                            <td>{{specialist.startHourSecondSpeciality}} - {{specialist.endHourSecondSpeciality}}</td>
+                            <td><button class = "btn-book" (click) = "showContainer('solicitud', specialist)">Solicitar</button></td>
+                        }
+                
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

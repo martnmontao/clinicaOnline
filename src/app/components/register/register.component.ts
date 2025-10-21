@@ -13,7 +13,7 @@ export class RegisterComponent {
   showOptions = false; 
   showSpecialities = false;
   showCaptcha = false;
-  
+  showPhotos = false;
   optionsLogins = "PACIENTE";
   labelInput = "Obra social";
  
@@ -43,10 +43,11 @@ export class RegisterComponent {
 
 
 
-  goTo(path: string)
-  {
-    this.router.navigateByUrl(path);
-  }
+ goTo(route: string) {
+  this.router.navigate([route]);
+}
+
+
   showContainer(container: string)
   {
     switch(container)
@@ -63,57 +64,50 @@ export class RegisterComponent {
     
   }
 
-  changeOptionsSpecility(speciality: string)
-  {
-    this.nameUser = "";
-    this.lastNameUser = "";
-    this.ageUser = "";
-    this.emailUser = "";
-    this.passwordUser = "";
-    this.socialWorkUser = "";
-    this.documentUser = "";
-    this.speciality = "";
-    this.secondSpeciality = "";
-
-    switch(speciality)
-    {
-      case "Especialista":
-        this.optionsLogins = "ESPECIALISTA"
-        this.labelInput = "Especialidad";
-        this.showSpecialities = true;
-        
-        break;
-      case "Paciente":
-        this.optionsLogins = "PACIENTE";
-        this.labelInput = "Obra social";
-        this.showSpecialities = false;
-        break;
-    }
-    this.toggleOptions();
-  }
+  
 
   openInput() 
   {
     const input = document.getElementById('input-file') as HTMLInputElement;
     input.click();
+   
   }
 
- onFileSelected(event: Event) 
- {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const archivos = Array.from(input.files);
+onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    const archivos = Array.from(input.files);
 
-      archivos.forEach((archivo) => {
-        this.images.push(archivo);
+    archivos.forEach((archivo) => {
+      this.images.push(archivo);
 
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagesPreview.push(e.target.result); 
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const img = new Image();
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d')!;
+          
+          
+          const maxWidth = 400; 
+          const scale = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scale;
+
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+
+
+          this.imagesPreview.push(compressedBase64);
         };
-        reader.readAsDataURL(archivo); 
-      });
-    }
+      };
+      reader.readAsDataURL(archivo);
+    });
+  }
 }
 
 async registerUser() {
@@ -123,7 +117,7 @@ async registerUser() {
   const user = userCredential.user;
 
   if (user) {
-    // Enviar correo de verificación para cualquier tipo de usuario
+   
     const emailSent = await this.firebaseService.verifyEmailUser(user);
     if (!emailSent) return;
 
@@ -137,14 +131,15 @@ async registerUser() {
         socialWorkUser: this.socialWorkUser,
         imagesUser: this.imagesPreview,
         emailUser: this.emailUser,
-        profile: "Paciente"
+        profile: "Paciente",
+        imageSelected: this.imagesPreview[0]
       };
 
     } else {
       data = {
         uid: user.uid,
         nameUser: this.nameUser,
-        lastNameUser: this.lastNameUser,
+        lastnameUser: this.lastNameUser,
         ageUser: this.ageUser,
         documentUser: this.documentUser,
         imagesUser: this.imagesPreview,
@@ -153,11 +148,12 @@ async registerUser() {
         profile: "Especialista",
         autorization: false,
         emailUser: this.emailUser,
+        imageSelected: this.imagesPreview[0]
       };
     }
 
     await this.firebaseService.addDocument(data, "users");
-    await this.firebaseService.signOut();
+   
     this.router.navigateByUrl("login");
   }
 }
@@ -179,6 +175,7 @@ async registerUser() {
     if (parseInt(this.respuesta) === suma) {
       this.mensaje = '✅ Correcto';
       this.colorMensaje = 'green';
+      
       this.registerUser();
       this.showCaptcha = false;
 

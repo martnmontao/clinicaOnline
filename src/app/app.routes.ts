@@ -18,24 +18,28 @@ export const routes: Routes = [
   },
   {
     path: 'welcome',
-    component: WelcomeComponent
+    component: WelcomeComponent,
+    data: { animation: 'WelcomePage' }
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    data: { animation: 'LoginPage' }
   },
   {
     path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: 'administration',
-    component: AdministrationComponent
+    component: RegisterComponent,
+    data: { animation: 'RegisterPage' }
   },
   {
     path: 'home',
     component: HomeComponent,
     children: [
+      {
+        path: 'administration',
+        component: AdministrationComponent,
+        data: { animation: 'AdministrationPage' }
+      },
       {
         path: 'mi-perfil',
         component: MiPerfilComponent,

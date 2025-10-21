@@ -2,7 +2,7 @@
     <header>
         <div class = "head-containers">
             <img src="/images/logoClinica.png" >
-            <h1>Clínica Médica Avellaneda</h1>
+            <h1>Clínica Online</h1>
         </div>
         <div class = "head-containers login-register">
             <button (click) = "goTo('welcome')">INICIO</button>
@@ -11,63 +11,62 @@
         </div>
     </header>
     <section>
-        <form *ngIf = "!showCaptcha">
-            <div id = "first-container-form">
-                <div id = "container-form-inputs">
-                    <div  class = "inputs-container">
-                        <label>Nombre</label>
-                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Nombre" [(ngModel)] = "nameUser" name = "nameUser">
-                        <label>Apellido</label>
-                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Apellido" [(ngModel)] = "lastNameUser" name = "lastNameUser">
-                        <label>Edad</label>
-                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Edad" [(ngModel)] = "ageUser" name = "ageUser">
-                        
-                        <label>Documento</label>
-                        <input type="text" class="inputs-form" autocorrect="off" placeholder="N° de documento"[(ngModel)] = "documentUser" name="document">
-                    </div>
-                    <div class = "inputs-container">
-                        <label>Correo electrónico</label>
-                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Correo electrónico" [(ngModel)] = "emailUser" name="email">
-                        <label>{{labelInput}}</label>
-                        <input type="text" class="inputs-form" autocorrect="off" [placeholder]="labelInput" *ngIf = "!showSpecialities" [(ngModel)] = "socialWorkUser" name = "socialWork">
-                        <select *ngIf = "showSpecialities" [(ngModel)]="speciality" name = "speciality">
-                            <option [value]="'Clínica médica'">Clínica médica</option>
-                            <option [value]="'Cardiología'">Cardiología</option>
-                            <option [value]="'Cirugía General'">Cirugía General</option>
-                            <option [value]="'Ginecología'">Ginecología</option>
-                            <option [value]="'Pediatría'">Pediatría</option>
-                            <option [value]="'Dermatología'">Dermatología</option>
-                            <option [value]="'Neurología'">Neurología</option>
-                            <option [value]="'Traumatología'">Traumatología</option>
-                            <option [value]="'Otorrinolaringología'">Otorrinolaringología</option>
-                        </select>
-                        
-                       
-                        <label>Contraseña</label>
-                        <input type="password" class="inputs-form" autocorrect="off" placeholder="Contraseña"[(ngModel)] = "passwordUser" name="password">
-                        <label *ngIf = "showSpecialities">Agregar una especialidad</label>
-                        <input type="text" class="inputs-form" autocorrect="off" placeholder="Especialidad" *ngIf = "showSpecialities" [(ngModel)] = "secondSpeciality" name = "secondSpeciality">
-                    </div>
-                </div>
-                <div id = "second-container-form">
-                   
-                    <p id ="p-speciality">Seleccione perfil:</p>
-                    <button type = "button" class = "option-select"(click) = "toggleOptions()">{{optionsLogins}}⮟</button>
-                    <div id = "options-speciality-container" [class.visible]="showOptions">
-                        <button type = "button" class="option-speciality-select" (click) = " changeOptionsSpecility('Paciente')">Paciente</button>
-                        <button type = "button" class="option-speciality-select select-options" (click) = " changeOptionsSpecility('Especialista')" style="border-radius: 0px 0px 5px 5px;">Especialista</button>
-                      
+      <form>
+            
+            <div>
+                <button (click) = "showSpecialities = false; optionsLogins = 'PACIENTE'" [class.active]="!showSpecialities" >PACIENTE</button>
+                <button (click) = "showSpecialities = true; optionsLogins = 'ESPECIALISTA'" [class.active]="showSpecialities" >ESPECIALISTA</button>
+            </div>
+            <div>
+                <button type="button" (click)="openInput()"><img src = "/images/imagenUsuario.png"></button>
+                <button *ngIf = "imagesPreview.length > 0" (click) = "showPhotos = true">Ver imágenes</button>
+                <p *ngIf = "imagesPreview.length == 0">Subir foto de perfil.</p>
+            </div>
+            <div>
+                
+                    <input type="text" class="inputs-form shorts-inputs" placeholder="Nombre" [(ngModel)]="nameUser" name="nameUser" autocomplete="off">
+                    <input type="text" class="inputs-form shorts-inputs" placeholder="Apellido" [(ngModel)]="lastNameUser" name="lastNameUser" autocomplete="off">
+                    <input type="text" class="inputs-form shorts-inputs" placeholder="Edad" [(ngModel)]="ageUser" name="ageUser" autocomplete="off">
+                
+            </div>
+            <div>
+                
+                    <input type="text" class="inputs-form shorts-inputs" placeholder="N° de documento" [(ngModel)]="documentUser" name="document" autocomplete="off">
+                    <input type="text" class="inputs-form shorts-inputs" autocorrect="off" placeholder="Correo electrónico" [(ngModel)] = "emailUser" name="email" autocomplete="off">
+                    <input type="password" class="inputs-form shorts-inputs" autocorrect="off" placeholder="Contraseña"[(ngModel)] = "passwordUser" name="password" autocomplete="off">
+            </div>
+            <div>
+                <input type="text" class="inputs-form shorts-inputs" autocorrect="off" placeholder="Obra social" *ngIf = "!showSpecialities" [(ngModel)] = "socialWorkUser" name = "socialWork" autocomplete="off">
+                <div class="select-wrapper" *ngIf="showSpecialities">
+                    <select *ngIf="showSpecialities" [(ngModel)]="speciality" name="speciality">
+                        <option value="" disabled selected>Elegir especialidad</option>
+                        <option [value]="'Clínica médica'">Clínica médica</option>
+                        <option [value]="'Cardiología'">Cardiología</option>
+                        <option [value]="'Cirugía General'">Cirugía General</option>
+                        <option [value]="'Ginecología'">Ginecología</option>
+                        <option [value]="'Pediatría'">Pediatría</option>
+                        <option [value]="'Dermatología'">Dermatología</option>
+                        <option [value]="'Neurología'">Neurología</option>
+                        <option [value]="'Traumatología'">Traumatología</option>
+                        <option [value]="'Otorrinolaringología'">Otorrinolaringología</option>
+                    </select>
+                    <input class = "inputs-form shorts-inputs"type="text" *ngIf = "optionsLogins == 'ESPECIALISTA'" placeholder="Agregar especialidad"  [(ngModel)] = "secondSpeciality" name = "secondSpeciality" autocomplete="off">
+            </div>
+                <input type="file" id = "input-file" hidden  (change)="onFileSelected($event)" multiple/>
+            </div>
+            <div>
+                 <button (click) = "showContainer('captcha')" >REGISTRARSE</button>
+            </div>
+            <div *ngIf = "showPhotos">
+                <div>
+                    <img [src] = "imagesPreview[0]">
+                    <img [src] = "imagesPreview[1]" *ngIf = "imagesPreview.length > 1">
 
-                    </div>           
-                    <label>Imagenes para su perfil</label>
-                    <input type="file" id = "input-file" hidden  (change)="onFileSelected($event)" multiple/>
-                    <button type="button"  id = "btn-input-file"(click)="openInput()">Subir imagen</button>
-                    
                 </div>
+                <button (click) = "showPhotos = false">Aceptar</button>
+                <button (click) = "imagesPreview.length = 0; showPhotos = false" >Cancelar</button>
             </div>
-            <div  id = "third-container-form">
-                <button id = "btn-register" (click) = "showContainer('captcha')" >REGISTRARSE</button>
-            </div>
+
         </form>
         <div class="captcha-container" *ngIf = "showCaptcha">
         <h2>Verificación CAPTCHA</h2>

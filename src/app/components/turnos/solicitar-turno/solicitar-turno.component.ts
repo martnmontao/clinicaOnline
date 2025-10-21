@@ -32,13 +32,14 @@ export class SolicitarTurnoComponent implements OnInit {
   hoursAvailable: string[] = [];
   selectedDay: string = '';
   selectedHour: string = '';
+  user: any;
   constructor(private firebaseService: FirebaseService)
   {
     
   }
   
   async ngOnInit() {
-  
+    this.user = await this.firebaseService.getUserLogged();
   }
   
   async filterSpecialist() 
@@ -181,7 +182,10 @@ async bookAppointment()
     specialityType: specialitySelected,
     date: this.selectedDay,
     hour: this.selectedHour,
-    state: 'Pendiente'
+    state: 'Pendiente',
+    patient: this.user,
+    patientReview: "",
+    specialistReview: ""
   };
 
   this.firebaseService.addDocument(turno, "appointment");

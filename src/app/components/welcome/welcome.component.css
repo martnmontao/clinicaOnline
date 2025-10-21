@@ -34,9 +34,11 @@ header
 
 h1
 {
-    font-size: 40px;
-    margin: 23px 20px;
-    color: #47A4A0;
+    font-size: clamp(1rem, 2.5vw, 3rem);
+    margin-top: 16px;
+  
+   
+    color: #1F2937;
 }
 
 
@@ -55,7 +57,8 @@ h1
 {
     font-family: 'Roboto', sans-serif;
     width: 250px;
-    font-size: 1.5rem;
+    font-size: clamp(1.3rem, 1.5vw, 2rem);
+
     border: none;
     background-color: transparent;
     color: #1F2937;
@@ -65,7 +68,8 @@ h1
 
 .login-register button:hover
 {
-    color: #47A4A0;
+    border-bottom: 3px solid #1F2937;
+
 }
 
 section

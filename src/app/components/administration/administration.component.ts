@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-administration',
   imports: [CommonModule, FormsModule],
@@ -13,7 +15,13 @@ export class AdministrationComponent implements OnInit{
   showOptions = false; 
   showRegister = false;
   showTable = true;
-
+  showPhotos = false;
+  showCaptcha = false;
+  num1: number = 0;
+  num2: number = 0;
+  mensaje: string = '';
+  colorMensaje: string = '';
+  respuesta: string = '';
   optionsLogins = "PACIENTE";
   labelInput = "Obra social";
   showSpecialities = false;
@@ -199,7 +207,7 @@ selectFilter(filter: string) {
         data = {
           uid: user.uid,
           nameUser: this.nameUser,
-          lastNameUser: this.lastNameUser,
+          lastnameUser: this.lastNameUser,
           ageUser: this.ageUser,
           documentUser: this.documentUser,
           imagesUser: this.imagesPreview,
@@ -223,4 +231,72 @@ selectFilter(filter: string) {
     
   }
 }
+
+  exportExcel() {
+    let data;
+    switch(this.selectedFilter)
+    {
+      case "Paciente":
+        data = this.usersList.map((user:any) => ({
+        "Perfil": user.profile,
+        "Nombre": user.nameUser,
+        "Apellido": user.lastnameUser,
+        "Documento": user.documentUser,
+        "Edad": user.ageUser,
+        "Correo electrónico": user.emailUser, 
+        "Obra social": user.socialWorkUser
+        }));
+        break;
+      case "Especialista":
+         data = this.usersList.map((user:any) => ({
+        "Perfil": user.profile,
+        "Nombre": user.nameUser,
+        "Apellido": user.lastnameUser,
+        "Documento": user.documentUser,
+        "Edad": user.ageUser,
+        "Correo electrónico": user.emailUser, 
+        "Especialidad": user.speciality,
+        "Segunda especialidad": user.secondSpeciality,
+        }));
+        break;
+    }
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+
+  const workbook = { Sheets: { 'Hoja1': worksheet }, SheetNames: ['Hoja1'] };
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+  const blob: Blob = new Blob([excelBuffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+  });
+
+  saveAs(blob, this.selectedFilter + 's.xlsx'); // 📂 Se descarga como Excel real
+  }
+
+  
+  generarCaptcha(): void {
+    this.num1 = Math.floor(Math.random() * 10);
+    this.num2 = Math.floor(Math.random() * 10);
+    this.respuesta = '';
+    this.mensaje = '';
+  }
+
+  verificarCaptcha(): void {
+    const suma = this.num1 + this.num2;
+    if (parseInt(this.respuesta) === suma) {
+      this.mensaje = '✅ Correcto';
+      this.colorMensaje = 'green';
+      
+      this.registerUser();
+      this.showCaptcha = false;
+
+    } else {
+      this.mensaje = '❌ Incorrecto, intenta otra vez';
+      this.colorMensaje = 'red';
+      setTimeout(() => {
+        this.generarCaptcha();
+        
+      }, 1000);
+    }
+  }
 }

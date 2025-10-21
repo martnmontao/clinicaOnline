@@ -1,5 +1,5 @@
-<div id = "horarios-container" >
-            <div id = "specialities-container" *ngIf = "user">
+<div id = "horarios-container" *ngIf = "user">
+            <div id = "specialities-container">
               <button class = "btn-filters">{{user.speciality}}</button>
               <button class = "btn-filters" *ngIf = "user.secondSpeciality != ''">{{user.secondSpeciality}}</button>
 
@@ -27,5 +27,5 @@
                   
                 </div>
                 <button id = "btn-save-horario"(click)="saveSchedule()">Guardar</button>
-        
+       
 </div>

@@ -11,52 +11,103 @@
     </div>
     <div id ="second-container">
         <div id = "filters-specialists">
-            <button 
-            *ngFor = "let specialist of specialistsList" 
-            (click)="selectSpecialist(specialist)"
-            class = "btn-filters"    
-            [class.selected]="selectedSpecialistUid === specialist.uid" 
-            >
-                {{specialist.nameUser}} {{specialist.lastNameUser}}
-            </button>
+            <div id = "btn-container"*ngIf = "!isLoading">
+                <button 
+                *ngFor = "let specialist of specialistsList" 
+                (click)="selectSpecialist(specialist)"
+                class = "btn-filters"    
+                [class.selected]="selectedSpecialistUid === specialist.uid" 
+                >
+                    {{specialist.nameUser}} {{specialist.lastnameUser}}
+                </button>
+
+            </div>
+          
+            <div *ngIf="isLoading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px;">
+                 <svg
+                     width="80"
+                     height="80"
+                     viewBox="0 0 50 50"
+                     xmlns="http://www.w3.org/2000/svg"
+                     stroke="#3498db"
+                 >
+                     <g fill="none" fill-rule="evenodd" stroke-width="4" >
+                     <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+                     <path d="M45 25c0-11.046-8.954-20-20-20">
+                         <animateTransform
+                         attributeName="transform"
+                         type="rotate"
+                         from="0 25 25"
+                         to="360 25 25"
+                         dur="1s"
+                         repeatCount="indefinite"/>
+                     </path>
+                     </g>
+                 </svg>
+            </div>
         </div>
         <div id = "appointment-container">
-             <table >
+             <table *ngIf = "appointmentsList.length > 0 && !isLoadingAppointment">
                 <thead>
                     <tr>
-                        <th>Especialista</th>
+                        <th>Paciente</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Especialidad</th>
-                        <th>Horario</th>
-                        <th>Segunda especialidad</th>
-                        <th>Horario</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
                         <th>Solicitud</th>
                     </tr>
                 </thead>
-                <tbody *ngIf="!isLoading">
-                    <tr *ngFor="let specialist of specialistsList">
-                        @if(specialist.startHour != ""){
-                            <td><img [src]="specialist.imagesUser[0]" ></td>
-                            <td>{{ specialist.nameUser }}</td>
-                            <td>{{ specialist.lastNameUser }}</td>
-                            <td>{{ specialist.speciality }}</td>
-                            <td>{{specialist.startHour}} - {{specialist.endHour}}</td>
-                            
-                            <td *ngIf = "specialist.secondSpeciality != ''">{{ specialist.secondSpeciality }}</td>
-    
-                            
-                            
-                            <td *ngIf = "specialist.secondSpeciality == ''">-</td>
-    
-                            
-                            <td>{{specialist.startHourSecondSpeciality}} - {{specialist.endHourSecondSpeciality}}</td>
-                            <td><button class = "btn-book" (click) = "showContainer('solicitud', specialist)">Solicitar</button></td>
-                        }
-                
+                <tbody>                   
+                    <tr *ngFor = "let appointment of appointmentsList">
+                        <td><img [src]="appointment.patient.nameUser"></td>
+                        <td>{{appointment.patient.nameUser}}</td>
+                        <td>{{appointment.patient.lastnameUser}}</td>
+                        <td>{{appointment.date}}</td>
+                        <td>{{appointment.hour}}</td>
+                        <td>{{appointment.state}}</td>
+                        <td *ngIf = "appointment.state != 'Cancelado' && appointment.state != 'Realizado' && appointment.state != 'Aceptado' && appointment.state != 'Rechazado'"><button class = "btn-book" (click) = "patientSelected = appointment;showContainer('review')">Cancelar</button></td>
+                        <td *ngIf = "appointment.state == 'Cancelado' || appointment.state == 'Realizado' || appointment.state == 'Aceptado' || appointment.state == 'Rechazado'"> - </td>
+                        
                     </tr>
                 </tbody>
             </table>
+
+              <div *ngIf="isLoadingAppointment" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px;">
+                 <svg
+                     width="80"
+                     height="80"
+                     viewBox="0 0 50 50"
+                     xmlns="http://www.w3.org/2000/svg"
+                     stroke="#3498db"
+                 >
+                     <g fill="none" fill-rule="evenodd" stroke-width="4" >
+                     <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+                     <path d="M45 25c0-11.046-8.954-20-20-20">
+                         <animateTransform
+                         attributeName="transform"
+                         type="rotate"
+                         from="0 25 25"
+                         to="360 25 25"
+                         dur="1s"
+                         repeatCount="indefinite"/>
+                     </path>
+                     </g>
+                 </svg>
+            </div>
         </div>
+      
+    </div>
+
+    <div id = "review-container" *ngIf = "showReview">
+                <div>
+                    <button (click) = "showContainer('review')">X</button>
+                </div>
+                <div>
+                    <textarea placeholder="Su comentario..." [(ngModel)] = "review">{{patientSelected.specialistReview}}</textarea>
+                    <button (click) = "sendReview()" *ngIf = "patientSelected.specialistReview == ''">Enviar</button>
+                </div>
+                
     </div>
 </div>

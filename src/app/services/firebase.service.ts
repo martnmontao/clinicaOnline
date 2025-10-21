@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut } from '@angular/fire/auth';
-import { Firestore, collection, addDoc, query, where, getDocs ,updateDoc, onSnapshot, doc, getDoc, limit, Query, DocumentData } from '@angular/fire/firestore'; 
+import { Firestore, deleteDoc, collection, addDoc, query, where, getDocs ,updateDoc, onSnapshot, doc, getDoc, limit, Query, DocumentData } from '@angular/fire/firestore'; 
 
 
 @Injectable({
@@ -9,7 +9,7 @@ import { Firestore, collection, addDoc, query, where, getDocs ,updateDoc, onSnap
 export class FirebaseService {
 
 
-  user: any;
+
    
   constructor(private auth: Auth, private firestore: Firestore)
   {
@@ -30,6 +30,17 @@ export class FirebaseService {
   {
     const dataRef = collection(this.firestore, col);
     return addDoc(dataRef, data);
+  }
+
+   async deleteDocument(collectionName: string, docId: string): Promise<void> {
+    try {
+      const documentRef = doc(this.firestore, `${collectionName}/${docId}`);
+      await deleteDoc(documentRef);
+      console.log(`Documento con ID "${docId}" eliminado de la colección "${collectionName}".`);
+    } catch (error) {
+      console.error('Error eliminando el documento:', error);
+      throw error;
+    }
   }
 
   async verifyEmailUser(user: any): Promise<boolean> 
@@ -164,6 +175,20 @@ async updateUser(id: string, data: any)
   }
 }
 
+
+  async updateDocument(collectionName: string, docId: string, data: any): Promise<void> {
+    try {
+      const docRef = doc(this.firestore, `${collectionName}/${docId}`);
+      await updateDoc(docRef, data);
+      console.log(`Documento ${docId} actualizado en ${collectionName}`);
+    } catch (error) {
+      console.error("Error actualizando documento:", error);
+      throw error;
+    }
+  }
+
+
+
 async  autorizateUser(uid: string) {
   const usersRef = collection(this.firestore, 'users');
   const q = query(usersRef, where('uid', '==', uid));
@@ -212,5 +237,30 @@ async getDocumentsWithFilters(filters: { key: string, value: any }[], collection
 
   const snapshot = await getDocs(q);
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+
+async getAppointments(uid: string, specialityType: string) {
+  const appointmentsRef = collection(this.firestore, 'appointment');
+
+  const q = query(
+    appointmentsRef,
+    where('specialist.uid', '==', uid),
+    where('specialityType', '==', specialityType)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const appointments: any[] = [];
+
+ 
+
+  querySnapshot.forEach((doc) => {
+    appointments.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+ 
+  return appointments;
 }
 }

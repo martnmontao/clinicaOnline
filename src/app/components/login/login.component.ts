@@ -13,19 +13,20 @@ export class LoginComponent {
   showOptions = false; 
   //emailUser: string = "koverem157@iridales.com";
   //passwordUser: string = "martin";
-  emailUser: string = "joheka9136@dxirl.com";
+  emailUser: string = "hiwec41220@fenexy.com";
   passwordUser: string = "martin";
-
+  textUserChoice: string = "";
   optionsLogins = "PACIENTE";
   constructor(private router: Router, private firebaseService: FirebaseService)
   {
 
   }
 
-  goTo(path: string)
-  {
-    this.router.navigateByUrl(path);
-  }
+ 
+
+goTo(route: string) {
+  this.router.navigate([route]);
+}
 
     
 

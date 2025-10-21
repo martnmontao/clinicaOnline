@@ -7,15 +7,11 @@ import { Router } from '@angular/router';
   styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
-  constructor(private router: Router)
-  {
+  constructor(private router: Router) {}
 
-  }
-
-  goTo(path: string)
-  {
-    this.router.navigateByUrl(path);
-  }
+goTo(route: string) {
+  this.router.navigate([route]);
+}
 
 
 }

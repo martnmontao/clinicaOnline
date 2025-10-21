@@ -110,3 +110,41 @@ button
   align-items: center;
   justify-content: center;
 }
+.left-svg
+{
+    position: absolute;
+    left: 0;
+    top: 42%;
+    width: 80px;
+    height: 80px;
+    transform: translate(50%, -50%);
+    animation: pulse 2s infinite;
+    cursor: pointer;
+    margin: 0 20px;
+
+}
+
+.right-svg
+{
+    position: absolute;
+    right: 0;
+    top: 35%;
+    width: 80px;
+    height: 80px;
+    transform: translate(50%, -50%);
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    rotate: 180deg;
+    margin: 0 20px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-50%) scale(1.1);
+    opacity: 0.8;
+  }
+}

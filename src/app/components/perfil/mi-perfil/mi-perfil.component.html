@@ -1,6 +1,13 @@
 <div id = "user-profile-container" *ngIf = "user">
     <div class = "data-user-container img-container">
-        <img [src] = "user.imagesUser[0]">
+    
+        <img [src] = "user.imageSelected">
+        <button class = "btn-download">Historia clínica<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-label="Descargar">
+  <path d="M12 3v11"/>
+  <path d="M8 10l4 4 4-4"/>
+  <rect x="4" y="17" width="16" height="3" rx="1.5" ry="1.5"/>
+</svg>
+</button>
     </div>
     <div class = "data-user-container">
         <p>Nombre: <br>{{user.nameUser}} </p>
@@ -8,7 +15,7 @@
         <p>Correo electrónico: <br>{{user.emailUser}}</p>
     </div>
     <div class = "data-user-container">
-        <p>Apellido:<br> {{user.lastNameUser}} </p>
+        <p>Apellido:<br> {{user.lastnameUser}} </p>
         <p>Edad: <br>{{user.ageUser}}</p>
         @if(user.profile == 'Especialista')
         {
@@ -21,4 +28,5 @@
 
          }
     </div>
+
 </div>

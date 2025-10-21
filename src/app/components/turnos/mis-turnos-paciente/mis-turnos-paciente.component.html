@@ -1,10 +1,107 @@
 <div id = "principal-container">
-    <div id = "filters-container">
-        <button class="btn-filter">Especialidad</button>
-        <button class="btn-filter">Especialista</button>
-        
-    </div>
-    <div id = "patients-shifts-container"> 
+     <div id ="dark-opacity" *ngIf = "showDetails">
 
     </div>
+    <button (click) = "showContainer('filters')">
+        FILTRAR
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+        </svg>
+    </button>
+
+    <div id = "filters-container"  [ngClass]="{'specialistActions': showDetails}" *ngIf = "showFilters">
+
+        <div id = "btn-specialities-container">
+            <p>Filtrar por especialidad:</p>
+            <button *ngFor = "let speciality of specialityFilters" (click) = "filterSpecialities(speciality);" class="btn-filter"  [class.selected]="filterSpecialitySelected === speciality">{{speciality}}</button>
+        </div>
+        <div id = "btn-specialists-container" >
+            <p>Filtrar por especialista:</p>
+            <button *ngFor = "let specialist of specialistsFilters" (click) = "filterSpecialist(specialist);" class="btn-filter"  [class.selected]="filterSpecialistSelected === specialist">{{specialist}}</button>
+        </div>
+        <div id = "btn-specialists-container" >
+            <p>Filtrar por día:</p>
+            <button *ngFor = "let specialist of specialistsFilters" (click) = "filterSpecialist(specialist);" class="btn-filter"  [class.selected]="filterSpecialistSelected === specialist">{{specialist}}</button>
+        </div>
+        <div id = "btn-specialists-container" >
+            <p>Filtrar por horario:</p>
+            <button *ngFor = "let specialist of specialistsFilters" (click) = "filterSpecialist(specialist);" class="btn-filter"  [class.selected]="filterSpecialistSelected === specialist">{{specialist}}</button>
+        </div><div id = "btn-specialists-container" >
+            <p>Filtrar por estado:</p>
+            <button *ngFor = "let specialist of specialistsFilters" (click) = "filterSpecialist(specialist);" class="btn-filter"  [class.selected]="filterSpecialistSelected === specialist">{{specialist}}</button>
+        </div>
+    </div>
+ 
+    <div id = "patients-shifts-container"> 
+       
+        <table>
+                <thead>
+                    <tr>
+                        <th>Especialista</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Especialidad</th>
+                        <th>Día</th>
+                        <th>Horario</th>
+                        <th>Estado</th>
+                        <th>Detalles</th>
+
+                    </tr>
+                </thead>
+               <tbody>
+                <tr *ngFor="let appointment of appointmentsFiltered">
+                    <td data-label="Especialista">
+                    <img [src]="appointment.specialist.imagesUser[0]">
+                    </td>
+                    <td data-label="Nombre">{{ appointment.specialist.nameUser }}</td>
+                    <td data-label="Apellido">{{ appointment.specialist.lastnameUser }}</td>
+                    <td data-label="Especialidad">{{ appointment.specialityType }}</td>
+                    <td data-label="Día">{{ appointment.date }}</td>
+                    <td data-label="Horario">{{ appointment.hour }}</td>
+                    <td data-label="Estado">{{ appointment.state }}</td>
+                     <td><button class="btn-action-patient" (click) = "appointmentSelected = appointment; showContainer('details')">Ver detalles</button></td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+    <div id = "specialist-action-container" *ngIf = "showDetails">
+                <div>
+                    <img src="" alt="">
+                    <span>Especialista: {{appointmentSelected.specialist.nameUser}} {{appointmentSelected.specialist.lastnameUser}}</span>
+                
+                    <span>Especialidad: {{appointmentSelected.specialityType}}</span>
+                    <span>Horario: {{appointmentSelected.hour}}</span>
+                    <span>Día: {{appointmentSelected.date}}</span>
+                </div>
+                <div>
+                    <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); stateAppointmentSelected = 'Cancelado'" *ngIf = "appointmentSelected.state != 'Realizado' && appointmentSelected.state != 'Cancelado' && appointmentSelected.state != 'Rechazado'">Cancelar turno</button>
+                    <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); stateAppointmentSelected = 'Realizado'" *ngIf = "appointmentSelected.state == 'Realizado'">Calificar atención</button>
+                    <button class="btn-action-specialist" (click) = "showContainer('review')" *ngIf = "appointmentSelected.state == 'Realizado'">Completar encuesta</button>
+                    <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist')" *ngIf = "appointmentSelected.specialistReview != ''">Ver reseña</button>
+
+
+                    <button class="btn-action-specialist" (click) = "showContainer('details')">Cerrar</button>
+                </div>
+
+    </div>
+
+       <div id = "review-container" *ngIf = "showReviewPatient">
+                <div>
+                    <button (click) = "showContainer('reviewPatient')">X</button>
+                </div>
+                <div>
+                     <textarea placeholder="Su comentario..." [(ngModel)] = "review">{{appointmentSelected.patientReview}}</textarea>
+                     <button (click) = "sendReview()" *ngIf = "appointmentSelected.patientReview == ''">Enviar</button>
+                </div>
+        </div>
+        <div id = "review-container" *ngIf = "showReviewSpecialist">
+                <div>
+                    <button (click) = "showContainer('reviewSpecialist')">X</button>
+                </div>
+                <div>
+                     <textarea placeholder="Su comentario..." [(ngModel)] = "review">{{appointmentSelected.specialistReview}}</textarea>
+                    
+                </div>
+        </div>
+       
 </div>

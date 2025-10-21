@@ -8,7 +8,7 @@
   justify-content: space-evenly;
   /* QUITÁ esto 👇 */
    height: 600px;
-   background-color: red; 
+
   /* overflow-y: auto; */
   
 }
@@ -38,7 +38,7 @@ select:focus
   width: 100%;
   position: relative;
   border-radius: 10px;
-  /* QUITÁ esto 👇 */
+
   height: 70%; 
   overflow-y: auto; 
 }

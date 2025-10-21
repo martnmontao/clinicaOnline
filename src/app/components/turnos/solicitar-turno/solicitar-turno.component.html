@@ -26,7 +26,7 @@
                         @if(specialist.startHour != ""){
                             <td><img [src]="specialist.imagesUser[0]" ></td>
                             <td>{{ specialist.nameUser }}</td>
-                            <td>{{ specialist.lastNameUser }}</td>
+                            <td>{{ specialist.lastnameUser }}</td>
                             <td>{{ specialist.speciality }}</td>
                             <td>{{specialist.startHour}} - {{specialist.endHour}}</td>
                             
@@ -73,7 +73,7 @@
 
   <!-- Info especialista -->
       <div class="info-appointment-container info-specialist">
-        <p>{{ specialistSelected.nameUser }} {{ specialistSelected.lastNameUser }}</p>
+        <p>{{ specialistSelected.nameUser }} {{ specialistSelected.lastnameUser }}</p>
       </div>
 
       <!-- Especialidad y horario disponible -->

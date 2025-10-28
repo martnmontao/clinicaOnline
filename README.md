@@ -1,4 +1,5 @@
-Clínica Online es una aplicación web que te permite ingresar tanto como un paciente, un especialista o un administrador.
+Clínica Online es una aplicación web que te permite ingresar tanto como un paciente, un especialista o un administrador. Podrás solicitar turnos médicos por parte de los pacientes. Podrás atender pacientes por parte de los especialistas y los administradores
+podrán controlar tanto a los usuarios y los turnos médicos.
 Primero tenemos tres secciones la pagina de bienvenida, inicio de sesión y el registro tanto como paciente y especialista
 
 

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../../services/firebase.service';
-
+import { Speciality } from '../../../interfaces/speciality';
 @Component({
   selector: 'app-listado-turnos',
   imports: [FormsModule, CommonModule],
@@ -10,18 +10,7 @@ import { FirebaseService } from '../../../services/firebase.service';
   styleUrl: './listado-turnos.component.css'
 })
 export class ListadoTurnosComponent implements OnInit {
- specialitiesList: string[] = [
-    'Clínica médica',
-    'Cardiología',
-    'Cirugía General',
-    'Ginecología',
-    'Pediatría',
-    'Dermatología',
-    'Neurología',
-    'Traumatología',
-    'Otorrinolaringología',
-    'Hemoterapia'
-  ];
+ specialitiesList: string[] = [];
   
   specialistsList: any[] = [];
   selectedSpeciality: string = '';
@@ -38,37 +27,31 @@ export class ListadoTurnosComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    
+  async ngOnInit() {
+     this.specialitiesList = await this.firebaseService.getAllUniqueSpecialities();
   }
 
 
 
-  async selectSpeciality(speciality: string)
-  {
-      this.isLoading = true;
-      this.specialistsList = [];
-      this.appointmentsList = [];
-      this.selectedSpeciality = speciality;
-      this.selectedSpecialistUid = '';
+  async selectSpeciality(speciality: string) {
+    this.isLoading = true;
+    this.specialistsList = [];
+    this.appointmentsList = [];
+    this.selectedSpeciality = speciality;
+    this.selectedSpecialistUid = '';
 
-      const specialistsPrimary = await this.firebaseService.getSpecifyUsers('speciality', speciality, 'users');
-      const specialistsSecondary = await this.firebaseService.getSpecifyUsers('secondSpeciality', speciality, 'users');
+    const allSpecialists = await this.firebaseService.getSpecifyUsers('profile', 'Especialista', 'users');
 
-      
-      const combinedMap = new Map();
 
-      [...specialistsPrimary, ...specialistsSecondary].forEach(s => {
-        combinedMap.set(s.uid, s); 
-      });
+    this.specialistsList = allSpecialists.filter(user =>
+      Array.isArray(user.specialities) &&
+          user.specialities.some((sp: Speciality) => sp.name === speciality)
+    );
 
-      this.specialistsList = Array.from(combinedMap.values());
-      setTimeout(() => {
-
-        this.isLoading = false;
-      }, 500);
-
-    }
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500);
+  }
 
   async selectSpecialist(specialist:any)
   {
@@ -85,7 +68,6 @@ export class ListadoTurnosComponent implements OnInit {
     this.isLoadingAppointment = true;
     
     this.appointmentsList = await this.firebaseService.getAppointments(this.selectedSpecialistUid, this.selectedSpeciality)
-    console.log(this.appointmentsList)
     setTimeout(() => {
       
       this.isLoadingAppointment = false;
@@ -108,7 +90,7 @@ export class ListadoTurnosComponent implements OnInit {
   async changeStateAppointment()
   {
     
-    await this.firebaseService.updateDocument('appointment', this.patientSelected.id, 
+    await this.firebaseService.updateDocument('appointments', this.patientSelected.id, 
       {
         state: 'Cancelado',
         specialistReview: this.review

@@ -50,6 +50,7 @@ section
     height: 100%;
     display: flex;
     align-items: center;
+    overflow-y: auto;
    
     flex-direction: column;
     gap: 2%;
@@ -65,6 +66,14 @@ th, td
     background-color: 	#E0E0DF ;
 }
 
+td
+{
+    min-height: 100px;
+    max-height: 100px; 
+    overflow-y: auto;  
+    overflow-x: hidden;
+}
+
 
 
 
@@ -75,6 +84,7 @@ table
     padding: 1%;
    
     
+    
 }
 
 #btn-filter-users-container
@@ -82,7 +92,7 @@ table
 
     width: 100%;
     
-   
+    min-height: 100px;
     height: 15%;
     display: flex;
     justify-content: space-evenly;
@@ -94,12 +104,12 @@ table
     border-radius: 10px;
      font-size: clamp(0.5rem, 1.3vw, 5rem);
     transition: 0.3s background ease;
-    
+    height: 60px;
 }
 
 .btn-filter-users:hover
 {
-    background-color: #232324;
+    background-color: #1F2937;
     color: #E0E0DF;
 }
 
@@ -111,21 +121,26 @@ button
 
 #table-users-container
 {
-    background-color: #1F2937;
+    background-color: rgb(255, 255, 255, 0.6);
+    min-height: 400px;
+    max-height: 450px;
     border-radius: 5px;
     margin-top: 5%;
     width: 70%;
     padding: 20px;
-    height: 50%;
+    min-height: 500px;
+    height: auto;
     min-width: 700px;
     display: flex;
     flex-direction: column;
     gap: 10%;
+    overflow-y: auto;
+    overflow-x: hidden;
    
 }
 
 .btn-filter-users.selected {
-  background-color: #232324;
+  background-color: #1F2937;
 
     color: #E0E0DF;
 
@@ -133,22 +148,40 @@ button
 
 .btn-autorizate-user
 {
-    height: 50px;
-    width: 45%;
-    padding: 5px;
+    
+   
     border-radius: 10px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: #1F2937;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
     transition: 0.1s background ease;
+}
+
+.img-accept-user
+{
+    width: 90px;
+    height: 90px;
+
 }
 
 #td-autorizate-user
 {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    
+ 
+    
 }
+.td-specialities
 
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100px;
+    padding: 0 20px 0 0;
+}
 
 
 
@@ -160,17 +193,23 @@ button
 .btn-accept-user
 {
     background-color: #7BD29B;
+    font-size: clamp(0.6rem, 0.3vw, 3rem);
+    height: 70px;
+    width: 70px;
+    text-align: center;
+
 }
 
 .btn-delete-user
 {
     background-color: #F08080;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+
 }
 
 .btn-accept-user:hover
@@ -232,9 +271,11 @@ label
     font-family: 'Roboto', sans-serif;
     border-radius: 5px;
     color: white;
-  
+    font-size: clamp(1.5rem, 1vw, 2rem);
+    
     background-color: #1F2937;
-    width: 450px;
+    margin: 0 auto;
+    width: 350px;
     height: 55px;
     border: none;
 }
@@ -313,11 +354,12 @@ button
 {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
-    border-radius: 10px;
+    
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: transparent;
 }
 
 
@@ -326,23 +368,11 @@ button
     height: 100px;
     width: 100px;
     object-fit: contain;
-    border-radius: 50%;
+    border-radius: 5px;
+    
+    border: 2px solid #1F2937;
    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 select
 {
@@ -375,259 +405,74 @@ select
     border-bottom: 3px solid #1F2937;
 }
 
-form > div:nth-child(2) > p
+form
 {
-    position: absolute;
+    min-width: 400px;
  
-    top: -25%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(1rem, 1vw, 2rem);
-    
-}
-
-form > div:first-child
-{
-    height: 25%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-   
-}
-form > div:first-child button.active
-{
-     
-    font-weight: 600;
-    border-bottom: 3px solid #1F2937;
 }
 
 
-form > div:first-child button
+form > div:nth-child(1)
 {
-    width: 25%;
-    height: 70px;
-    background-color: transparent;
-    color: #1F2937;
-    border-bottom: 1px solid #1F2937;
-    font-size: clamp(0.5rem, 1.5vw, 2rem);
-
-    min-width: 100px;
-
-}
-form > div:nth-child(3)
-{
-     height: 25%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-
-form > div:nth-child(4)
-{
-     height: 25%;
-    display: flex;
-    justify-content: space-between;
-    width: 89%;
-    align-items: center;
-    
-    margin: 0 auto;
-
-}
-
-
-
-form > div:nth-child(4) > input
-{
-    width: 27.8%;
-
-    
-}
-
-form > div:nth-child(5) > select
-{
-    width: 26%;
-
-    background-color: transparent;
-    margin-left: 5.5%;
-    
-
-    border: 2px solid #1F2937;
-}
-
-form > div:nth-child(5) > input
-{
-    width: 25%;
-    margin-left: 5.5%;
-    margin-bottom: 16px;
-}
-
-
-
-form > div:nth-child(2) > button > img
-{
-    object-fit: cover;
-    width: 170px;
-    height: 170px;  
-   
-}
-
-form > div:nth-child(2) > button:nth-child(1):hover
-{
-   
-    width: 120px;
-    height: 120px;
-    border: 2px solid #1F2937;
-    
-}
-
-form > div:nth-child(2) > button
-{
-    background-color: transparent;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.4s ease;
-    margin: 16px auto;
-    
-    
+    flex-direction: column;
+    height: 35%;
 }
 
-input::placeholder
+form > div:nth-child(1) > button > img:nth-child(1)
 {
-    color:  #1F2937;
+    height: 120px;
+    width: 120px;
+    transition: transform 0.5s ease;
+}
+
+.img-user:hover
+{
+    transform: scale(1.5);
 }
 
 
 
+form > div:nth-child(1) > button
+{
+    background-color: transparent;
+}
+
+form > div:nth-child(1) > button:nth-child(2)
+{
+    width: 200px;
+    height: 55px;
+    background-color: #1F2937;
+    color: white;
+    border-radius: 5px;
+}
 
 form > div:nth-child(2)
 {
-
+    height: 20%;
     display: flex;
     justify-content: space-evenly;
-    flex-direction: column; 
-    gap: 26px;
-    position: relative;
 }
 
-form > div:nth-child(2) > button:nth-child(2)
+form > div:nth-child(3)
 {
-    background-color: #1F2937;
-    width: 200px;
-    border-radius: 0;
-    height: 50px;
-    border-radius: 5px;
- 
-}
-
-form > div:nth-child(6)
-{
+    height: 20%;
     display: flex;
-    justify-content: center;
-    margin: 16px 0;
-}
-
-form > div:nth-child(7)
-{
-    min-width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
-    border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-    height: 500px;
-    width: 70%;
-    background-color: rgb(255, 255, 255, 0.9);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-form > div:nth-child(7) > div
-{
-        display: flex;
-        justify-content: center;  
-        align-items: center;
-        gap: 16px;                     
-        max-width: 100%;          
-        box-sizing: border-box;
-}
-
-form > div:nth-child(7) > button
-{
-    background-color: #1F2937;
-    border-radius: 5px;
-    width: 40%;
-    height: 60px;
+    justify-content: space-evenly;
 }
 
 
-form > div:nth-child(7) > div:nth-child(1) > img
-{
-    max-width: 100%;          
-    width: 200px;            
-    height: 200px;             
-    border: 1px solid #1F2937;
-    transition: transform 0.5s ease;
-    object-fit: cover;   
-}
-
-form > div:nth-child(7) > div:nth-child(1) > img:hover
-{
-     transform: scale(1.08);
-}
-
-form > div:nth-child(6) > button
-{
-    width: 20%;
-    background-color: #1F2937;
-    border-radius: 5px;
-    padding: 16px;
-    font-size: clamp(0.5rem, 1vw, 2rem);
-
-}
-
-.select-wrapper {
-  position: relative;
-  display: flex;
-
-  justify-content: space-evenly;
-  width: 100%;
-}
-
-.select-wrapper select {
-  width: 26%;
-  
-  margin-left: 5.5%;
-  padding: 10px 40px 10px 12px; 
-  border-radius: 8px;
-  border: 1px solid #1F2937;
-  appearance: none; 
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  font-size: 20px;
-  cursor: pointer;
-  background-color: transparent;
-}
 
 
-.select-wrapper::after {
-  content: "▼";
-  font-size: 16px;
-  color: #1F2937;
-  position: absolute;
-  left: 43%;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; /* Para no interferir con el clic */
-}
+
+
+
+
+
+
+
 
 .arrow-img
 {

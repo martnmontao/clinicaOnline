@@ -127,23 +127,13 @@ selectFilter(filter: string) {
   this.selectedFilter = filter;
   this.loading = true;
 
-  if (filter === "Especialista") {
-    this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => {
+  this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => {
       this.usersList = answer;
 
       setTimeout(() => {
         this.loading = false;
       }, 500);
     });
-  } else if (filter === "Paciente") {
-    this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => {
-      this.usersList = answer;
-
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
-    });
-  }
 }
 
   autorizateUser(uid:string)
@@ -174,36 +164,9 @@ selectFilter(filter: string) {
 
     if (user) 
       {
-      const emailSent = await this.firebaseService.verifyEmailUser(user);
-
-      if (!emailSent) 
-      {
-       
-        return;
-      }
-
       let data: any;
 
-      if (this.optionsLogins === "PACIENTE") 
-      {
-        data = {
-          uid: user.uid,
-          nameUser: this.nameUser,
-          lastnameUser: this.lastNameUser,
-          ageUser: this.ageUser,
-          documentUser: this.documentUser,
-          socialWorkUser: this.socialWorkUser,
-          imagesUser: this.imagesPreview,
-          emailUser: this.emailUser,
-          profile: "Paciente"
-        };
-
-        await this.firebaseService.addDocument(data, "users");
-
-       
-      }else 
-      {
-       
+     
         data = {
           uid: user.uid,
           nameUser: this.nameUser,
@@ -211,21 +174,23 @@ selectFilter(filter: string) {
           ageUser: this.ageUser,
           documentUser: this.documentUser,
           imagesUser: this.imagesPreview,
-          speciality: this.speciality,
-          secondSpeciality: this.secondSpeciality,
-          profile: "Especialista",
-          autorization: false,
           emailUser: this.emailUser,
+          profile: "Admin"
         };
 
         await this.firebaseService.addDocument(data, "users");
+
+       
+     
+
+      
 
        
       }
 
-      await this.firebaseService.signOut(); 
+    
     }
-  }catch (error) 
+  catch (error) 
   {
     console.error("Error al registrar:", error);
     

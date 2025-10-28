@@ -13,9 +13,9 @@ export class MisTurnosEspecialistaComponent {
   patientsAppointment: any = [];
   specialityFilters:any = [];
   patiensFilters: any = [];
-  dateFilters: any = [];
-  hourFilters: any = [];
-  stateFilters: any = [];
+  datesFilters: any = [];
+  hoursFilters: any = [];
+  statesFilters: any = [];
   appointmentsFiltered: any = [];
   patientSelected: any;
   showActionSpecialist:boolean = false;
@@ -49,27 +49,27 @@ export class MisTurnosEspecialistaComponent {
     this.userLogged = await this.firebaseService.getUserLogged();
     this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'specialist.uid', value: this.userLogged.uid }],
-      'appointment' 
+      'appointments' 
     );
 
 
     this.appointmentsFiltered = this.patientsAppointment;
-    console.log(this.appointmentsFiltered)
+
     this.specialityFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.specialityType))
+    ...new Set(this.patientsAppointment.map((t: any) => t.speciality))
     ];
 
     this.patiensFilters = [
     ...new Set(this.patientsAppointment.map((t: any) => t.patient.nameUser))
     ];
 
-    this.dateFilters = [
+    this.datesFilters = [
     ...new Set(this.patientsAppointment.map((t: any) => t.date))
     ];
-    this.hourFilters = [
+    this.hoursFilters = [
     ...new Set(this.patientsAppointment.map((t: any) => t.hour))
     ];
-    this.stateFilters = [
+    this.statesFilters = [
     ...new Set(this.patientsAppointment.map((t: any) => t.state))
     ];
   } 
@@ -79,7 +79,7 @@ export class MisTurnosEspecialistaComponent {
   {
     this.filterSpecialitySelected = speciality;
      const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.specialityType === speciality);
+    (appointment: any) => appointment.speciality === speciality);
     
     this.appointmentsFiltered = filteredAppointments;
  
@@ -134,15 +134,15 @@ export class MisTurnosEspecialistaComponent {
   async changeStateAppointment()
   {
     
-    this.firebaseService.updateDocument('appointment', this.patientSelected.id, 
+    this.firebaseService.updateDocument('appointments', this.patientSelected.id, 
       {
         state: this.stateAppointmentSelected,
-        specialistReview: this.review
+        specialistReview: "Especialista: "+this.review
       }
     )
      this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'specialist.uid', value: this.userLogged.uid }],
-      'appointment' 
+      'appointments' 
     );
 
 
@@ -155,6 +155,7 @@ export class MisTurnosEspecialistaComponent {
     {
       case "actions":
         this.showActionSpecialist = !this.showActionSpecialist;
+        console.log(this.patientSelected)
         break;
       case "reviewSpecialist":
        

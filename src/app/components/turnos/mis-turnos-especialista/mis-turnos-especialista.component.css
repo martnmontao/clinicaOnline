@@ -1,43 +1,89 @@
 #principal-container
 {
-    margin: 1% auto;
+    margin: 0 auto;
     height: 87%;
     width: 70%;
     display: flex;
-    justify-content: space-evenly;
+    
     align-items: center;
 
     flex-direction: column;
 }
 
-
 #filters-container
 {
     
-    height: 300px;
-    min-width: 1000px;
-    text-align: center;
-    position: absolute;
-    top: 20%;
-    padding: 10px;
+  
+    width: 100%;
+    height: auto;
+    overflow-y: hidden;
     display: flex;
+    flex-direction: column;
     transform: scaleY(0);
-    background-color: #1F2937;
-    justify-content: center;
+    background-color: rgb(255, 255, 255,0.8);
+    border: 2px solid #1F2937;
     animation: showFilter 200ms ease forwards;
-    
+    overflow-y: auto;
     font-size: clamp(0.8rem, 1vw, 3rem);
-    color: white;
-    border-radius: 10px;
+    border-radius: 5px;
+    padding: 0 16px 0 0;
+    gap: 16px;
 }
 
+.btn-specialists-container > p
+{
+    margin: 32px 0;
+    font-size: clamp(1rem, 1.5vw, 3rem);
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #1F2937;
+}
+.btn-specialists-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  width: 100%;
+  
+  min-height: auto;
+}
+
+td > img
+{
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    object-fit: contain;
+    background-color: white;
+}
+.btn-filters-container
+{
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    height: auto;
+
+
+    width: 100%;
+}
 
 #patients-shifts-container
 {
+    
+    background-color: rgb(255, 255, 255,0.8);
+    display: flex;
+    flex-direction: column;
+    
     height: 100%;
-   
+    width: 100%;
+    border: 2px solid #1F2937;
     border-radius: 10px;
+    overflow-y: auto;
 }
+
 
 #principal-container > button
 {
@@ -74,14 +120,19 @@ svg{
 
 }
 
+
 .btn-filter
 {
-    width: 120px;
+   
+    padding: 0 16px;
     min-height: 70px;
-    border-radius: 10px;
+    min-width: 200px;
+    border-radius: 5px;
     border: none;
-    background-color: #2B2F3B;
-    color: #F4F4F3;
+    letter-spacing: 1px;
+    border: 2px solid #1F2937;
+    margin: 0 16px;
+    color: #1F2937;
     font-size: clamp(1rem, 1vw, 3rem);
     margin: 10px;
 }
@@ -115,15 +166,7 @@ button
 }
 
 
-#patients-shifts-container
-{
-    
-    display: flex;
-    margin-left: 10px;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-}
+
 img
 {
     background-color: red;
@@ -131,24 +174,25 @@ img
 table
 {
 
-    margin-top: 20px;
+
     background-color: #F4F4F3;
-    border-radius: 10px;
+ 
     padding: 1%;
-    width: 80%;
-    height: 10px;
+    width: 100%;
+    
 
 }
 
 th, td
 {
     padding: 10px;
-
+    border: 1px solid #1F2937;
     border-radius: 5px;
     color: #1F2937;
     text-align: center;
-    background-color: 	#E0E0DF ;
-   font-size: clamp(0.8rem, 2vw, 1.2rem);
+    background-color: 	white ;
+     font-size: clamp(1rem, 1vw, 1.5rem);
+    
 }
 
 
@@ -156,27 +200,74 @@ th, td
 button{
     border: none;
 }
+#specialist-action-container > div:first-child > button:nth-child(1)
+{
+    height:55px;
+    width:55px;
+    border-radius: 50%;
+    position: absolute;
+    margin: 16px;
+    left: 0;
+    top: 0;
+    border: 2px solid #1F2937;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.span-little
+{
+    font-size: 22px;
+
+    color: #1F2937;
+}
+
+.span-big
+{
+    font-size: clamp(2.5rem, 3vw, 2.5rem);
+    color: #1F2937;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+.img-patient
+{
+    border-radius: 50%;
 
 
+    height: 120px;
+    width: 120px;
+    background-color: transparent;
+    object-fit: contain;
+}
 
 
 #specialist-action-container
 {
     position: absolute;
+    min-width: 400px;
+    
+    top: 0;
     right: 0;
-    top: 1%;
-    min-width: 300px;
-    max-width: 400px;
-    height: 85vh;
+    width: 25%;
+    height: 100%;
     transform-origin: right top;
     transform: scaleX(0);
     z-index: 999999;
-    background-color: white;
-    border-radius: 10px 0 0 10px;
+    background-color: #F4F4F3;
+
     animation: showContainer 300ms ease forwards;
     padding: 10px;
 }
+.arrow-img
+{
+    border-radius: 50%;
 
+
+    height: 60px;
+    width: 60px;
+    background-color: transparent;
+    rotate: 180deg;
+    object-fit: contain;
+}
 div span
 {
 font-size: clamp(1.2rem, 1.5vw, 1.4rem);
@@ -185,42 +276,47 @@ font-size: clamp(1.2rem, 1.5vw, 1.4rem);
 
 #specialist-action-container > div:last-child
 {
-    display: flex;
+     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    height: 70%;
+    
+    height: 40%;
     
 }
 
 #specialist-action-container > div:first-child
 {
-    height: 30%;
+    position: relative;
+    gap: 16px;
+    height: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     text-align: center;
 }
+.btn-action-specialist:hover
+{
+    font-weight: bold;
+    border-bottom: 3px solid #1F2937;
+}
 .btn-action-specialist
 {
-    width: 70%;
-    margin: 10px;
-    color: #E0E0DF;
-    border-radius: 10px;
+    width: 90%;
+
+    color: #1F2937;
+
     height: auto;
     padding: 20px;
-    font-size: clamp(1rem, 1vw, 3rem);
-    background-color: #1F2937;
+    font-size: clamp(1rem, 1.3vw, 2rem);
+    background-color: transparent;
+    border-bottom: 2px solid #1F2937;
     transition: background 300ms ease-in;
   
 }
 
-.btn-action-specialist:hover
-{
-    background-color: #2d3f58;
 
-}
 
 
 
@@ -258,6 +354,24 @@ tr button
     z-index: 1;
 }
 
+.btn-action-patient
+{
+    width: 100%;
+    margin: 0 auto;
+    color: #E0E0DF;
+    border-radius: 10px;
+    height: auto;
+    padding: 20px;
+    font-size: clamp(1rem, 1.3vw, 1.5rem);
+    background-color: #1F2937;
+    transition: background 100ms ease-in;
+  
+}
+
+.btn-action-patient:hover
+{
+    background-color: #36475e;
+}
 
 
 #review-container
@@ -325,11 +439,20 @@ tr button
     font-size:  clamp(1.5rem, 1vw, 3rem);
 }
 
-.selected {
-  background-color: #007bff; 
-
-
+.btn-filter.selected
+{
+    background-color: #354a67;
+    color: white;
+    font-weight: bold;
 }
+
+.btn-filter:hover
+{
+    background-color: #354a67;
+
+    color: white;
+}
+
 
 @media (max-width: 768px) {
   table, thead, tbody, th, tr {

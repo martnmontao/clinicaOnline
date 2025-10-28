@@ -4,8 +4,22 @@ body
     margin: 0;
     padding: 0;
       font-family: 'Roboto', sans-serif;
+      
+}
+.swal2-container-absolute {
+  position: absolute !important; /* deja que fluya con el scroll normal */
+  top: 50%;                     /* opcional, centrado */
+  left: 50%;                    /* opcional, centrado */
+  transform: translate(-50%, -50%);
+ 
 }
 
+.my-swal-popup {
+  border: 2px solid #1F2937;   /* color y grosor del borde */
+  border-radius: 8px;           /* opcional, para esquinas redondeadas */
+  padding: 20px;                /* opcional, ajustar tamaño interno */
+  background-color: white;      /* si querés un fondo diferente */
+}
 html, body {
   height: 100%;
   margin: 0;

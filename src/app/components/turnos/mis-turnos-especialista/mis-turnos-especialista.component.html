@@ -9,29 +9,39 @@
         </svg>
     </button>
 
-    <div id = "filters-container"  [ngClass]="{'specialistActions': showActionSpecialist}" *ngIf = "showFilters">
-
-        <div id = "btn-specialities-container">
-            <p>Filtrar por especialidad:</p>
-            <button *ngFor = "let speciality of specialityFilters" (click) = "filterSpecialities(speciality);" class="btn-filter"  [class.selected]="filterSpecialitySelected === speciality">{{speciality}}</button>
-        </div>
-        <div id = "btn-specialists-container" >
-            <p>Filtrar por paciente:</p>
-            <button *ngFor = "let patient of patiensFilters" (click) = "filterPatient(patient);" class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-        </div>
-        <div id = "btn-specialists-container" >
-            <p>Filtrar por día:</p>
-            <button *ngFor = "let patient of dateFilters" (click) = "filterDate(patient);" class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-        </div><div id = "btn-specialists-container" >
-            <p>Filtrar por horario:</p>
-            <button *ngFor = "let patient of hourFilters" (click) = "filterHour(patient);" class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-        </div><div id = "btn-specialists-container" >
-            <p>Filtrar por estado:</p>
-            <button *ngFor = "let patient of stateFilters" (click) = "filterState(patient);" class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-        </div>
-        
-    </div>
-    <div id = "patients-shifts-container"> 
+      <div id = "filters-container"  [ngClass]="{'specialistActions': showActionSpecialist}" *ngIf = "showFilters">
+            <div class = "btn-specialists-container">
+                <p>Filtrar por especialidad:</p>
+                <div class = "btn-filters-container">
+                    <button *ngFor = "let speciality of specialityFilters" (click) = "filterSpecialities(speciality);" class="btn-filter"  [class.selected]="filterSpecialitySelected === speciality">{{speciality}}</button>
+                </div>
+            </div>
+            <div class = "btn-specialists-container" >
+                <p>Filtrar por paciente:</p>
+                <div class = "btn-filters-container">
+                    <button *ngFor = "let patient of patiensFilters" (click) = "filterPatient(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
+                </div>
+            </div>
+            <div class = "btn-specialists-container" >
+                <p>Filtrar por día:</p>
+                <div class = "btn-filters-container">
+                    <button *ngFor = "let patient of datesFilters" (click) = "filterDate(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
+                </div>
+            </div>
+            <div class = "btn-specialists-container" >
+                <p>Filtrar por horario:</p>
+                <div class = "btn-filters-container">
+                    <button *ngFor = "let patient of hoursFilters" (click) = "filterHour(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
+                </div>
+            </div>
+            <div class = "btn-specialists-container" >
+                <p>Filtrar por estado:</p>
+                <div class = "btn-filters-container">
+                    <button *ngFor = "let patient of statesFilters" (click) = "filterState(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
+                </div>
+            </div>
+         </div>
+    <div id = "patients-shifts-container" *ngIf = "!showFilters"> 
        
         <table>
                 <thead>
@@ -49,26 +59,31 @@
                 <tbody >
                     <tr *ngFor="let appointment of appointmentsFiltered" >
                       
-                            <td><img [src]="appointment.patient.imagesUser[0]" ></td>
+                            <td><img [src]="appointment.patient.imageSelected" ></td>
                             <td data-label="Nombre">{{ appointment.patient.nameUser }}</td>
                             <td data-label="Apellido" >{{ appointment.patient.lastnameUser }}</td>
-                            <td data-label="Especialidad">{{ appointment.specialityType }}</td>
+                            <td data-label="Especialidad">{{ appointment.speciality }}</td>
                             <td data-label="Día">{{ appointment.date}}</td>
                             <td data-label="Horario">{{ appointment.hour}}</td>
                             <td data-label="Estado">{{ appointment.state}}</td>
-                            <td><button class="btn-action-specialist" (click) = "patientSelected = appointment; showContainer('actions')">Ver detalles</button></td>
+                            <td><button class="btn-action-patient" (click) = "patientSelected = appointment; showContainer('actions')">Ver detalles</button></td>
                     </tr>
                 </tbody>
             </table>
 
             <div id = "specialist-action-container" *ngIf = "showActionSpecialist">
                     <div>
-                        <img src="" alt="">
-                        <span>Paciente: {{patientSelected.patient.nameUser}} {{patientSelected.patient.lastNameUser}}</span>
-                    
-                        <span>Especialidad: {{patientSelected.specialityType}}</span>
-                        <span>Horario: {{patientSelected.hour}}</span>
-                        <span>Día: {{patientSelected.date}}</span>
+                        <button (click)="showActionSpecialist = false">
+                            <img class="arrow-img" src="/images/backArrow.png">
+                        </button>
+                        <img class = "img-patient"[src]="patientSelected.patient.imageSelected" alt="">
+                        <span class = "span-big" >{{patientSelected.patient.nameUser}} {{patientSelected.patient.lastNameUser}}</span>
+                        
+                        <span class = "span-big" >{{patientSelected.specialityType}}</span>
+                        <span class = "span-big">Estado:<br>{{patientSelected.state}}</span>
+
+                        <span class = "span-little">Horario: {{patientSelected.hour}}</span>
+                        <span class = "span-little">Día: {{patientSelected.date}}</span>
                     </div>
                     <div>
                         <button class="btn-action-specialist" (click) = "stateAppointmentSelected = 'Aceptado'; changeStateAppointment()" *ngIf = "patientSelected.state != 'Rechazado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Aceptado'">Aceptar turno</button>
@@ -78,7 +93,6 @@
                         <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist')" *ngIf = "patientSelected.specialistReview != ''">Ver reseña</button>
                         <button class="btn-action-specialist" (click) = "showContainer('medicalHistory')" *ngIf = "patientSelected.state == 'Realizado' && !patientSelected.medicalHistory">Historia clínica</button>               
                         <button class="btn-action-specialist" (click) = "showContainer('reviewPatient')" *ngIf = "patientSelected.patientReview != ''">Ver comentario</button>
-                        <button class="btn-action-specialist" (click) = "showContainer('actions')">Cerrar</button>
                     </div>
 
             </div>

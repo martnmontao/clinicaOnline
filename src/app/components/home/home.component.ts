@@ -93,5 +93,6 @@ export class HomeComponent  implements OnInit{
   async logOut()
   {
     await this.FirebaseService.signOut();
+    
   }
 }

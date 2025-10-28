@@ -61,11 +61,33 @@ export class FirebaseService {
   try 
   {
     await signOut(this.auth);
+    
     return true;
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
     return false;
   }
+}
+
+async getAllUniqueSpecialities(): Promise<string[]> {
+  const usersRef = collection(this.firestore, 'users');
+  const q = query(usersRef, where('profile', '==', 'Especialista'));
+
+  const snapshot = await getDocs(q);
+  const especialidadesSet = new Set<string>();
+
+  snapshot.forEach((doc) => {
+    const data: any = doc.data();
+    if (data.specialities && Array.isArray(data.specialities)) {
+      data.specialities.forEach((esp: any) => {
+        if (esp.name) {
+          especialidadesSet.add(esp.name.trim());
+        }
+      });
+    }
+  });
+
+  return Array.from(especialidadesSet);
 }
 
 async verifySpecialistAutorization(uid: string): Promise<boolean> 
@@ -97,7 +119,7 @@ async getUserByUID(uid: string, collectionName: string): Promise<any> {
   return null;
 }
 
-async getSpecifyUsers(key: string, value: string, col: string): Promise<any[]> 
+async getSpecifyUsers(key: string, value: any, col: string): Promise<any[]> 
 {
   const usersRef = collection(this.firestore, col);
   const q = query(usersRef, where(key, '==', value));
@@ -241,12 +263,12 @@ async getDocumentsWithFilters(filters: { key: string, value: any }[], collection
 
 
 async getAppointments(uid: string, specialityType: string) {
-  const appointmentsRef = collection(this.firestore, 'appointment');
+  const appointmentsRef = collection(this.firestore, 'appointments');
 
   const q = query(
     appointmentsRef,
     where('specialist.uid', '==', uid),
-    where('specialityType', '==', specialityType)
+    where('speciality', '==', specialityType)
   );
 
   const querySnapshot = await getDocs(q);

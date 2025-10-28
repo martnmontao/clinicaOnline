@@ -15,10 +15,14 @@ export class MisTurnosPacienteComponent implements OnInit {
   userLogged: any;
   patientsAppointment: any = [];
   specialistsFilters: any = [];
+  datesFilters: any = [];
+  statesFilters: any = [];
+  hoursFilters: any = [];
+
   appointmentsFiltered: any = [];
   showFilters: boolean = false;
-  filterSpecialistSelected:any;
-  filterSpecialitySelected:any;
+  filterSelected:any;
+  titleReview: string = "";
   appointmentSelected: any;
   showDetails: boolean = false;
   stateAppointmentSelected: string = "";
@@ -36,17 +40,27 @@ export class MisTurnosPacienteComponent implements OnInit {
     this.userLogged = await this.firebaseService.getUserLogged();
     this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'patient.uid', value: this.userLogged.uid }],
-      'appointment' 
+      'appointments' 
     );
     this.appointmentsFiltered = this.patientsAppointment;
      this.specialityFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.specialityType))
+    ...new Set(this.patientsAppointment.map((t: any) => t.speciality))
     ];
 
     this.specialistsFilters = [
     ...new Set(this.patientsAppointment.map((t: any) => t.specialist.nameUser))
     ];
+    this.datesFilters = [
+    ...new Set(this.patientsAppointment.map((t: any) => t.date))
+    ]
+    
+    this.statesFilters = [
+    ...new Set(this.patientsAppointment.map((t: any) => t.state))
+    ]
 
+    this.hoursFilters = [
+    ...new Set(this.patientsAppointment.map((t: any) => t.hour))
+    ]
     
   }
 
@@ -55,7 +69,7 @@ export class MisTurnosPacienteComponent implements OnInit {
   {
 
      const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.specialityType === speciality);
+    (appointment: any) => appointment.speciality === speciality);
     
     this.appointmentsFiltered = filteredAppointments;
 
@@ -71,6 +85,49 @@ export class MisTurnosPacienteComponent implements OnInit {
     
     this.appointmentsFiltered = filteredAppointments;
 
+
+  }
+   async filterSpeciality(specialist: string)
+  {
+    
+   
+    const filteredAppointments = this.patientsAppointment.filter(
+    (appointment: any) => appointment.specialist.nameUser === specialist);
+    
+    this.appointmentsFiltered = filteredAppointments;
+      
+
+  } async filterDate(date: string)
+  {
+    
+   
+    const filteredAppointments = this.patientsAppointment.filter(
+    (appointment: any) => appointment.date === date);
+    
+    this.appointmentsFiltered = filteredAppointments;
+      
+
+  } async filterHour(hour: string)
+  {
+    
+   
+    const filteredAppointments = this.patientsAppointment.filter(
+    (appointment: any) => appointment.hour === hour);
+    
+    this.appointmentsFiltered = filteredAppointments;
+      
+
+  }
+
+   async filterState(state: string)
+  {
+    
+   
+    const filteredAppointments = this.patientsAppointment.filter(
+    (appointment: any) => appointment.state === state);
+    
+    this.appointmentsFiltered = filteredAppointments;
+      
 
   }
 
@@ -98,15 +155,15 @@ export class MisTurnosPacienteComponent implements OnInit {
     async changeStateAppointment()
   {
     
-    this.firebaseService.updateDocument('appointment', this.appointmentSelected.id, 
+    this.firebaseService.updateDocument('appointments', this.appointmentSelected.id, 
       {
         state: this.stateAppointmentSelected,
-        patientReview: this.review
+        patientReview: "Paciente: "+this.review
       }
     )
      this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'patient.uid', value: this.userLogged.uid }],
-      'appointment' 
+      'appointments' 
     );
 
 
@@ -117,7 +174,7 @@ export class MisTurnosPacienteComponent implements OnInit {
   sendReview()
   {
     
-    if(this.review != "" && this.review.length > 20)
+    if(this.review != "" && this.review.length > 10)
     {
       this.changeStateAppointment();
     }

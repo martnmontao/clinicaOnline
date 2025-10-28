@@ -1,150 +1,101 @@
-
-#horarios-container
-{
-
-    height: 500px;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 5% auto;
-    background-color: #1F2937;
-    border-radius: 10px;
-}
-
-#times-container
-{
-    
-    height: 50%;
-    display: flex;
-    
-   
-    justify-content: space-evenly;
-    width: 100%;
-    
-}
-
-label
-{
-    color: #E6F4F1;
-     font-size: clamp(0.8rem, 2vw, 1.5rem);
-    margin: 5px 0;
-}
-
-
-input
-{
-    width: 70%;
-    height: 25%;
-    border-radius: 10px;
-    border: none;
-    font-size: clamp(0.8rem, 2vw, 1.5rem);
-    text-align: center;
-    padding-left: 30px;
-}
-
-.btn-filters
-{
-  background-color: #29a9a3;
-  height: 70%;
-  margin: 0 10%;
+.principal-container {
+  border-radius: 5px;
+  margin: 5% auto;
+  height: 600px;
   width: 70%;
-  font-size: clamp(1rem, 2vw, 1.8rem);
-  border-radius: 10px;
-}
-
-#specialities-container
-{
-  height: 20%;
-  display: flex;
-  justify-content: space-evenly;
-  
-  width: 100%;
-}
-
-input:focus
-{
-    outline: none;
-}
-#btn-save-horario
-{
-    width: 70%;
-    height: 60px;
-    border-radius: 10px;
-    font-size: clamp(0.8rem, 2vw, 1.5rem);
-    margin-top: 5%;
-    background-color: #47A5A1;
-    color: #1F2937;
-}
-
-button
-{
-    outline: none;
-    cursor: pointer;
-    border: none;
-}
-
-#btn-schedules
-{
-    height: 15%;
-    width: 90%;
-    font-size: clamp(0.8rem, 2vw, 1.3rem);
-    background-color: #58d9d2;
-    border-radius: 10px;
-    color: #1F2937;
-}
-
-
-#btn-schedules:hover
-{
-    background-color: #29a9a3;
-
-}
-
-.times-specialities-container
-{
-  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid #1F2937;
   display: flex;
   flex-direction: column;
+}
+
+.header-container {
+  flex-shrink: 0;
+  background-color: white;
+  padding: 16px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid #1F2937;
 }
-.left-svg
+.scroll-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+
+
+h2
 {
-    position: absolute;
-    left: 0;
-    top: 42%;
-    width: 80px;
-    height: 80px;
-    transform: translate(50%, -50%);
-    animation: pulse 2s infinite;
-    cursor: pointer;
-    margin: 0 20px;
-
+  font-size: clamp(1.3rem, 2vw, 3rem);
+  color: #1F2937;
+  text-align: center;
 }
 
-.right-svg
+.btn-save-work-hour {
+  height: 55px;
+  width: 300px;
+  border: none;
+  background-color: #1f2937;
+  color: white;
+  border-radius: 5px;
+  font-size: clamp(1.3rem, 1.1vw, 3rem);
+  cursor: pointer;
+}
+
+.times-specialities-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+
+
+.times-specialities-container > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+}
+
+.principal-container > div:nth-child(1)
 {
-    position: absolute;
-    right: 0;
-    top: 35%;
-    width: 80px;
-    height: 80px;
-    transform: translate(50%, -50%);
-    cursor: pointer;
-    animation: pulse 2s infinite;
-    rotate: 180deg;
-    margin: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white; /* o el color que quieras de fondo */
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid #1F2937;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    transform: translateY(-50%) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(-50%) scale(1.1);
-    opacity: 0.8;
-  }
+
+
+
+p {
+  color: #1f2937;
+  font-size: clamp(1.3rem, 1.5vw, 3rem);
 }
+
+  
+   
+
+
+input {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border: none;
+  font-size: clamp(1rem, 1.5vw, 3rem);
+  border: 1px solid #1f2937;
+  color: #1f2937;
+  border-radius: 5px;
+}
+

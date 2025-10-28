@@ -1,49 +1,48 @@
 
-    <div id = "form-book-appointment"*ngIf = "!showAppointment">
-        <select [(ngModel)]="specialitySelected" (change)="filterSpecialist()">
-             <option value="" disabled selected hidden>Seleccione una especialidad</option>
-            <option *ngFor="let specialist of specialitiesList" [value]="specialist">
-            
-            {{ specialist }}
-        </option>
-        </select>
-        <div id = "specialist-users-container">
-           <table >
-                <thead>
-                    <tr>
-                        <th>Especialista</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Especialidad</th>
-                        <th>Horario</th>
-                        <th>Segunda especialidad</th>
-                        <th>Horario</th>
-                        <th>Solicitud</th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="!isLoading">
-                    <tr *ngFor="let specialist of specialistsList">
-                        @if(specialist.startHour != ""){
-                            <td><img [src]="specialist.imagesUser[0]" ></td>
-                            <td>{{ specialist.nameUser }}</td>
-                            <td>{{ specialist.lastnameUser }}</td>
-                            <td>{{ specialist.speciality }}</td>
-                            <td>{{specialist.startHour}} - {{specialist.endHour}}</td>
-                            
-                            <td *ngIf = "specialist.secondSpeciality != ''">{{ specialist.secondSpeciality }}</td>
-    
-                            
-                            
-                            <td *ngIf = "specialist.secondSpeciality == ''">-</td>
-    
-                            
-                            <td>{{specialist.startHourSecondSpeciality}} - {{specialist.endHourSecondSpeciality}}</td>
-                            <td><button class = "btn-book" (click) = "showContainer('solicitud', specialist)">Solicitar</button></td>
-                        }
-                
-                    </tr>
-                </tbody>
-            </table>
+    <div class = "form-book-appointment"*ngIf = "!showAppointment">
+      <div id = "specialist-users-container">
+          <div>
+            <select [(ngModel)]="specialitySelected" (change)="filterSpecialist()">
+                <option value="" disabled selected hidden>Seleccione una especialidad</option>
+        
+                <option value="">Todas las especialidades</option>
+                <option *ngFor="let specialist of specialitiesList" [value]="specialist">
+                  {{ specialist }}
+                </option>
+            </select>
+          </div>
+          <div>
+            <table *ngIf="specialistsList.length > 0">
+             <thead>
+               <tr>
+                 <th>Especialista</th>
+                 <th>Nombre</th>
+                 <th>Apellido</th>
+                 <th>Especialidad</th>
+                 <th>Solicitar</th>
+               </tr>
+             </thead>
+ 
+             <tbody *ngIf="!isLoading">
+               <tr *ngFor="let specialist of specialistsList">
+                 <td>
+                   <img [src]="specialist.imageSelected" alt="Especialista" width="50">
+                 </td>
+                 <td>{{ specialist.nameUser }}</td>
+                 <td>{{ specialist.lastnameUser }}</td>
+                 <td>
+                   {{ specialitySelected || specialist.specialityName }}
+                 </td>
+ 
+                 <td>
+                   <button class="btn-book" (click)="showContainer('solicitud', specialist, specialist.specialityName)">
+                     <img class="img-book" src="/images/book.png" alt="Solicitar turno">
+                   </button>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+          </div>
             <div *ngIf="isLoading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px;">
                 <svg
                     width="80"
@@ -69,72 +68,57 @@
         </div>
 
 </div>
-<div id="book-appointment-container" *ngIf="showAppointment">
+<div class="book-appointment-container" *ngIf="showAppointment">
 
-  <!-- Info especialista -->
-      <div class="info-appointment-container info-specialist">
-        <p>{{ specialistSelected.nameUser }} {{ specialistSelected.lastnameUser }}</p>
-      </div>
+ 
+  <div>
+    <p class="p-info-specialist">
+      {{ specialistSelected.nameUser }} {{ specialistSelected.lastnameUser }}
+    </p>
+    <p class="p-info-specialist">{{ specialitySelected }}</p>
+  </div>
 
-      <!-- Especialidad y horario disponible -->
-      <div class="info-appointment-container ">
-        
-            <button 
-              class="btn-select-speciality" 
-              (click)="onSelectSpecialityType('speciality')"
-              [class.selected]="selectedSpecialityType === 'speciality'">
-              {{ specialistSelected.speciality }}
-            </button>
-        
-            <button 
-              *ngIf="specialistSelected.secondSpeciality !== ''" 
-              class="btn-select-speciality" 
-              (click)="onSelectSpecialityType('secondSpeciality')"
-              [class.selected]="selectedSpecialityType === 'secondSpeciality'">
-              {{ specialistSelected.secondSpeciality }}
-            </button>
-      
 
-      </div>
+  <div>
+    <p class="p-choice">Elegí un día:</p>
+    <div class="date-buttons">
+      <button 
+        *ngFor="let day of daysAvailable" 
+        (click)="selectDay(day)"
+        class="btn-select-day"
+        [class.selected]="selectedDay?.date === day.date">
+        {{ day.date }}
+      </button>
+    </div>
+  </div>
 
-      <!-- Selección de día -->
-      <div class="info-appointment-container info-date-container">
-        <p class ="p-info-specialist">Elegí un día:</p>
-        <div class="date-buttons">
-          <button 
-            *ngFor="let day of daysAvailable" 
-            (click)="selectDay(day)"
-            class="btn-select-day"
-            [class.selected]="selectedDay === day">
-            {{ day }}
-          </button>
-        </div>
-      </div>
+ 
+  <div *ngIf="selectedDay">
+    <p class="p-choice">Elegí un horario:</p>
+    <div class="hour-buttons">
+      <button 
+        *ngFor="let hour of hoursAvailable" 
+        (click)="selectedHour = hour"
+        class="btn-select-day"
+        [class.selected]="selectedHour === hour">
+        {{ hour }}
+      </button>
+    </div>
+  </div>
 
-      <!-- Selección de hora -->
-      <div class="info-appointment-container info-date-container" *ngIf="selectedDay">
-        <p class ="p-info-specialist">Elegí un horario:<br></p>
-        <div class="hour-buttons">
-          <button 
-            *ngFor="let hour of hoursAvailable" 
-            (click)="selectedHour = hour"
-            class = "btn-select-day"
-            [class.selected]="selectedHour === hour">
-            {{ hour }}
-          </button>
-        </div>
-      </div>
 
-      <!-- Acciones -->
-      <div class="info-appointment-container">
-        <button class="btn-finish-book" (click)="showAppointment = false">CANCELAR</button>
-        <button 
-          class="btn-finish-book" 
-          [disabled]="!selectedDay || !selectedHour"
-          (click)="bookAppointment()">
-          ACEPTAR
-        </button>
-      </div>
+  <div>
+    <button class="btn-cancel-book" (click)="showAppointment = false; specialitySelected = ''">
+              <img class = "img-book"src = "/images/declineBook.png">
+
+    </button>
+    <button 
+      class="btn-finish-book" 
+      (click) = "bookAppointment(); ; specialitySelected = ''"
+      [disabled]="!selectedDay || !selectedHour">
+        <img class = "img-book"src = "/images/acceptBook.png">
+
+    </button>
+  </div>
 
 </div>
-    

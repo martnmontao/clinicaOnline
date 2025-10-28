@@ -8,6 +8,23 @@
     background-size: cover;
 }
 
+.img-profiles
+{
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+
+    
+}
+
+.img-profiles-specialist
+{
+    height: 100px;
+    width: 100px;
+}
+
+
+
 header
 {
     height: 90px;
@@ -18,7 +35,16 @@ header
     display: flex;
     background-color: #F4F3F3;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* 🔹 Oculta las flechas en Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 .head-containers
 {
    
@@ -205,6 +231,12 @@ form > div:nth-child(2) > p
     
 }
 
+form > div:nth-child(5)
+{
+   display: flex;
+   justify-content: space-evenly;
+}
+
 form > div:first-child
 {
     height: 25%;
@@ -217,20 +249,22 @@ form > div:first-child button.active
 {
      
     font-weight: 600;
-    border-bottom: 3px solid #1F2937;
+    border: 4px solid #1F2937;
+    background-color: #FEF7E6;
 }
 
 
 form > div:first-child button
 {
-    width: 25%;
-    height: 70px;
+    width: 120px;
+    margin-top: 16px;
+    height: 120px;
+    border-radius: 50%;
     background-color: transparent;
-    color: #1F2937;
-    border-bottom: 1px solid #1F2937;
-    font-size: clamp(0.5rem, 1.5vw, 2rem);
-
-    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #1F2937;
 
 }
 form > div:nth-child(3)
@@ -263,22 +297,21 @@ form > div:nth-child(4) > input
     
 }
 
-form > div:nth-child(5) > select
+
+
+.div-add-speciality
 {
-    width: 26%;
-
-    background-color: transparent;
-    margin-left: 5.5%;
     
-
-    border: 2px solid #1F2937;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    
 }
 
-form > div:nth-child(5) > input
+.div-add-speciality > input
 {
-    width: 25%;
-    margin-left: 5.5%;
-    margin-bottom: 16px;
+       width: 50.8%;
 }
 
 
@@ -288,15 +321,33 @@ form > div:nth-child(2) > button > img
     object-fit: cover;
     width: 170px;
     height: 170px;  
-   
+    border-radius: 50%;
+    
+    
 }
+
+form > div:nth-child(2) > button > img:nth-child(1)
+{
+    width: 120px;
+    height: 120px; 
+    
+}
+
+form > div:nth-child(2) > button
+{
+    
+    transition: transform 0.4s ease;
+    
+}
+
+
+
 
 form > div:nth-child(2) > button:nth-child(1):hover
 {
    
-    width: 120px;
-    height: 120px;
-    border: 2px solid #1F2937;
+    transform: scale(1.5);
+    
     
 }
 
@@ -309,7 +360,6 @@ form > div:nth-child(2) > button
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.4s ease;
     margin: 16px auto;
     
     
@@ -442,8 +492,23 @@ form > div:nth-child(6) > button
   font-size: 16px;
   color: #1F2937;
   position: absolute;
-  left: 43%;
+  left: 33%;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none; /* Para no interferir con el clic */
+}
+
+.img-user
+{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.btn-add-speciality
+{
+    width: 100px;
+    height: 50px;
+    background-color: #1F2937;
+
 }

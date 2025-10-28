@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../../services/firebase.service';
+import { AvailableDay } from '../../../interfaces/availableDay';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-solicitar-turno',
@@ -10,29 +12,22 @@ import { FirebaseService } from '../../../services/firebase.service';
   styleUrl: './solicitar-turno.component.css'
 })
 export class SolicitarTurnoComponent implements OnInit {
-  specialitiesList: string[] = [
-    'Clínica médica',
-    'Cardiología',
-    'Cirugía General',
-    'Ginecología',
-    'Pediatría',
-    'Dermatología',
-    'Neurología',
-    'Traumatología',
-    'Otorrinolaringología',
-    'Hemoterapia'
-  ];
+  specialitiesList: string[] = [];
   specialitySelected = "";
   specialistSelected: any;
   specialistsList:any[] =[]
   isLoading = false;
   showAppointment = false;
-  selectedSpecialityType: 'speciality' | 'secondSpeciality' = 'speciality';
-  daysAvailable: string[] = [];
+
+
   hoursAvailable: string[] = [];
-  selectedDay: string = '';
+  selectedDay: AvailableDay | null = null;
+  daysAvailable: AvailableDay[] = [];
   selectedHour: string = '';
   user: any;
+
+
+
   constructor(private firebaseService: FirebaseService)
   {
     
@@ -40,34 +35,85 @@ export class SolicitarTurnoComponent implements OnInit {
   
   async ngOnInit() {
     this.user = await this.firebaseService.getUserLogged();
+
+ 
+    this.filterSpecialist();
+    this.specialitiesList = await this.firebaseService.getAllUniqueSpecialities();
+  }
+
+  async showAllSpecilists()
+  {
+    this.filterSpecialist();
+
   }
   
-  async filterSpecialist() 
-  {
-    this.isLoading = true;
+async filterSpecialist() {
+  this.isLoading = true;
 
-    if (this.specialitySelected) {
-      this.specialistsList = await this.firebaseService.getUsersWithFilters(
-        [
-          { key: 'speciality', value: this.specialitySelected },
-          { key: 'autorization', value: true }
-        ],
-        'users'
-      );
-    } else {
-      this.specialistsList = [];
-    }
+  const allSpecialists = await this.firebaseService.getSpecifyUsers(
+    'autorization',
+    true,
+    'users'
+  );
 
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 300);
+  if (this.specialitySelected != "") {
+
+    this.specialistsList = allSpecialists
+      .filter(specialist =>
+        specialist.specialities?.some((s: { name: string }) => s.name === this.specialitySelected)
+      )
+      .map(specialist => {
+        const spec = specialist.specialities.find(
+          (s: any) => s.name === this.specialitySelected
+        );
+
+        return {
+          ...specialist,
+          specialityName: spec?.name,
+          startHour: spec?.startHourWork,
+          endHour: spec?.endHourWork,
+          startHourWeekend: spec?.startHourWeekend,
+          endHourWeekend: spec?.endHourWeekend
+        };
+      });
+  } else {
+
+    this.specialistsList = allSpecialists.flatMap(specialist => {
+      return (specialist.specialities || []).map((spec: any) => ({
+        ...specialist,
+        specialityName: spec?.name,
+        startHour: spec?.startHourWork,
+        endHour: spec?.endHourWork,
+        startHourWeekend: spec?.startHourWeekend,
+        endHourWeekend: spec?.endHourWeekend
+      }));
+    });
   }
 
-  selectDay(day: string) {
-  this.selectedDay = day;
-  this.selectedHour = '';
-  this.loadAvailableHoursForDay();
+  console.log(this.specialistsList);
+  this.isLoading = false;
 }
+
+  
+  getSpecialityName(specialist: any): string {
+    if (!this.specialitySelected) return '';
+    const found = specialist.specialities.find((s: { name: string }) => s.name === this.specialitySelected);
+    return found ? found.name : '';
+  }
+
+showContainer(container: string, specialist?: any, specialityName?: string) {
+  switch (container) {
+    case 'solicitud':
+      this.specialistSelected = specialist;
+      this.specialitySelected = this.specialitySelected || specialityName || '';
+      this.generateNext15Days();
+      this.selectedDay = null;
+      this.selectedHour = '';
+      this.showAppointment = true;
+      break;
+  }
+}
+
 
  generateNext15Days() {
   const today = new Date();
@@ -77,125 +123,149 @@ export class SolicitarTurnoComponent implements OnInit {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
 
-    const day = date.getDate().toString().padStart(2, '0');     
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
 
     const formattedDate = `${day}/${month}/${year}`;
-    this.daysAvailable.push(formattedDate);
+    const dayOfWeek = date.getDay(); 
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+    this.daysAvailable.push({
+      date: formattedDate,
+      isWeekend,
+      dayOfWeek,
+      jsDate: date
+    });
   }
 }
 
-generateHourSlots(start: string, end: string) {
-  const [startH, startM] = start.split(':').map(Number);
-  const [endH, endM] = end.split(':').map(Number);
-
-  this.hoursAvailable = [];
-
-  for (let h = startH; h <= endH; h++) {
-    const hourStr = h.toString().padStart(2, '0') + ':00';
-    if (h < endH || endM === 0) {
-      this.hoursAvailable.push(hourStr);
-    }
+    selectDay(day: AvailableDay) {
+    this.selectedDay = day;
+    this.selectedHour = '';
+    this.loadAvailableHours();
+    console.log(this.selectedDay)
   }
-}
-async loadAvailableHoursForDay() {
-  if (!this.selectedDay || !this.specialistSelected) return;
+
+
+async loadAvailableHours() {
+  if (!this.specialistSelected || !this.selectedDay || !this.specialitySelected) return;
+
+  const isWeekend = this.selectedDay.isWeekend;
 
   
+  const specialityObj = this.specialistSelected.specialities.find(
+    (s: any) => s.name === this.specialitySelected
+  );
+
+  if (!specialityObj) return;
+
+  
+  const startHour = isWeekend ? specialityObj.startHourWeekend : specialityObj.startHourWork;
+  const endHour = isWeekend ? specialityObj.endHourWeekend : specialityObj.endHourWork;
+
+ 
   const takenAppointments = await this.firebaseService.getDocumentsWithFilters(
     [
       { key: 'specialist.uid', value: this.specialistSelected.uid },
-      { key: 'date', value: this.selectedDay }
+      { key: 'date', value: this.selectedDay.date } 
     ],
-    'appointment'
+    'appointments'
   );
 
+  const takenHours = takenAppointments.map((a: any) => a.hour);
 
-  const takenHours = takenAppointments.map(a => a.hour);
 
-  let specialitySelected;
-  if(this.selectedSpecialityType == 'secondSpeciality')
-  {
-    this.generateHourSlots(this.specialistSelected.startHourSecondSpeciality, this.specialistSelected.endHourSecondSpeciality);
-  }
-  else
-  {
-    this.generateHourSlots(this.specialistSelected.startHour, this.specialistSelected.endHour);
-  }
+  const allSlots = this.generateHourSlots(startHour, endHour);
 
-  this.hoursAvailable = this.hoursAvailable.filter(hour => !takenHours.includes(hour));
+
+  this.hoursAvailable = allSlots.filter(hour => !takenHours.includes(hour));
 }
 
-showContainer(container: string, specialist?:any)
-{
-  switch(container)
+
+  generateHourSlots(start: string, end: string): string[] {
+    const slots: string[] = [];
+    const [startH, startM] = start.split(':').map(Number);
+    const [endH, endM] = end.split(':').map(Number);
+
+    const current = new Date();
+    current.setHours(startH, startM, 0, 0);
+    const endTime = new Date();
+    endTime.setHours(endH, endM, 0, 0);
+
+    while (current < endTime) {
+      const h = current.getHours().toString().padStart(2, '0');
+      const m = current.getMinutes().toString().padStart(2, '0');
+      slots.push(`${h}:${m}`);
+      current.setMinutes(current.getMinutes() + 30); 
+    }
+
+    return slots;
+  }
+
+
+  async bookAppointment()
   {
-    case "solicitud":
-      case 'solicitud':
-      this.specialistSelected = specialist;
-      this.generateNext15Days();
-      this.selectedDay = '';
-      this.selectedHour = '';
-      this.onSelectSpecialityType('speciality');
-      this.showAppointment = !this.showAppointment; 
-      break;
-    
+
+    try
+    {
+
+      let data = 
+      {
+        patient: this.user,
+        date: this.selectedDay?.date,
+        hour: this.selectedHour,
+        specialist: this.specialistSelected,
+        speciality: this.specialitySelected,
+        state: "Pendiente",
+        specialistReview: "",
+        patientReview: ""
+
+      }
+      this.firebaseService.addDocument(data, "appointments");
+      await Swal.fire({
+          icon: 'success',
+          title: '¡Turno solicitado!',
+          text: 'Se ha procesado la solicitud exitosamente.',
+          timer: 2000,
+          showConfirmButton: false,
+          scrollbarPadding: false,
+          confirmButtonText: 'Aceptar', 
+          backdrop: false,
+          customClass: {
+            container: 'swal2-container-absolute',
+            popup: 'my-swal-popup'
+          }
+        });
+
+    }catch(e)
+    {
+      console.log("No se ha guardado en firebase")
+      this.showAppointment = false;
+      await Swal.fire({
+          icon: 'error',
+          title: 'Ha sucedido un error',
+          text: 'No se ha podido solicitar el turno. Intente denuevo más tarde.',
+          timer: 2000,
+          showConfirmButton: false,
+          scrollbarPadding: false,
+          confirmButtonText: 'Aceptar', 
+          backdrop: false,
+          customClass: {
+            container: 'swal2-container-absolute',
+            popup: 'my-swal-popup'
+          }
+        });
+    }
+    finally
+    {
+      this.showAppointment = false;
+      
+    }
+
   }
-}
-
-onSelectSpecialityType(type: 'speciality' | 'secondSpeciality') {
-   this.selectedSpecialityType = type;
-  this.selectedDay = '';
-  this.selectedHour = '';
-
-  if (type === 'speciality') {
-    this.generateHourSlots(
-      this.specialistSelected.startHour,
-      this.specialistSelected.endHour
-    );
-  } else {
-    this.generateHourSlots(
-      this.specialistSelected.startHourSecondSpeciality,
-      this.specialistSelected.endHourSecondSpeciality
-    );
-  }
-}
-
-async bookAppointment()
-{
-  
-  let specialitySelected;
-  if(this.selectedSpecialityType == 'secondSpeciality')
-  {
-    specialitySelected = this.specialistSelected.secondSpeciality;
-  }
-  else
-  {
-    specialitySelected = this.specialistSelected.speciality;
-
-  }
-
-
-  const turno = {
-    specialist: this.specialistSelected,
-    specialityType: specialitySelected,
-    date: this.selectedDay,
-    hour: this.selectedHour,
-    state: 'Pendiente',
-    patient: this.user,
-    patientReview: "",
-    specialistReview: ""
-  };
-
-  this.firebaseService.addDocument(turno, "appointment");
-
-  this.showAppointment = false;
-  this.selectedDay = '';
-  this.selectedHour = '';
 
 
 
-}
 
 }

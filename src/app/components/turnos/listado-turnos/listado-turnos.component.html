@@ -61,7 +61,7 @@
                 </thead>
                 <tbody>                   
                     <tr *ngFor = "let appointment of appointmentsList">
-                        <td><img [src]="appointment.patient.nameUser"></td>
+                        <td><img [src]="appointment.patient.imageSelected"></td>
                         <td>{{appointment.patient.nameUser}}</td>
                         <td>{{appointment.patient.lastnameUser}}</td>
                         <td>{{appointment.date}}</td>

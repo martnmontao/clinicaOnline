@@ -1,32 +1,50 @@
-<div id = "user-profile-container" *ngIf = "user">
-    <div class = "data-user-container img-container">
-    
-        <img [src] = "user.imageSelected">
-        <button class = "btn-download">Historia clínica<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-label="Descargar">
-  <path d="M12 3v11"/>
-  <path d="M8 10l4 4 4-4"/>
-  <rect x="4" y="17" width="16" height="3" rx="1.5" ry="1.5"/>
-</svg>
-</button>
-    </div>
-    <div class = "data-user-container">
-        <p>Nombre: <br>{{user.nameUser}} </p>
-        <p>Documento: <br>{{user.documentUser}}</p>
-        <p>Correo electrónico: <br>{{user.emailUser}}</p>
-    </div>
-    <div class = "data-user-container">
-        <p>Apellido:<br> {{user.lastnameUser}} </p>
-        <p>Edad: <br>{{user.ageUser}}</p>
-        @if(user.profile == 'Especialista')
-        {
-        <p>Especialidad:<br> {{user.speciality}}<br>{{user.secondSpeciality}}</p>
+<div class = "principal-container"  *ngIf = "user">
+    <div >
+            <div>
+                <button class = "btn-img-user"><img [src] = "user?.imagesUser[0]"></button>
+            </div>
+            <div>
+                <p class = "p-name-user">{{user.nameUser}} {{user.lastnameUser}}</p>
+            </div>
             
-        }
-         @if(user.profile == 'Paciente')
-         {
-             <p>Obra social:<br> {{user.socialWorkUser}}</p>
-
-         }
     </div>
+    <div>
 
+            <p class = "p-data-user">Correo electrónico:<br>{{user.emailUser}}</p>
+            <p class = "p-data-user">Documento:<br>{{user.documentUser}}</p>
+            <p class = "p-data-user">Edad:<br>{{user.ageUser}} años.</p>
+            <p class = "p-data-user" *ngIf = "user.profile == 'Paciente'">Obra social:<br>{{user.socialWorkUser}}</p>
+            
+    </div>
+    <div >
+        <p>
+            @if(user.profile == 'Admin')
+            {
+                Administrador
+            }
+            @if(user.profile != 'Admin')
+            {
+                {{user.profile}}
+            }
+
+
+        </p>
+            
+        <button class = "btn-download" *ngIf = "user.profile == 'Paciente'"><!-- download-white.svg -->
+            <p>Historia clínica</p>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    width="64" height="64"
+                    viewBox="0 0 24 24"
+                    role="img" aria-label="Descargar" fill="none">
+                <!-- Bandeja -->
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                        stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <!-- Flecha hacia abajo -->
+                <path d="M12 3v10"
+                        stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M8 9l4 4 4-4"
+                        stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+        </button>
+    </div>
 </div>

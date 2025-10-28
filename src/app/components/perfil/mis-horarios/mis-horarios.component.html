@@ -1,31 +1,74 @@
-<div id = "horarios-container" *ngIf = "user">
-            <div id = "specialities-container">
-              <button class = "btn-filters">{{user.speciality}}</button>
-              <button class = "btn-filters" *ngIf = "user.secondSpeciality != ''">{{user.secondSpeciality}}</button>
+<div class="principal-container" *ngIf="user">
 
-            </div>
+  <!-- Barra superior fija -->
+  <div class="header-container">
+    <button class="btn-save-work-hour" (click)="saveSchedule()">Guardar</button>
+  </div>
 
+  <!-- Contenedor con scroll solo para las especialidades -->
+  <div class="scroll-container">
 
-          <div id="times-container">
-            <div class = "times-specialities-container" >
-                  <label for="hora-inicio">Comenzar</label>
-                   <input type="time"  [(ngModel)]="startHour">
-   
-                   <label for="hora-fin">Terminar</label>
-                   <input type="time" [(ngModel)]="endHour">
-  
+    <!-- Título Semana -->
+    <h2 class="section-title">Lunes a Viernes: 08:00 AM - 19:00 PM.</h2>
+    <div
+      class="times-specialities-container"
+      *ngFor="let spec of user.specialities; let i = index"
+    >
+      <div>
+        <p>{{ spec.name }}</p>
+      </div>
 
-            </div>
-            <div  class = "times-specialities-container" *ngIf = "user.secondSpeciality != ''">
-                  <label for="hora-inicio">Comenzar</label>
-                   <input type="time"  [(ngModel)]="startHourSecondSpeciality">
-   
-                   <label for="hora-fin">Terminar</label>
-                   <input type="time" [(ngModel)]="endHourSecondSpeciality">
-   
-                  </div>
-                  
-                </div>
-                <button id = "btn-save-horario"(click)="saveSchedule()">Guardar</button>
-       
+      <div>
+        <label [for]="'hora-inicio-week-' + i">Comenzar</label>
+        <input
+          [id]="'hora-inicio-week-' + i"
+          type="time"
+          [(ngModel)]="spec.startHourWork"
+          [name]="'startHourWeek' + i"
+        />
+      </div>
+
+      <div>
+        <label [for]="'hora-fin-week-' + i">Terminar</label>
+        <input
+          [id]="'hora-fin-week-' + i"
+          type="time"
+          [(ngModel)]="spec.endHourWork"
+          [name]="'endHourWeek' + i"
+        />
+      </div>
+    </div>
+
+    <!-- Título Fin de semana -->
+    <h2 class="section-title">Sábados y Domingos: 08:00 AM - 14:00 PM.</h2>
+    <div
+      class="times-specialities-container"
+      *ngFor="let spec of user.specialities; let i = index"
+    >
+      <div>
+        <p>{{ spec.name }}</p>
+      </div>
+
+      <div>
+        <label [for]="'hora-inicio-weekend-' + i">Comenzar</label>
+        <input
+          [id]="'hora-inicio-weekend-' + i"
+          type="time"
+          [(ngModel)]="spec.startHourWeekend"
+          [name]="'startHourWeekend' + i"
+        />
+      </div>
+
+      <div>
+        <label [for]="'hora-fin-weekend-' + i">Terminar</label>
+        <input
+          [id]="'hora-fin-weekend-' + i"
+          type="time"
+          [(ngModel)]="spec.endHourWeekend"
+          [name]="'endHourWeekend' + i"
+        />
+      </div>
+    </div>
+
+  </div>
 </div>

@@ -8,100 +8,91 @@
                 <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Admin'" (click) = "selectFilter('Admin')">ADMINISTRADORES</button>
                 <button class = "btn-open-register" (click) = "showContainer('register')" ><img class = "img-add-user"src= "/images/addUser.png"></button>
             </div>
-            <table *ngIf = "!loading && selectedFilter === 'Paciente'">
-            <thead>
-                <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Edad</th>
-                <th>Documento</th>
-                <th>Obra social</th>
-                <th>Perfil</th>
-                <th>Autorización</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of usersList">
-                <td>{{ user.nameUser }}</td>
-                <td>{{ user.lastnameUser }}</td>
-                <td>{{ user.emailUser }}</td>
-                <td>{{ user.ageUser }}</td>
-                <td>{{ user.documentUser }}</td>
-                <td>{{ user.socialWorkUser }}</td>
-                <td>{{ user.profile }}</td>
-                <td><button class="btn-autorizate-user btn-delete-user"><img class = "img-delete-user"src = "/images/deleteUser.png"></button></td>
-                
-    
-                </tr>
-            </tbody>
-        </table>
-        <table *ngIf = "!loading && selectedFilter === 'Especialista'">
-            <thead>
-                <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Edad</th>
-                <th>Documento</th>
-                <th>Especialidad</th>
-                <th>Segunda especialidad</th>
-                <th>Perfil</th>
-                <th>Estado</th>
-                <th id = "th-autorization">Autorización</th>
+            <table *ngIf="!loading && (selectedFilter === 'Paciente' || selectedFilter === 'Admin')">
+                <thead>
+                    <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Edad</th>
+                    <th>Documento</th>
+                    <th *ngIf = "selectedFilter === 'Paciente'">Obra social</th>
+                    <th>Perfil</th>
+                    <th *ngIf = "selectedFilter != 'Admin'">Autorización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of usersList">
+                    <td>{{ user.nameUser }}</td>
+                    <td>{{ user.lastnameUser }}</td>
+                    <td>{{ user.emailUser }}</td>
+                    <td>{{ user.ageUser }}</td>
+                    <td >{{ user.documentUser }}</td>
+                    <td *ngIf = "selectedFilter === 'Paciente'">{{ user.socialWorkUser }}</td>
+                    <td>{{ user.profile }}</td>
+                    <td *ngIf = "selectedFilter != 'Admin'"><button class="btn-autorizate-user btn-delete-user"><img class = "img-delete-user"src = "/images/deleteUser.png"></button></td>
+                    
+        
+                    </tr>
+                </tbody>
+            </table>
+       <table *ngIf="!loading && selectedFilter === 'Especialista'">
+        <thead>
+            <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Edad</th>
+            <th>Documento</th>
+            <th>Especialidades</th>
+            <th>Perfil</th>
+            <th>Estado</th>
+            <th id="th-autorization">Autorización</th>
             </tr>
         </thead>
+
         <tbody>
             <tr *ngFor="let user of usersList">
-                <td>{{ user.nameUser }}</td>
-                <td>{{ user.lastnameUser }}</td>
-                <td>{{ user.emailUser }}</td>
-                <td>{{ user.ageUser }}</td>
-                <td>{{ user.documentUser }}</td>
-                <td>{{ user.speciality }}</td>
-                <td>{{ user.secondSpeciality }}</td>
-                <td>{{ user.profile }}</td>
-                @if(user.autorization == true)
-                {
-                    <td>Autorizado</td>
-                }@if(user.autorization == false)
-                {
-                    <td>Sin autorizar</td>
+            <td>{{ user.nameUser }}</td>
+            <td>{{ user.lastnameUser }}</td>
+            <td>{{ user.emailUser }}</td>
+            <td>{{ user.ageUser }}</td>
+            <td>{{ user.documentUser }}</td>
+            <td >
+                <div class = "td-specialities">
+                    <div *ngFor="let spec of user.specialities" >
+                    {{ spec.name }}
+                    </div>
+
+                </div>
+            </td>
+
+            <td>{{ user.profile }}</td>
+
+            @if (user.autorization == true) {
+                <td>Autorizado</td>
+            }
+            @if (user.autorization == false) {
+                <td>Sin autorizar</td>
+            }
+
+            <td id="td-autorizate-user">
+                <button class="btn-autorizate-user btn-delete-user">
+                <img class="img-delete-user" src="/images/deleteUser.png">
+                </button>
+
+                @if (user.autorization == false) {
+                <button
+                    class="btn-autorizate-user btn-accept-user"
+                    (click)="autorizateUser(user.uid)"
+                >
+                <img class="img-accept-user" src="/images/autorizateUser.png">
+
+                </button>
                 }
-                
-
-                <td id = "td-autorizate-user"><button class="btn-autorizate-user btn-delete-user"><img class = "img-delete-user"src = "/images/deleteUser.png"></button>
-                 @if(user.autorization == false)
-                 {
-                     <button class="btn-autorizate-user btn-accept-user" (click) = "autorizateUser(user.uid)">ACEPTAR</button>
-
-                 }   
-                </td>
-    
-                </tr>
-            </tbody>
-        </table>
-        <table *ngIf = "!loading && selectedFilter === 'Admin'">
-            <thead>
-                <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Edad</th>
-                <th>Documento</th>
-                <th>Perfil</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of usersList">
-                <td>{{ user.nameUser }}</td>
-                <td>{{ user.lastnameUser }}</td>
-                <td>{{ user.emailUser }}</td>
-                <td>{{ user.ageUser }}</td>
-                <td>{{ user.documentUser }}</td>
-                <td>{{ user.profile }}</td>
-                </tr>
-            </tbody>
+            </td>
+            </tr>
+        </tbody>
         </table>
          <div *ngIf="loading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px; margin-top: 8%;">
             <svg
@@ -132,12 +123,10 @@
     <div id = "register-users-section" *ngIf = "showRegister">
          <form>
             
+          
             <div>
-                <button (click) = "showSpecialities = false; optionsLogins = 'PACIENTE'" [class.active]="!showSpecialities" >PACIENTE</button>
-                <button (click) = "showSpecialities = true; optionsLogins = 'ESPECIALISTA'" [class.active]="showSpecialities" >ESPECIALISTA</button>
-            </div>
-            <div>
-                <button type="button" (click)="openInput()"><img src = "/images/imagenUsuario.png"></button>
+                <button type="button" (click)="openInput()"><img *ngIf = "imagesPreview.length == 0"src = "/images/imagenUsuario.png" class = "img-user"><img *ngIf = "imagesPreview.length > 0"[src] = "imagesPreview[0]" class = "img-user"></button>
+
                 <button *ngIf = "imagesPreview.length > 0" (click) = "showPhotos = true">Ver imágenes</button>
                 <p *ngIf = "imagesPreview.length == 0">Subir foto de perfil.</p>
             </div>
@@ -154,28 +143,11 @@
                     <input type="text" class="inputs-form shorts-inputs" autocorrect="off" placeholder="Correo electrónico" [(ngModel)] = "emailUser" name="email" autocomplete="off">
                     <input type="password" class="inputs-form shorts-inputs" autocorrect="off" placeholder="Contraseña"[(ngModel)] = "passwordUser" name="password" autocomplete="off">
             </div>
-            <div>
-                <input type="text" class="inputs-form shorts-inputs" autocorrect="off" placeholder="Obra social" *ngIf = "!showSpecialities" [(ngModel)] = "socialWorkUser" name = "socialWork" autocomplete="off">
-                <div class="select-wrapper" *ngIf="showSpecialities">
-                    <select *ngIf="showSpecialities" [(ngModel)]="speciality" name="speciality">
-                        <option value="" disabled selected>Elegir especialidad</option>
-                        <option [value]="'Clínica médica'">Clínica médica</option>
-                        <option [value]="'Cardiología'">Cardiología</option>
-                        <option [value]="'Cirugía General'">Cirugía General</option>
-                        <option [value]="'Ginecología'">Ginecología</option>
-                        <option [value]="'Pediatría'">Pediatría</option>
-                        <option [value]="'Dermatología'">Dermatología</option>
-                        <option [value]="'Neurología'">Neurología</option>
-                        <option [value]="'Traumatología'">Traumatología</option>
-                        <option [value]="'Otorrinolaringología'">Otorrinolaringología</option>
-                    </select>
-                    <input class = "inputs-form shorts-inputs"type="text" *ngIf = "optionsLogins == 'ESPECIALISTA'" placeholder="Agregar especialidad"  [(ngModel)] = "secondSpeciality" name = "secondSpeciality" autocomplete="off">
-            </div>
-                <input type="file" id = "input-file" hidden  (change)="onFileSelected($event)" multiple/>
-            </div>
-            <div>
-                 <button (click) = "showCaptcha = true" class = "btn-register">REGISTRARSE</button>
-            </div>
+           
+            <input type="file" id = "input-file" hidden  (change)="onFileSelected($event)" multiple/>
+            
+            <button (click) = "showCaptcha = true" class = "btn-register">REGISTRAR</button>
+            
             <div *ngIf = "showPhotos">
                 <div>
                     <img [src] = "imagesPreview[0]">

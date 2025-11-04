@@ -30,7 +30,7 @@ export class MisTurnosPacienteComponent implements OnInit {
   showReviewPatient: boolean = false;
 
   review:string = "";
-
+  filterValue: string = "";
   constructor(private firebaseService: FirebaseService)
   {
     
@@ -43,24 +43,6 @@ export class MisTurnosPacienteComponent implements OnInit {
       'appointments' 
     );
     this.appointmentsFiltered = this.patientsAppointment;
-     this.specialityFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.speciality))
-    ];
-
-    this.specialistsFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.specialist.nameUser))
-    ];
-    this.datesFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.date))
-    ]
-    
-    this.statesFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.state))
-    ]
-
-    this.hoursFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.hour))
-    ]
     
   }
 
@@ -75,6 +57,43 @@ export class MisTurnosPacienteComponent implements OnInit {
 
   }
 
+ filterAppointments() {
+  const value = this.filterValue?.toLowerCase().trim();
+
+  if (!value) {
+    this.appointmentsFiltered = [...this.patientsAppointment];
+    return;
+  }
+
+  this.appointmentsFiltered = this.patientsAppointment.filter((a: any) => {
+    const specialistName = a.specialist.nameUser?.toLowerCase() || '';
+    const specialistLastname = a.specialist.lastnameUser?.toLowerCase() || '';
+    const speciality = a.speciality?.toLowerCase() || '';
+    const day = a.date?.toLowerCase() || '';
+    const time = a.hour?.toLowerCase() || '';
+    const status = a.state?.toLowerCase() || '';
+
+  
+    let medicalMatch = false;
+    if (a.medicalHistory) {
+      const historyValues = Object.values(a.medicalHistory)
+        .filter(v => typeof v === 'string') 
+        .map(v => v.toLowerCase());
+
+      medicalMatch = historyValues.some((v: string) => v.includes(value));
+    }
+
+    return (
+      specialistName.includes(value) ||
+      specialistLastname.includes(value) ||
+      speciality.includes(value) ||
+      day.includes(value) ||
+      time.includes(value) ||
+      status.includes(value) ||
+      medicalMatch
+    );
+  });
+}
 
   async filterSpecialist(specialist: string)
   {
@@ -158,7 +177,7 @@ export class MisTurnosPacienteComponent implements OnInit {
     this.firebaseService.updateDocument('appointments', this.appointmentSelected.id, 
       {
         state: this.stateAppointmentSelected,
-        patientReview: "Paciente: "+this.review
+        patientReview:+this.review
       }
     )
      this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(

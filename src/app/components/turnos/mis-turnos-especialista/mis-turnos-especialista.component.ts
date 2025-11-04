@@ -39,7 +39,8 @@ export class MisTurnosEspecialistaComponent {
   valueAdditionalData2: string = "";
   valueAdditionalData3: string = "";
   medicalHistoryAppointment: any;
-
+  filterValue: string = "";
+  titleReview: string = "";
   constructor(private firebaseService: FirebaseService)
   {
     
@@ -55,26 +56,43 @@ export class MisTurnosEspecialistaComponent {
 
     this.appointmentsFiltered = this.patientsAppointment;
 
-    this.specialityFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.speciality))
-    ];
-
-    this.patiensFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.patient.nameUser))
-    ];
-
-    this.datesFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.date))
-    ];
-    this.hoursFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.hour))
-    ];
-    this.statesFilters = [
-    ...new Set(this.patientsAppointment.map((t: any) => t.state))
-    ];
+    
   } 
 
+filterAppointments() {
+  const value = this.filterValue.toLowerCase().trim();
 
+  if (!value) {
+    this.appointmentsFiltered = [...this.patientsAppointment];
+    return;
+  }
+
+  console.log(this.appointmentsFiltered)
+
+this.appointmentsFiltered.forEach((a: any, i: number) => {
+  if (typeof a.speciality !== 'string') {
+    console.warn('⚠️ Turno con speciality no string en índice', i, a.speciality);
+  }
+});
+ this.appointmentsFiltered = this.appointmentsFiltered.filter((a: any) => {
+  const patientName = a.patient.nameUser?.toLowerCase() || '';
+  const speciality = a.speciality?.toLowerCase() || '';
+  const day = a.date?.toLowerCase() || '';
+  const time = a.hour?.toLowerCase() || '';
+  const status = a.state?.toLowerCase() || '';
+  const patientLastname = a.patient.lastnameUser?.toLowerCase() || '';
+  return (
+    patientLastname.includes(value) ||
+    patientName.includes(value) ||
+    speciality.includes(value) ||
+    day.includes(value) ||
+    time.includes(value) ||
+    status.includes(value)
+  );
+});
+console.log(this.patientsAppointment)
+console.log(this.appointmentsFiltered)
+}
   async filterSpecialities(speciality: string) 
   {
     this.filterSpecialitySelected = speciality;
@@ -137,7 +155,7 @@ export class MisTurnosEspecialistaComponent {
     this.firebaseService.updateDocument('appointments', this.patientSelected.id, 
       {
         state: this.stateAppointmentSelected,
-        specialistReview: "Especialista: "+this.review
+        specialistReview: this.review
       }
     )
      this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
@@ -187,10 +205,10 @@ export class MisTurnosEspecialistaComponent {
   async sendMedicalHistory()
   {
     
-  this.firebaseService.updateDocument('appointment', this.patientSelected.id, 
+  this.firebaseService.updateDocument('appointments', this.patientSelected.id, 
     {
       medicalHistory: {
-        weight: this.patientHeight,
+        weight: this.patientWeight,
         height: this.patientHeight,
         temperature: this.patientTemperature,
         pressure: this.patientPressure,
@@ -205,7 +223,7 @@ export class MisTurnosEspecialistaComponent {
     )
     this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'specialist.uid', value: this.userLogged.uid }],
-      'appointment' 
+      'appointments' 
     );
 
 

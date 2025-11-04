@@ -10,10 +10,10 @@ import { Speciality } from '../../../interfaces/speciality';
   styleUrl: './listado-turnos.component.css'
 })
 export class ListadoTurnosComponent implements OnInit {
- specialitiesList: string[] = [];
+ specialitiesList: Speciality[] = [];
   
   specialistsList: any[] = [];
-  selectedSpeciality: string = '';
+  selectedSpeciality: Speciality = {name: "", startHourWeekend: "", endHourWeekend: "", startHourWork: "", endHourWork: "", specialityImage: ""}
   appointmentsList: any[] = [];
   selectedSpecialistUid: string = '';
   isLoading = false;
@@ -33,7 +33,7 @@ export class ListadoTurnosComponent implements OnInit {
 
 
 
-  async selectSpeciality(speciality: string) {
+  async selectSpeciality(speciality: any) {
     this.isLoading = true;
     this.specialistsList = [];
     this.appointmentsList = [];
@@ -45,7 +45,7 @@ export class ListadoTurnosComponent implements OnInit {
 
     this.specialistsList = allSpecialists.filter(user =>
       Array.isArray(user.specialities) &&
-          user.specialities.some((sp: Speciality) => sp.name === speciality)
+          user.specialities.some((sp: Speciality) => sp.name === speciality.name)
     );
 
     setTimeout(() => {
@@ -67,7 +67,7 @@ export class ListadoTurnosComponent implements OnInit {
  
     this.isLoadingAppointment = true;
     
-    this.appointmentsList = await this.firebaseService.getAppointments(this.selectedSpecialistUid, this.selectedSpeciality)
+    this.appointmentsList = await this.firebaseService.getAppointments(this.selectedSpecialistUid, this.selectedSpeciality.name)
     setTimeout(() => {
       
       this.isLoadingAppointment = false;

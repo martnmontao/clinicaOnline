@@ -1,5 +1,5 @@
 <div class = "principal-container"  *ngIf = "user">
-    <div >
+    <div class = "div-1" *ngIf = "!showMedicalHistory">
             <div>
                 <button class = "btn-img-user"><img [src] = "user?.imagesUser[0]"></button>
             </div>
@@ -8,7 +8,7 @@
             </div>
             
     </div>
-    <div>
+    <div class = "div-2"*ngIf = "!showMedicalHistory">
 
             <p class = "p-data-user">Correo electrónico:<br>{{user.emailUser}}</p>
             <p class = "p-data-user">Documento:<br>{{user.documentUser}}</p>
@@ -16,7 +16,7 @@
             <p class = "p-data-user" *ngIf = "user.profile == 'Paciente'">Obra social:<br>{{user.socialWorkUser}}</p>
             
     </div>
-    <div >
+    <div  class = "div-3"*ngIf = "!showMedicalHistory">
         <p>
             @if(user.profile == 'Admin')
             {
@@ -30,21 +30,61 @@
 
         </p>
             
-        <button class = "btn-download" *ngIf = "user.profile == 'Paciente'"><!-- download-white.svg -->
-            <p>Historia clínica</p>
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    width="64" height="64"
-                    viewBox="0 0 24 24"
-                    role="img" aria-label="Descargar" fill="none">
-                <!-- Bandeja -->
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
-                        stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                <!-- Flecha hacia abajo -->
-                <path d="M12 3v10"
-                        stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M8 9l4 4 4-4"
-                        stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+        <button class = "btn-show-medical-history" *ngIf = "user.profile == 'Paciente'" (click) = "showMedicalHistory = true"><!-- download-white.svg -->
+            Ver historias clínicas
         </button>
     </div>
+
+    <div class = "table-container">
+        <div>
+
+            <table *ngIf = "showMedicalHistory">
+                     <thead>
+                         <tr>
+                             <th>Especialista</th>
+                             <th>Nombre</th>
+                             <th>Apellido</th>
+                             <th>Especialidad</th>
+                             <th>Día</th>
+                             <th>Horario</th>
+                             <th>Estado</th>
+                             <th>Historia clínica</th>
+     
+                         </tr>
+                     </thead>
+                    <tbody>
+                     <tr *ngFor="let appointment of patientsAppointment">
+                         <td data-label="Especialista">
+                         <img class = "img-specialist"[src]="appointment.specialist.imageSelected">
+                         </td>
+                         <td data-label="Nombre">{{ appointment.specialist.nameUser }}</td>
+                         <td data-label="Apellido">{{ appointment.specialist.lastnameUser }}</td>
+                         <td data-label="Especialidad">{{ appointment.speciality }}</td>
+                         <td data-label="Día">{{ appointment.date }}</td>
+                         <td data-label="Horario">{{ appointment.hour }}</td>
+                         <td data-label="Estado">{{ appointment.state }}</td>
+                          <td><button class = "btn-download" (click) = "onGeneratePDF(appointment)">
+                             Descargar en PDF
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="64" height="64"
+                                 viewBox="0 0 24 24"
+                                 role="img" aria-label="Descargar" fill="none">
+                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                                     stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                             <path d="M12 3v10"
+                                     stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                             <path d="M8 9l4 4 4-4"
+                                     stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                             </svg>
+     
+                          </button></td>
+                     </tr>
+                     </tbody>
+                 </table>
+        </div>
+             <div>  
+                <button (click) = "showMedicalHistory = false">Volver</button>
+             </div>
+    </div>
+    
 </div>

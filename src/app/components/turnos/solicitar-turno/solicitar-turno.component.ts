@@ -13,20 +13,21 @@ import Swal from 'sweetalert2';
 })
 export class SolicitarTurnoComponent implements OnInit {
   specialitiesList: string[] = [];
-  specialitySelected = "";
+  specialitySelected: any;
   specialistSelected: any;
   specialistsList:any[] =[]
-  isLoading = false;
-  showAppointment = false;
-
-
+  isLoading: boolean = false;
+  showAppointment: boolean = false;
+  showSpecialities: boolean = false;
+  patientSelected: any;
   hoursAvailable: string[] = [];
   selectedDay: AvailableDay | null = null;
   daysAvailable: AvailableDay[] = [];
   selectedHour: string = '';
   user: any;
-
-
+  usersList: any;
+  showSpecialists: boolean = false;
+  filterValue: string = "";
 
   constructor(private firebaseService: FirebaseService)
   {
@@ -35,10 +36,20 @@ export class SolicitarTurnoComponent implements OnInit {
   
   async ngOnInit() {
     this.user = await this.firebaseService.getUserLogged();
+ 
 
+    this.firebaseService.getSpecifyUsers("profile", "Paciente", "users").then(answer => 
+      {
+        this.usersList = answer;
+        setTimeout(() => {
+          
+        }, 500);
+      }
+      )
  
     this.filterSpecialist();
-    this.specialitiesList = await this.firebaseService.getAllUniqueSpecialities();
+    this.specialistsList = await this.firebaseService.getSpecifyUsers("profile", "Especialista", "users")
+
   }
 
   async showAllSpecilists()
@@ -64,7 +75,7 @@ async filterSpecialist() {
       )
       .map(specialist => {
         const spec = specialist.specialities.find(
-          (s: any) => s.name === this.specialitySelected
+          (s: any) => s.name === this.specialitySelected.name
         );
 
         return {
@@ -109,7 +120,7 @@ showContainer(container: string, specialist?: any, specialityName?: string) {
       this.generateNext15Days();
       this.selectedDay = null;
       this.selectedHour = '';
-      this.showAppointment = true;
+      //this.showAppointment = true;
       break;
   }
 }
@@ -155,7 +166,7 @@ async loadAvailableHours() {
 
   
   const specialityObj = this.specialistSelected.specialities.find(
-    (s: any) => s.name === this.specialitySelected
+    (s: any) => s.name === this.specialitySelected.name
   );
 
   if (!specialityObj) return;
@@ -210,18 +221,35 @@ async loadAvailableHours() {
     try
     {
 
-      let data = 
+      let data;
+      if(this.user.profile == 'Paciente')
+
       {
-        patient: this.user,
+        data= {
+          patient: this.user,
+          date: this.selectedDay?.date,
+          hour: this.selectedHour,
+          specialist: this.specialistSelected,
+          speciality: this.specialitySelected.name,
+          state: "Pendiente",
+          specialistReview: "",
+          patientReview: ""
+        }
+      }
+      else
+      {
+        data= {
+        patient: this.patientSelected,
         date: this.selectedDay?.date,
         hour: this.selectedHour,
         specialist: this.specialistSelected,
-        speciality: this.specialitySelected,
+        speciality: this.specialitySelected.name,
         state: "Pendiente",
         specialistReview: "",
         patientReview: ""
-
+        }
       }
+      console.log(data)
       this.firebaseService.addDocument(data, "appointments");
       await Swal.fire({
           icon: 'success',
@@ -264,7 +292,6 @@ async loadAvailableHours() {
     }
 
   }
-
 
 
 

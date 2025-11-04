@@ -156,11 +156,14 @@ table
 
 .btn-book
 {
-    background-color: #F08080;
+    background-color: #ffabab;
     height: 55px;
     width: 100%;
+    color: #1F2937;
+    font-weight: bold;
     font-size: clamp(0.2rem, 1vw, 1rem);
     border-radius: 10px;
+    border: 2px solid #dc3545;
 }
 
 .btn-book:hover

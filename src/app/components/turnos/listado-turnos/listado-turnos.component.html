@@ -4,9 +4,9 @@
         *ngFor = "let speciality of specialitiesList"
         (click) = "selectSpeciality(speciality)"
         class = "btn-filters"  
-        [class.selected]="selectedSpeciality === speciality"
+        [class.selected]="speciality.name === selectedSpeciality.name"
         >
-            {{speciality}}
+            {{speciality.name}}
         </button>
     </div>
     <div id ="second-container">

@@ -12,8 +12,61 @@
     background-color: rgb(255, 255, 255, 0.8);
     border: 2px solid #1F2937;
     border-radius: 5px;
+    
 }
 
+.table-container
+{
+    height: 100%;
+}
+.table-container > div:nth-child(1)
+{
+    height: 90%;
+    overflow-y: auto;
+    border-bottom: 2px solid #1F2937;
+}
+
+.table-container > div:nth-child(2)
+{
+    height: 10%;
+    display: flex;
+    justify-content:start;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.table-container > div:nth-child(2) > button
+{
+    height: 55px;
+    width: 120px;
+    background-color: transparent;
+    background-color: #1F2937;
+    color: white;
+    border-radius: 5px;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+
+
+}
+
+table
+{
+    background-color:transparent;
+    padding: 1%;
+    width: 100%;
+    height: auto;
+    
+}
+th, td
+{
+    padding: 10px;
+    border: 1px solid #1F2937;
+    border-radius: 5px;
+    color: #1F2937;
+    text-align: center;
+    background-color: 	white ;
+     font-size: clamp(1rem, 1vw, 1.5rem);
+    
+}
 .principal-container > div
 {
     width: 100%;
@@ -52,14 +105,14 @@ img:hover
     transform: scale(1.1);
 }
 
-.principal-container > div:nth-child(1) > div:nth-child(1)
+.div-1 > div:nth-child(1)
 {
     width: 40%;
     display: flex;
     justify-content: center;
 }
 
-.principal-container > div:nth-child(1) > div:nth-child(2)
+.div-1 > div:nth-child(2)
 {
     display: flex;
     justify-content: start;
@@ -68,7 +121,7 @@ img:hover
 
 
 
-.principal-container > div:nth-child(1) 
+.div-1
 {
     display: flex;
     align-items: center;
@@ -92,7 +145,7 @@ img:hover
 
 }
 
-.principal-container > div:nth-child(2)
+.div-2
 {
     display: flex;
     justify-content: space-evenly;
@@ -126,12 +179,13 @@ p
 
 svg
 {
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
+    
 }
 
 
-.btn-download
+.btn-show-medical-history
 {
     width: 260px;
     height: 60px;
@@ -145,13 +199,28 @@ svg
     position: absolute;
     right: 18px;
     top: 18px;
+    color: white;
     
 }
-
-.btn-download > p
+.img-specialist
 {
-    color: white;
+    height: 90px;
+    width: 90px;
 }
+.btn-download
+{
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    padding: 0 16px;
+    height: 55px;
+    background-color: #1F2937;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0 auto;
+    gap: 6px;
+}
+
+
 
 
 

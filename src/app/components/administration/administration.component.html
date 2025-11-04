@@ -6,6 +6,8 @@
                 <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Paciente'" (click) = "selectFilter('Paciente')">PACIENTES</button>
                 <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialista'" (click) = "selectFilter('Especialista')">ESPECIALISTAS</button>
                 <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Admin'" (click) = "selectFilter('Admin')">ADMINISTRADORES</button>
+                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialidades'" (click) = "selectFilter('Especialidades')">ESPECIALIDADES</button>
+                
                 <button class = "btn-open-register" (click) = "showContainer('register')" ><img class = "img-add-user"src= "/images/addUser.png"></button>
             </div>
             <table *ngIf="!loading && (selectedFilter === 'Paciente' || selectedFilter === 'Admin')">
@@ -94,6 +96,35 @@
             </tr>
         </tbody>
         </table>
+        
+       <div class="specialities-container" *ngIf="!loading && selectedFilter == 'Especialidades'">
+        <div *ngFor="let speciality of specialitiesList">
+            <div class = "specialities-img-container">
+
+                <p>{{ speciality.name }}</p>
+                @if(speciality.specialityImage == "")
+                {
+                    <img src = "/images/defaultImageSpeciality.png" width="170" height="170"/>
+
+                }
+                @if(speciality.specialityImage != "")
+                {
+                    <img [src]="speciality.specialityImage" width="170" height="170"/>
+
+                }
+                
+                
+                <input 
+                type="file" 
+                accept="image/*" 
+                (change)="onFileSelectedSpeciality($event, speciality.name)" 
+                hidden 
+                #fileInput>
+                
+                <button (click)="fileInput.click()" >Subir logo</button>
+            </div>
+        </div>
+        </div>
          <div *ngIf="loading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px; margin-top: 8%;">
             <svg
                 width="80"
@@ -179,7 +210,7 @@
         <p [style.color]="colorMensaje">{{ mensaje }}</p>
         </div>
      
-     <button (click) = "exportExcel()">Descargar excel usuarios</button>
+     <button (click) = "exportExcel()" *ngIf = "selectedFilter == 'Paciente' || selectedFilter == 'Especialista'">Exportar a Excel<img src = "/images/excelIcon.png"></button>
     </section>
 
 </div>

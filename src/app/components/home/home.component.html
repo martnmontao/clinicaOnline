@@ -25,7 +25,7 @@
         <a routerLink="mis-turnos-paciente">MIS TURNOS</a>
     </button>
 
-    <button class="btn-head" *ngIf="userLogged.profile == 'Paciente'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
+    <button class="btn-head" *ngIf="userLogged.profile != 'Especialista'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
         <a routerLink="solicitar-turno">SOLICITAR TURNO</a>
     </button>
 

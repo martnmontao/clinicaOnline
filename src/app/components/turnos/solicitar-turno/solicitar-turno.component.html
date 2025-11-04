@@ -1,47 +1,59 @@
 
-    <div class = "form-book-appointment"*ngIf = "!showAppointment">
-      <div id = "specialist-users-container">
-          <div>
-            <select [(ngModel)]="specialitySelected" (change)="filterSpecialist()">
-                <option value="" disabled selected hidden>Seleccione una especialidad</option>
-        
-                <option value="">Todas las especialidades</option>
-                <option *ngFor="let specialist of specialitiesList" [value]="specialist">
-                  {{ specialist }}
-                </option>
-            </select>
-          </div>
-          <div>
-            <table *ngIf="specialistsList.length > 0">
-             <thead>
-               <tr>
-                 <th>Especialista</th>
-                 <th>Nombre</th>
-                 <th>Apellido</th>
-                 <th>Especialidad</th>
-                 <th>Solicitar</th>
-               </tr>
-             </thead>
- 
-             <tbody *ngIf="!isLoading">
-               <tr *ngFor="let specialist of specialistsList">
-                 <td>
-                   <img [src]="specialist.imageSelected" alt="Especialista" width="50">
-                 </td>
-                 <td>{{ specialist.nameUser }}</td>
-                 <td>{{ specialist.lastnameUser }}</td>
-                 <td>
-                   {{ specialitySelected || specialist.specialityName }}
-                 </td>
- 
-                 <td>
-                   <button class="btn-book" (click)="showContainer('solicitud', specialist, specialist.specialityName)">
-                     <img class="img-book" src="/images/book.png" alt="Solicitar turno">
-                   </button>
-                 </td>
-               </tr>
-             </tbody>
-           </table>
+  <div class = "form-book-appointment"*ngIf = "!showAppointment && !specialistSelected">
+
+    <div class = "table-users-container" *ngIf = "user?.profile == 'Admin' && !patientSelected">
+            <table >
+                <thead>
+                    <tr>
+                    <th>Paciente</th>
+
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Edad</th>
+                    <th>Documento</th>
+                    <th >Obra social</th>
+                    <th>Perfil</th>
+                    <th >Agendar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let patient of usersList">
+                    <td> <img [src] = "patient.imageSelected" class = "img-patient"></td>
+                    <td>{{ patient.nameUser }}</td>
+                    <td>{{ patient.lastnameUser }}</td>
+                    <td>{{ patient.emailUser }}</td>
+                    <td>{{ patient.ageUser }}</td>
+                    <td >{{ patient.documentUser }}</td>
+                    <td >{{ patient.socialWorkUser }}</td>
+                    <td>{{ patient.profile }}</td>
+                    <td><button class="btn-book" (click)="patientSelected = patient">
+                            <img class="img-book" src="/images/book.png" alt="Solicitar turno">
+                          </button></td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+
+
+
+      <div id = "specialist-users-container" *ngIf = "patientSelected || user?.profile != 'Admin'">
+          <div class = "scroll-speacialists-container">
+              <div class = "specialist-list-container"> 
+                  <div *ngFor = "let specialist of specialistsList">
+                      <div class = "specialists-container">
+                        <div>
+                          <img [src] = "specialist.imageSelected" class = "img-specialist">
+                          <p class = "p-name-specialist">{{specialist.nameUser}} {{specialist.lastnameUser}}</p>
+                        </div>
+                        <div>
+                          <button class="btn-book" (click)="showContainer('solicitud', specialist, specialist.specialityName); specialistSelected = specialist">
+                            <img class="img-book" src="/images/book.png" alt="Solicitar turno">
+                          </button>
+                        </div>
+                      </div>
+                  </div>
+              </div>
           </div>
             <div *ngIf="isLoading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px;">
                 <svg
@@ -65,9 +77,40 @@
                     </g>
                 </svg>
             </div>
-        </div>
+      </div>
 
 </div>
+
+<div class = "specialities-images-container" *ngIf = "specialistSelected && !showAppointment">
+  <div>
+    <p>{{specialistSelected.nameUser}} {{specialistSelected.lastnameUser}}</p>
+
+  </div>
+  <div  class = "nd-specialities-images-container">
+    <div *ngFor = "let speciality of specialistSelected.specialities">
+        <div class = "specialities-specialist-selected-container">
+          @if(speciality.specialityImage != "")
+          {
+            <img [src] = "speciality.specialityImage" width="200" height="200" (click) = "showAppointment = true; specialitySelected = speciality">
+          }
+          @if(speciality.specialityImage == "")
+          {
+            <img src = "/images/defaultImageSpeciality.png" width="200" height="200" (click) = "showAppointment = true; specialitySelected = speciality">
+            
+          }
+          <p>{{speciality.name}}</p>
+        </div>
+    </div>
+    
+  </div>
+  <div>
+      <button class="btn-cancel-book btn-cancel-book-2" (click)="showAppointment = false; specialitySelected = ''; specialistSelected = ''">
+            <img class = "img-book"src = "/images/declineBook.png">
+
+      </button>
+    </div>
+</div>
+
 <div class="book-appointment-container" *ngIf="showAppointment">
 
  
@@ -75,7 +118,7 @@
     <p class="p-info-specialist">
       {{ specialistSelected.nameUser }} {{ specialistSelected.lastnameUser }}
     </p>
-    <p class="p-info-specialist">{{ specialitySelected }}</p>
+    <p class="p-info-specialist">{{ specialitySelected.name }}</p>
   </div>
 
 
@@ -108,13 +151,13 @@
 
 
   <div>
-    <button class="btn-cancel-book" (click)="showAppointment = false; specialitySelected = ''">
+    <button class="btn-cancel-book" (click)="showAppointment = false; specialitySelected = ''; specialistSelected  = ''; hoursAvailable = []">
               <img class = "img-book"src = "/images/declineBook.png">
 
     </button>
     <button 
       class="btn-finish-book" 
-      (click) = "bookAppointment(); ; specialitySelected = ''"
+      (click) = "bookAppointment(); ; specialitySelected = '';  specialistSelected  = ''; hoursAvailable = []"
       [disabled]="!selectedDay || !selectedHour">
         <img class = "img-book"src = "/images/acceptBook.png">
 

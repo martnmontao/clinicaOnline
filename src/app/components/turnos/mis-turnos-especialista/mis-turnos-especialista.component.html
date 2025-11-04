@@ -2,45 +2,12 @@
     <div id ="dark-opacity" *ngIf = "showActionSpecialist">
 
     </div>
-    <button (click) = "showContainer('filters')">
-        FILTRAR
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-        </svg>
-    </button>
+    
+    <div class  = "input-filter-container">
+        <input placeholder="Buscar por nombre, apellido, especialidad, día, horario o estado..." [(ngModel)] = "filterValue"(ngModelChange)="filterAppointments()">
+        <img src = "/images/searchIcon.png"> 
+    </div>
 
-      <div id = "filters-container"  [ngClass]="{'specialistActions': showActionSpecialist}" *ngIf = "showFilters">
-            <div class = "btn-specialists-container">
-                <p>Filtrar por especialidad:</p>
-                <div class = "btn-filters-container">
-                    <button *ngFor = "let speciality of specialityFilters" (click) = "filterSpecialities(speciality);" class="btn-filter"  [class.selected]="filterSpecialitySelected === speciality">{{speciality}}</button>
-                </div>
-            </div>
-            <div class = "btn-specialists-container" >
-                <p>Filtrar por paciente:</p>
-                <div class = "btn-filters-container">
-                    <button *ngFor = "let patient of patiensFilters" (click) = "filterPatient(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-                </div>
-            </div>
-            <div class = "btn-specialists-container" >
-                <p>Filtrar por día:</p>
-                <div class = "btn-filters-container">
-                    <button *ngFor = "let patient of datesFilters" (click) = "filterDate(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-                </div>
-            </div>
-            <div class = "btn-specialists-container" >
-                <p>Filtrar por horario:</p>
-                <div class = "btn-filters-container">
-                    <button *ngFor = "let patient of hoursFilters" (click) = "filterHour(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-                </div>
-            </div>
-            <div class = "btn-specialists-container" >
-                <p>Filtrar por estado:</p>
-                <div class = "btn-filters-container">
-                    <button *ngFor = "let patient of statesFilters" (click) = "filterState(patient); " class="btn-filter"  [class.selected]="filterPatientSelected === patient">{{patient}}</button>
-                </div>
-            </div>
-         </div>
     <div id = "patients-shifts-container" *ngIf = "!showFilters"> 
        
         <table>
@@ -86,13 +53,13 @@
                         <span class = "span-little">Día: {{patientSelected.date}}</span>
                     </div>
                     <div>
-                        <button class="btn-action-specialist" (click) = "stateAppointmentSelected = 'Aceptado'; changeStateAppointment()" *ngIf = "patientSelected.state != 'Rechazado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Aceptado'">Aceptar turno</button>
-                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); stateAppointmentSelected = 'Rechazado'" *ngIf = "patientSelected.state != 'Aceptado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Rechazado'">Rechazar turno</button>
-                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); stateAppointmentSelected = 'Cancelado'" *ngIf = "patientSelected.state != 'Aceptado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Rechazado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado'">Cancelar turno</button>
-                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); stateAppointmentSelected = 'Realizado'" *ngIf = "patientSelected.state == 'Aceptado'">Finalizar turno</button>
-                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist')" *ngIf = "patientSelected.specialistReview != ''">Ver reseña</button>
-                        <button class="btn-action-specialist" (click) = "showContainer('medicalHistory')" *ngIf = "patientSelected.state == 'Realizado' && !patientSelected.medicalHistory">Historia clínica</button>               
-                        <button class="btn-action-specialist" (click) = "showContainer('reviewPatient')" *ngIf = "patientSelected.patientReview != ''">Ver comentario</button>
+                        <button class="btn-action-specialist" (click) = "stateAppointmentSelected = 'Aceptado'; changeStateAppointment(); showActionSpecialist = false" *ngIf = "patientSelected.state != 'Rechazado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Aceptado'">Aceptar turno</button>
+                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); stateAppointmentSelected = 'Rechazado'; showActionSpecialist = false; titleReview = '¿Por qué rechaza el turno?'" *ngIf = "patientSelected.state != 'Aceptado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Rechazado'">Rechazar turno</button>
+                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); stateAppointmentSelected = 'Cancelado'; showActionSpecialist = false; titleReview = '¿Por qué cancela el turno?'" *ngIf = "patientSelected.state != 'Aceptado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Rechazado' && patientSelected.state != 'Realizado' && patientSelected.state != 'Cancelado'">Cancelar turno</button>
+                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); stateAppointmentSelected = 'Realizado'; titleReview = '¿Cómo ha sido el turno?'" *ngIf = "patientSelected.state == 'Aceptado'">Finalizar turno</button>
+                        <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); showActionSpecialist = false; titleReview = 'Su reseña.'" *ngIf = "patientSelected.specialistReview != ''">Ver reseña</button>
+                        <button class="btn-action-specialist" (click) = "showContainer('medicalHistory'); showActionSpecialist = false" *ngIf = "patientSelected.state == 'Realizado' && !patientSelected.medicalHistory">Historia clínica</button>               
+                        <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); showActionSpecialist = false; titleReview = 'Comentario del paciente.'" *ngIf = "patientSelected.patientReview != ''">Ver comentario</button>
                     </div>
 
             </div>
@@ -101,8 +68,10 @@
                     <button (click) = "showContainer('reviewSpecialist')">X</button>
                 </div>
                 <div>
+                    <p class = "p-title-review">{{titleReview}}</p>
+
                     <textarea placeholder="Su comentario..." [(ngModel)] = "review">{{patientSelected.specialistReview}}</textarea>
-                    <button (click) = "sendReview()" *ngIf = "patientSelected.specialistReview == ''">Enviar</button>
+                    <button (click) = "sendReview(); showActionSpecialist = false; showReviewSpecialist = false" *ngIf = "patientSelected.specialistReview == ''">Enviar</button>
                 </div>
             </div>
             <div id = "review-container" *ngIf = "showReviewPatient">
@@ -110,6 +79,7 @@
                     <button (click) = "showContainer('reviewPatient')">X</button>
                 </div>
                 <div>
+                    <p class = "p-title-review">{{titleReview}}</p>
                     <textarea placeholder="Su comentario..." [(ngModel)] = "review">{{patientSelected.patientReview}}</textarea>
                 </div>
             </div>
@@ -118,48 +88,48 @@
 
                 <div>
                     <label for="Altura">Altura
-                        <input type="text" placeholder="Altura" name = "altura" [(ngModel)] = "patientHeight">
+                        <input type="text" placeholder="Altura" name = "altura" [(ngModel)] = "patientHeight" autocomplete="off">
                     </label>
                     <label for="">Peso
-                        <input type="text" placeholder="Peso" name = "peso" [(ngModel)] = "patientWeight">
+                        <input type="text" placeholder="Peso" name = "peso" [(ngModel)] = "patientWeight" autocomplete="off">
                     </label>
                 </div>
                  <div>
                      <label for="">Temperatura
-                        <input type="text" placeholder="Temperatura" name = "temperatura" [(ngModel)] ="patientTemperature">
+                        <input type="text" placeholder="Temperatura" name = "temperatura" [(ngModel)] ="patientTemperature" autocomplete="off">
                     </label>
                     <label for="">Presión
-                        <input type="text" placeholder="Presión" name = "presion" [(ngModel)] = "patientPressure">
+                        <input type="text" placeholder="Presión" name = "presion" [(ngModel)] = "patientPressure" autocomplete="off">
                     </label>
                 </div>
                 <h3>Datos adicionales</h3>
                <div>
                 <label for="">
-                    <input type="text" placeholder="Clave" name = "keyData1" [(ngModel)] = "patientAdditionalData1">
+                    <input type="text" placeholder="Clave" name = "keyData1" [(ngModel)] = "patientAdditionalData1" autocomplete="off">
                 </label>
                 
                 <label for="">
-                    <input type="text" placeholder="Valor" name = "valueData1" [(ngModel)] = "valueAdditionalData1">
+                    <input type="text" placeholder="Valor" name = "valueData1" [(ngModel)] = "valueAdditionalData1" autocomplete="off">
                 </label>
                </div>
                 <div>
                 <label for="">
-                    <input type="text" placeholder="Clave" name = "keyData2" [(ngModel)] = "patientAdditionalData2">
+                    <input type="text" placeholder="Clave" name = "keyData2" [(ngModel)] = "patientAdditionalData2" autocomplete="off">
                 </label>
                 <label for="">
-                    <input type="text" placeholder="Valor" name = "valueData2" [(ngModel)] = "valueAdditionalData2">
+                    <input type="text" placeholder="Valor" name = "valueData2" [(ngModel)] = "valueAdditionalData2" autocomplete="off">
                 </label>
                 </div>
                 <div>
                 <label for="">
-                    <input type="text" placeholder="Clave" name = "keyData3" [(ngModel)] = "patientAdditionalData3">
+                    <input type="text" placeholder="Clave" name = "keyData3" [(ngModel)] = "patientAdditionalData3" autocomplete="off">
                 </label>
                 <label for="">
-                    <input type="text" placeholder="Valor" name = "valueData3" [(ngModel)] = "valueAdditionalData3">
+                    <input type="text" placeholder="Valor" name = "valueData3" [(ngModel)] = "valueAdditionalData3" autocomplete="off">
                 </label>
                 </div>
                 
-                <button (click) = "sendMedicalHistory()">Enviar</button>
+                <button (click) = "sendMedicalHistory(); showMedicalHistory = false">Enviar</button>
                 <button (click) = "showMedicalHistory = false">Cancelar</button>
             </div>
     </div>

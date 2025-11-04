@@ -2,44 +2,10 @@
      <div id ="dark-opacity" *ngIf = "showDetails">
 
     </div>
-    <button (click) = "showContainer('filters'); showFilters">
-        FILTRAR
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-        </svg>
-    </button>
 
-    <div id = "filters-container"  [ngClass]="{'specialistActions': showDetails}" *ngIf = "showFilters">
-        <div class = "btn-specialists-container">
-            <p>Filtrar por especialidad:</p>
-            <div class = "btn-filters-container">
-                <button *ngFor = "let speciality of specialityFilters" (click) = "filterSpecialities(speciality); filterSelected = speciality;" class="btn-filter"  [class.selected]="filterSelected === speciality">{{speciality}}</button>
-            </div>
-        </div>
-        <div class = "btn-specialists-container" >
-            <p>Filtrar por especialista:</p>
-            <div class = "btn-filters-container">
-                <button *ngFor = "let specialist of specialistsFilters" (click) = "filterSpecialist(specialist); filterSelected = specialist;" class="btn-filter"  [class.selected]="filterSelected === specialist">{{specialist}}</button>
-            </div>
-        </div>
-        <div class = "btn-specialists-container" >
-            <p>Filtrar por día:</p>
-            <div class = "btn-filters-container">
-                <button *ngFor = "let specialist of datesFilters" (click) = "filterDate(specialist); filterSelected = specialist;" class="btn-filter"  [class.selected]="filterSelected === specialist">{{specialist}}</button>
-            </div>
-        </div>
-        <div class = "btn-specialists-container" >
-            <p>Filtrar por horario:</p>
-            <div class = "btn-filters-container">
-                <button *ngFor = "let specialist of hoursFilters" (click) = "filterHour(specialist); filterSelected = specialist;" class="btn-filter"  [class.selected]="filterSelected === specialist">{{specialist}}</button>
-            </div>
-        </div>
-        <div class = "btn-specialists-container" >
-            <p>Filtrar por estado:</p>
-            <div class = "btn-filters-container">
-                <button *ngFor = "let specialist of statesFilters" (click) = "filterState(specialist); filterSelected = specialist;" class="btn-filter"  [class.selected]="filterSelected === specialist">{{specialist}}</button>
-            </div>
-        </div>
+    <div class  = "input-filter-container">
+        <input placeholder="Buscar por nombre, apellido, especialidad, día, horario o estado..." [(ngModel)] = "filterValue"(ngModelChange)="filterAppointments()">
+        <img src = "/images/searchIcon.png"> 
     </div>
     
     <div id = "patients-shifts-container" *ngIf = "!showFilters"> 
@@ -88,9 +54,11 @@
                 </div>
                 <div>
                     <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); stateAppointmentSelected = 'Cancelado'; titleReview = 'Deja un mensaje del por qué cancelas el turno.'" *ngIf = "appointmentSelected.state != 'Realizado' && appointmentSelected.state != 'Cancelado' && appointmentSelected.state != 'Rechazado'">Cancelar turno</button>
-                    <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); stateAppointmentSelected = 'Realizado'; titleReview = 'Deja un comentario de cómo fue tu experiencia.'" *ngIf = "appointmentSelected.state == 'Realizado'">Calificar atención</button>
+                    <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); stateAppointmentSelected = 'Realizado'; titleReview = 'Deja un comentario de cómo fue tu experiencia.'" *ngIf = "appointmentSelected.state == 'Realizado' && appointmentSelected.patientReview == ''">Calificar atención</button>
                     <button class="btn-action-specialist" (click) = "showContainer('review')" *ngIf = "appointmentSelected.state == 'Realizado';">Completar encuesta</button>
-                    <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); review = appointmentSelected.patientReview" *ngIf = "appointmentSelected.specialistReview != '' || appointmentSelected.patientReview != ''">Ver reseña</button>
+                    <button class="btn-action-specialist" (click) = "showContainer('reviewSpecialist'); review = appointmentSelected.specialistReview; titleReview = 'Reseña del especialista.'" *ngIf = "appointmentSelected.specialistReview != ''">Ver reseña de especialista</button>
+                    <button class="btn-action-specialist" (click) = "showContainer('reviewPatient'); review = appointmentSelected.patientReview; titleReview = 'Su reseña.'" *ngIf = "appointmentSelected.patientReview != ''">Ver mi reseña</button>
+
                 </div>
 
     </div>
@@ -110,8 +78,8 @@
                     <button (click) = "showContainer('reviewSpecialist')">X</button>
                 </div>
                 <div>
-                    <textarea placeholder="Su comentario..." [(ngModel)] = "review">{{appointmentSelected.specialistReview}}</textarea>
-                  
+                    <p class = "p-title-review">{{titleReview}}</p>
+                    <textarea placeholder="Su comentario..." [(ngModel)] = "review" readonly>{{appointmentSelected.specialistReview}}</textarea>                  
                 </div>
         </div>
        

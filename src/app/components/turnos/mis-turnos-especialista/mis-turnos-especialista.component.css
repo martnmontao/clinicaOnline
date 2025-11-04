@@ -9,6 +9,13 @@
 
     flex-direction: column;
 }
+.p-title-review
+{
+    font-size: clamp(1rem, 1.3vw, 1.5rem);
+    color: #1F2937;
+}
+
+
 
 #filters-container
 {
@@ -28,6 +35,45 @@
     border-radius: 5px;
     padding: 0 16px 0 0;
     gap: 16px;
+}
+
+.input-filter-container
+{
+    width: 45%;
+    background-color: white;
+    border: 2px solid #1F2937;
+    border-radius: 10px;
+    height: 45px;
+    padding: 4px;
+    margin: 2%;
+    position: relative;
+    min-width: 500px;
+
+}
+
+.input-filter-container input
+{
+    width: 95%;
+    border: none;
+    border-radius: 10px;
+    height: 93%;
+    padding-left: 10px;
+    font-size: clamp(0.95em, 0.95vw, 3rem);
+    
+}
+
+.input-filter-container img
+{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+input:focus
+{
+    outline: none;
 }
 
 .btn-specialists-container > p
@@ -167,10 +213,7 @@ button
 
 
 
-img
-{
-    background-color: red;
-}
+
 table
 {
 
@@ -437,6 +480,7 @@ tr button
     border: 1px solid grey;
     border-radius: 10px;
     font-size:  clamp(1.5rem, 1vw, 3rem);
+    color: #1F2937;
 }
 
 .btn-filter.selected
@@ -508,6 +552,9 @@ tr button
     justify-content: space-evenly;
     border-radius: 10px;
     color: #1F2937;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     z-index: 999999999999999;
 }
 

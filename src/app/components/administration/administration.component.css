@@ -10,40 +10,55 @@
    
 }
 
-header
+
+
+
+.specialities-container
 {
-    height: 9vh;
-    border-radius: 10px;
-    box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
-    -webkit-box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
-    -moz-box-shadow: -2px 3px 5px 0px rgba(0,0,0,0.4);
+    height: auto;
+    width: 100%;
+    margin: 0 auto;
     display: flex;
-    background-color: #F4F4F3;
-
-}
-
-.head-containers
-{
-   
-    width: 50%;
-    height: 5%;
-    display: flex;
-   
-}
-
-h1
-{
-    font-size: 40px;
-    margin: 23px 20px;
-    color: #1F2937;
-}
-
-
-.head-containers img
-{
-    height: 9vh;
+    flex-wrap: wrap;
     
+    align-items: center;
+    justify-content: space-evenly;
 }
+
+.specialities-img-container
+{
+
+    height: 300px;
+   
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
+
+.specialities-img-container p
+{
+    color: #1F2937;
+font-size: clamp(0.8rem, 1.2vw, 5rem);
+}
+
+.specialities-img-container img
+{
+    border-radius: 5px;
+    border: 2px solid #1F2937;
+ 
+}
+
+.specialities-img-container button
+{
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
+    background-color: #1F2937;
+    color: white;
+    font-size: clamp(0.8rem, 0.9vw, 5rem);
+}
+
 
 section
 {
@@ -183,7 +198,7 @@ button
     padding: 0 20px 0 0;
 }
 
-
+.specialities-container
 
 #th-autorization
 {
@@ -502,8 +517,25 @@ form > div:nth-child(3)
 section > button:last-child 
 {
     height: 55px;
-    width: 200px;
+    width: 300px;
     border-radius: 5px;
-    background-color: rgb(36, 206, 36);
+    background-color: white;
+    border: 2px solid #28a745;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
     font-size: 16px;
+    font-weight: bold;
+    color: #1F2937;
+}
+
+section > button:last-child:hover
+{
+    background-color: #d0ffe1;
+}
+
+section > button:last-child > img
+{
+    height: 50px;
+    width: 50px;
 }

@@ -6,27 +6,136 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
- 
+    
    height: 800px;
-
-
-  
 }
 
 
-.form-book-appointment > div:nth-child(1)
+
+.table-users-container
 {
+    background-color: rgb(255, 255, 255, 0.6);
+    min-height: 400px;
+    max-height: 450px;
+    border-radius: 5px;
+    margin-top: 5%;
+    width: 100%;
+    padding: 20px;
+    min-height: 500px;
+    height: auto;
+    min-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+    overflow-y: auto;
+    overflow-x: hidden;
+   
+}
+
+
+
+th, td
+{
+    padding: 10px;
+    font-size: clamp(0.8rem, 1vw, 5rem);
+    border-radius: 5px;
+    color: #1F2937;
+    text-align: center;
+    background-color: 	#E0E0DF ;
+}
+
+td
+{
+    min-height: 100px;
+    max-height: 100px; 
+    overflow-y: auto;  
+    overflow-x: hidden;
+}
+
+.img-patient
+{
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+}
+
+
+table
+{
+    background-color: #F4F4F3;
+    border-radius: 10px;
+    padding: 1%;
+}
+
+td > button
+{
+    width: 220px;
+    margin: 0 auto;
+}
+
+.specialist-list-container
+{
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
-    width: 100%;
-    align-items: center;
-    background-color: #1F2937;
+    padding: 16px;
+  
+
+    height: 100%;
 
     
 }
 
+.scroll-speacialists-container
+{
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    justify-content: space-evenly;
+    display: flex;
+    overflow-x: auto;
+}
 
-#specialist-users-container> div:nth-child(1)::after {
+
+.img-specialist
+{
+    height: 300px;
+    width: 300px;
+    border-radius: 5px;
+    border: 2px solid #1F2937;
+}
+
+.p-name-specialist
+{
+    text-align: center;
+    color: white;
+     font-size: clamp(0.8rem, 2.5vw, 2rem);
+    padding: 0;
+    margin: 10px 0;
+}
+
+.img-book
+{
+    width: 100%;
+ 
+    border-radius: 5px;
+}
+.specialists-container
+{
+    width: 300px;
+    height: auto;
+    border: 2px solid #1F2937;
+    border-radius: 10px;
+    background-color: #1e3049;
+    margin: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-book-appointment > div:nth-child(1)::after {
   content: "▼";              
   position: absolute;
   top: 50%;
@@ -47,7 +156,7 @@ select
     text-align: center;
     font-size: clamp(0.8rem, 3vw, 2rem);
     border-radius: 3px 3px  0 0;
-
+    
     appearance: none;          
     -webkit-appearance: none;  
     -moz-appearance: none;  
@@ -56,24 +165,8 @@ select
     cursor: pointer;
 }
 
-#specialist-users-container> div:nth-child(1)
-{
-    background-color: #1F2937;
-    min-height: 80px;
-    width: 100%;
-    border-radius: 5px 5px  0 0;
-    position: relative;
-}
-
-#specialist-users-container> div:nth-child(2)
-{
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    
 
 
-}
 select:focus
 {
     outline: none;
@@ -82,17 +175,37 @@ select:focus
 #specialist-users-container {
   
     width: 100%;
+   
     position: relative;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    height: 70%; 
+    height: 65%; 
     background-color: rgb(255, 255, 255,0.8);
-
+    padding: 16px;
     border: 2px solid #1F2937;
-  
+
 }
 
+::-webkit-scrollbar {
+  width: 10px;              
+  height: 10px;            
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;      
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;     
+  border-radius: 10px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #415b93;      
+}
 
 th, td
 {
@@ -116,20 +229,13 @@ table
     
 }
 
-img
-{
-      height: 70px;
-  width: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center;
-}
+
 
 .btn-book
 {
     background-color: #86e99d;
     height: 100%;
-    width: 100%;
+    width: 300px;
     font-size: clamp(0.5rem, 2vw, 1.4rem);
     display: flex;
     justify-content: center;
@@ -214,8 +320,9 @@ button
   
     height: 80%;
     width: 900px;
-    
+  
     background-color: rgb(255, 255, 255,0.8);
+  
     border: 1px solid #2B2F3B;
     margin: 1% auto;
     display: flex;
@@ -300,6 +407,73 @@ button
     border: 2px solid #1F2937;
      font-size: clamp(0.5rem, 3vw, 1rem);
 }
+
+.specialities-images-container
+{
+    height: 70%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255,0.8);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: 2px solid #1F2937;
+    border-radius: 5px;
+}
+.specialities-images-container > div:nth-child(1) > p
+{
+    text-align: center;
+    font-size: clamp(3rem, 3vw, 1rem);
+    color: #1F2937;
+}
+.btn-cancel-book-2{
+    width: 300px;
+}
+.nd-specialities-images-container
+{
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.nd-specialities-images-container div
+{
+    width: auto;
+    height: 10px;
+    height:  auto;
+
+    padding: 16px;
+}
+
+.specialities-specialist-selected-container img
+{
+    border-radius: 50%;
+    border: 2px solid #1F2937;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+.specialities-specialist-selected-container img:hover
+{
+    transform: scale(1.08);
+    border: 3px solid #17191b;
+}
+
+.specialities-specialist-selected-container p
+{
+    font-size: clamp(1.5rem, 3vw, 1rem);
+    text-align: center;
+    color: #1F2937;
+}
+
 
 .date-buttons
 {

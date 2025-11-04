@@ -260,7 +260,7 @@ onFileSelected(event: Event) {
 
   async registerUser() {
     const { nameUser, lastNameUser, ageUser, documentUser, emailUser, passwordUser, socialWorkUser, selectSpeciality, specilityAdded } = this.registerForm.value;
-    console.log("EMAIL: ",emailUser)
+    const specialityImage = "";
     try {
       const userCredential = await this.firebaseService.signUp(emailUser, passwordUser);
       const user = userCredential.user;
@@ -285,8 +285,8 @@ onFileSelected(event: Event) {
           imageSelected: this.imagesPreview[0] || ''
         };
       } else {
-        if (selectSpeciality) this.specialities.push({ name: selectSpeciality, startHourWork: '08:00', endHourWork: '19:00', startHourWeekend: '08:00', endHourWeekend: '14:00' });
-        if (specilityAdded) this.specialities.push({ name: specilityAdded, startHourWork: '08:00', endHourWork: '19:00', startHourWeekend: '08:00', endHourWeekend: '14:00' });
+        if (selectSpeciality) this.specialities.push({ name: selectSpeciality, startHourWork: '08:00', endHourWork: '19:00', startHourWeekend: '08:00', endHourWeekend: '14:00', specialityImage });
+        if (specilityAdded) this.specialities.push({ name: specilityAdded, startHourWork: '08:00', endHourWork: '19:00', startHourWeekend: '08:00', endHourWeekend: '14:00', specialityImage });
 
         data = {
           uid: user.uid,
@@ -362,7 +362,8 @@ onFileSelected(event: Event) {
         startHourWork: "08:00",
         endHourWork: "19:00",
         startHourWeekend: "08:00",
-        endHourWeekend: "14:00"
+        endHourWeekend: "14:00",
+        specialityImage: ""
       };
       this.specialities.push(newSpeciality);
       this.f['specilityAdded'].setValue('');

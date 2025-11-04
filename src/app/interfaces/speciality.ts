@@ -3,5 +3,6 @@ export interface Speciality {
     startHourWork: string;
     endHourWork: string;     
     startHourWeekend: string; 
-    endHourWeekend: string; 
+    endHourWeekend: string;
+    specialityImage: string;
 }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-administration',
   imports: [CommonModule, FormsModule],
@@ -23,7 +24,7 @@ export class AdministrationComponent implements OnInit{
   colorMensaje: string = '';
   respuesta: string = '';
   optionsLogins = "PACIENTE";
-  labelInput = "Obra social";
+
   showSpecialities = false;
   usersList:any = [];
   selectedFilter: string = "Paciente"
@@ -35,10 +36,12 @@ export class AdministrationComponent implements OnInit{
   passwordUser: string = "";
   socialWorkUser: string = "";
   documentUser: string = "";
-  speciality: string = "";
-  secondSpeciality: string = "";
+  specialitiesList: any = "";
+ 
     images: File[] = [];
   imagesPreview: string[] = [];
+
+
     openInput() 
   {
     const input = document.getElementById('input-file') as HTMLInputElement;
@@ -49,7 +52,7 @@ export class AdministrationComponent implements OnInit{
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.loading = true; 
 
     this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => 
@@ -60,6 +63,8 @@ export class AdministrationComponent implements OnInit{
         }, 500);
       }
       )
+    this.specialitiesList  = await this.firebaseService.getAllUniqueSpecialities();
+      console.log(this.specialitiesList)
   }
   toggleOptions() 
   {
@@ -90,13 +95,13 @@ export class AdministrationComponent implements OnInit{
     {
       case "Especialista":
         this.optionsLogins = "ESPECIALISTA"
-        this.labelInput = "Especialidad";
+     
         this.showSpecialities = true;
         
         break;
       case "Paciente":
         this.optionsLogins = "PACIENTE";
-        this.labelInput = "Obra social";
+    
         this.showSpecialities = false;
         break;
       case "Administrador":
@@ -123,17 +128,28 @@ export class AdministrationComponent implements OnInit{
       });
     }
 }
-selectFilter(filter: string) {
+async selectFilter(filter: string) {
   this.selectedFilter = filter;
   this.loading = true;
-
-  this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => {
-      this.usersList = answer;
-
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
-    });
+  
+  if(filter == 'Especialidades')
+  {
+    this.firebaseService.getAllUniqueSpecialities().then(res => 
+    {
+      this.specialitiesList = res;
+    }
+    )
+  }
+  else
+  {
+    this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => {
+        this.usersList = answer;
+        
+      });
+    }
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
 }
 
   autorizateUser(uid:string)
@@ -197,37 +213,37 @@ selectFilter(filter: string) {
   }
 }
 
-  exportExcel() {
-    let data;
-    switch(this.selectedFilter)
-    {
-      case "Paciente":
-        data = this.usersList.map((user:any) => ({
+exportExcel() {
+  let data;
+  switch (this.selectedFilter) {
+    case "Paciente":
+      data = this.usersList.map((user: any) => ({
         "Perfil": user.profile,
         "Nombre": user.nameUser,
         "Apellido": user.lastnameUser,
         "Documento": user.documentUser,
         "Edad": user.ageUser,
-        "Correo electrónico": user.emailUser, 
+        "Correo electrónico": user.emailUser,
         "Obra social": user.socialWorkUser
-        }));
-        break;
-      case "Especialista":
-         data = this.usersList.map((user:any) => ({
+      }));
+      break;
+
+    case "Especialista":
+      data = this.usersList.map((user: any) => ({
         "Perfil": user.profile,
         "Nombre": user.nameUser,
         "Apellido": user.lastnameUser,
         "Documento": user.documentUser,
         "Edad": user.ageUser,
-        "Correo electrónico": user.emailUser, 
-        "Especialidad": user.speciality,
-        "Segunda especialidad": user.secondSpeciality,
-        }));
-        break;
-    }
+        "Correo electrónico": user.emailUser,
+        "Especialidades": Array.isArray(user.specialities)
+          ? user.specialities.map((spec: any) => spec.name).join(", ")
+          : ""
+      }));
+      break;
+  }
 
   const worksheet = XLSX.utils.json_to_sheet(data);
-
   const workbook = { Sheets: { 'Hoja1': worksheet }, SheetNames: ['Hoja1'] };
   const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
@@ -235,8 +251,8 @@ selectFilter(filter: string) {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
   });
 
-  saveAs(blob, this.selectedFilter + 's.xlsx'); // 📂 Se descarga como Excel real
-  }
+  saveAs(blob, this.selectedFilter + 's.xlsx');
+}
 
   
   generarCaptcha(): void {
@@ -264,4 +280,64 @@ selectFilter(filter: string) {
       }, 1000);
     }
   }
+
+async onFileSelectedSpeciality(event: Event, specialityName: string) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
+
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = async (e: any) => {
+    const img = new Image();
+    img.src = e.target.result;
+
+    img.onload = async () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+      
+      const maxWidth = 400;
+      const scale = Math.min(1, maxWidth / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+
+
+      const specialists = await this.firebaseService.getSpecifyUsers('profile', 'Especialista', 'users');
+
+      for (const specialist of specialists) {
+        const updatedSpecialities = specialist.specialities.map((esp: any) => {
+          if (esp.name === specialityName) {
+            return { ...esp, specialityImage: compressedBase64 };
+          }
+          return esp;
+        });
+
+
+        const hasChanges = updatedSpecialities.some(
+          (esp: any, i: number) => esp.specialityImage !== specialist.specialities[i].specialityImage
+        );
+
+        if (hasChanges) {
+          await this.firebaseService.updateDocument('users', specialist.id, {
+            specialities: updatedSpecialities
+          });
+        }
+      }
+
+      console.log(`✅ Imagen actualizada para la especialidad "${specialityName}" en todos los especialistas.`);
+    };
+  };
+
+  reader.readAsDataURL(file);
+  setTimeout(() => {
+    
+    this.selectFilter("Especialidades");
+  }, 1500);
+
+}
 }

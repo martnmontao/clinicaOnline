@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut } from '@angular/fire/auth';
 import { Firestore, deleteDoc, collection, addDoc, query, where, getDocs ,updateDoc, onSnapshot, doc, getDoc, limit, Query, DocumentData } from '@angular/fire/firestore'; 
-
+import { Speciality } from '../interfaces/speciality';
 
 @Injectable({
   providedIn: 'root'
@@ -69,25 +69,26 @@ export class FirebaseService {
   }
 }
 
-async getAllUniqueSpecialities(): Promise<string[]> {
+async getAllUniqueSpecialities(): Promise<Speciality[]> {
   const usersRef = collection(this.firestore, 'users');
   const q = query(usersRef, where('profile', '==', 'Especialista'));
 
   const snapshot = await getDocs(q);
-  const especialidadesSet = new Set<string>();
+  const especialidadesMap = new Map<string, Speciality>();
 
   snapshot.forEach((doc) => {
     const data: any = doc.data();
-    if (data.specialities && Array.isArray(data.specialities)) {
-      data.specialities.forEach((esp: any) => {
-        if (esp.name) {
-          especialidadesSet.add(esp.name.trim());
+    if (Array.isArray(data.specialities)) {
+      data.specialities.forEach((esp: Speciality) => {
+        const nombre = esp.name?.trim();
+        if (nombre && !especialidadesMap.has(nombre)) {
+          especialidadesMap.set(nombre, esp);
         }
       });
     }
   });
 
-  return Array.from(especialidadesSet);
+  return Array.from(especialidadesMap.values());
 }
 
 async verifySpecialistAutorization(uid: string): Promise<boolean> 
@@ -136,17 +137,16 @@ async getSpecifyUsers(key: string, value: any, col: string): Promise<any[]>
 async getUsersWithFilters(filters: { key: string; value: any }[], col: string): Promise<any[]> {
   const usersRef = collection(this.firestore, col);
 
-  // Extraer el filtro de especialidad
+
   const specialityFilter = filters.find(f => f.key === 'speciality');
   const otherFilters = filters.filter(f => f.key !== 'speciality');
 
   const buildQuery = (key: string) => {
     let q: any = usersRef;
 
-    // Aplicar filtro de especialidad o secondSpeciality
+
     q = query(q, where(key, '==', specialityFilter?.value));
 
-    // Aplicar otros filtros (como autorization)
     for (const filter of otherFilters) {
       q = query(q, where(filter.key, '==', filter.value));
     }
@@ -284,5 +284,35 @@ async getAppointments(uid: string, specialityType: string) {
   });
  
   return appointments;
+}
+
+async updateSpecialityImageByName(specialityName: string, imageUrl: string): Promise<void> {
+  try {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('profile', '==', 'Especialista'));
+    const snapshot = await getDocs(q);
+
+    const updates = snapshot.docs.map(async (docSnap) => {
+      const data: any = docSnap.data();
+
+      if (Array.isArray(data.specialities)) {
+
+        const updatedSpecialities = data.specialities.map((esp: any) => {
+          if (esp.name?.trim().toLowerCase() === specialityName.trim().toLowerCase()) {
+            return { ...esp, specialityImage: imageUrl };
+          }
+          return esp;
+        });
+
+        const userRef = doc(this.firestore, 'users', docSnap.id);
+        await updateDoc(userRef, { specialities: updatedSpecialities });
+      }
+    });
+
+    await Promise.all(updates);
+    console.log(`✅ Imagen actualizada para todas las especialidades "${specialityName}"`);
+  } catch (error) {
+    console.error("❌ Error al actualizar las imágenes de especialidad:", error);
+  }
 }
 }

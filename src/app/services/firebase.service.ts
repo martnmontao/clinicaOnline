@@ -15,6 +15,8 @@ export class FirebaseService {
   {
     
   }
+
+  
   async getCollection(col: string): Promise<any[]> {
     try {
       const colRef = collection(this.firestore, col);

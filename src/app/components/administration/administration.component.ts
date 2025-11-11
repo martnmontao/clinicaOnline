@@ -350,6 +350,22 @@ async onFileSelectedSpeciality(event: Event, specialityName: string) {
   }, 1500);
 
 }
+async deleteUser(user: any)
+{
+  this.loading = true;
+  await this.firebaseService.deleteDocument('users', user.id);
+   this.firebaseService.getSpecifyUsers("profile", this.selectedFilter, "users").then(answer => 
+    {
+      this.usersList = answer;
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
+    }
+    )
+}
+
+
+
 async downloadPDFPatients(patient: any) {
   const appointmentsList = await this.firebaseService.getAppointmentsByPatientUid(patient.uid);
 

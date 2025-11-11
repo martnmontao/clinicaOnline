@@ -27,7 +27,7 @@ sección podrá filtrar por especialidad y especialista y podrá visualizar los 
 Administración de horarios de especialista:
 <img width="1867" height="918" alt="horariosEspecialista" src="https://github.com/user-attachments/assets/27b74ba8-64c1-4764-ad11-3153d422306e" />
 
-Registro del administrador:
+Gráficos que puede ver el administrador:
 <img width="1867" height="920" alt="graficos-administrador" src="https://github.com/user-attachments/assets/859dd852-dd91-4fe0-83d8-a5ea06bde240" />
 
 Visualización de los pacientes por parte del adminsitrador pudiendo los turnos que realizó el paciente haciendo click en la imagen de:

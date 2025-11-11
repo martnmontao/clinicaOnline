@@ -26,17 +26,22 @@ sección podrá filtrar por especialidad y especialista y podrá visualizar los 
 <img width="1869" height="893" alt="navegacionAdministrador" src="https://github.com/user-attachments/assets/f3a152ec-229e-4f7d-9842-157c5e08b8da" />
 Administración de horarios de especialista:
 <img width="1867" height="918" alt="horariosEspecialista" src="https://github.com/user-attachments/assets/27b74ba8-64c1-4764-ad11-3153d422306e" />
-Filtro de especialistas:
-<img width="1868" height="926" alt="filtradoEspecialista" src="https://github.com/user-attachments/assets/2f3d2658-6b80-41c7-b1fb-ddbd8d6a36ef" />
-Filtrado de turnos de los pacientes:
-<img width="1868" height="918" alt="filtradoDeTurnosPaciente" src="https://github.com/user-attachments/assets/c0ac3ac7-18aa-4297-b28d-ee3f651daa7a" />
-Listado de turnos de los especialistas:
-<img width="1871" height="924" alt="listadoTurnosEspecialista" src="https://github.com/user-attachments/assets/32b290c5-0ea9-4a79-90b9-61a64cb803f1" />
-Listado de turnos de los pacientes:
-<img width="1870" height="917" alt="turnosPaciente" src="https://github.com/user-attachments/assets/012f4f53-7c6c-4454-8848-84f5012e18f7" />
-Listado de turnos y filtros por parte de un administrador:
-<img width="1871" height="914" alt="turnosAdministrador" src="https://github.com/user-attachments/assets/33299249-ff22-4808-b29e-d05bb547d047" />
-Solicitar turnos de los pacientes:
-<img width="1870" height="919" alt="solicitarTurnoPaciente" src="https://github.com/user-attachments/assets/e2e29800-4dda-4fd5-890f-42f2830aa265" />
+
 Registro del administrador:
-<img width="1870" height="894" alt="registrarAdministrador" src="https://github.com/user-attachments/assets/c169d8f7-5c75-468c-8e5b-92f1a5c2b322" />
+<img width="1867" height="920" alt="graficos-administrador" src="https://github.com/user-attachments/assets/859dd852-dd91-4fe0-83d8-a5ea06bde240" />
+
+Visualización de los pacientes por parte del adminsitrador pudiendo los turnos que realizó el paciente haciendo click en la imagen de:
+<img width="1869" height="926" alt="administracion-pacientes-descarga-pdf" src="https://github.com/user-attachments/assets/a2da92dc-0c65-4c59-a656-7713ca1e3b43" />
+Visualización de las especialidades de un especialista al solicitar un turno:
+<img width="1870" height="908" alt="seleccion-especialidad-solicitar-turno" src="https://github.com/user-attachments/assets/f845a1d6-ad18-4ba2-830e-5f2f5671201b" />
+Listado de los pacientes que atendió al menos una vez y puede descargar su historia clínica:
+<img width="1872" height="921" alt="listado-pacientes-de-especialista" src="https://github.com/user-attachments/assets/1712600c-0f1e-4fae-a8a9-e2bb4773a981" />
+Listado de los turnos:
+<img width="1871" height="914" alt="listado-de-turnos" src="https://github.com/user-attachments/assets/439ef695-aeae-4b18-a491-1db877fe22d1" />
+Visualización de los días y horarios disponibles al solicitar un turno:
+<img width="1870" height="924" alt="solicitar-turnos-horarios" src="https://github.com/user-attachments/assets/5a57c614-80dc-4345-ac4f-0495fae63a79" />
+Visualización de los especialista para solicitar un turno:
+<img width="1868" height="919" alt="seleccion-especialista-solicitar-turno" src="https://github.com/user-attachments/assets/5cb1b709-9669-47ad-9bb2-b8c8165b97fd" />
+Descarga de historias clínicas:
+<img width="1870" height="921" alt="descargar-historias-clinicas" src="https://github.com/user-attachments/assets/7eeb0424-aa8f-4b80-88e3-621dd66ef745" />
+

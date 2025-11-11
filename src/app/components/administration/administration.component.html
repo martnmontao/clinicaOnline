@@ -3,14 +3,14 @@
         <div id = "table-users-container" *ngIf = "showTable">
             
             <div id = "btn-filter-users-container">
-                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Paciente'" (click) = "selectFilter('Paciente')">PACIENTES</button>
-                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialista'" (click) = "selectFilter('Especialista')">ESPECIALISTAS</button>
-                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Admin'" (click) = "selectFilter('Admin')">ADMINISTRADORES</button>
-                <button class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialidades'" (click) = "selectFilter('Especialidades')">ESPECIALIDADES</button>
+                <button appBotonAnimado class = "btn-filter-users" [class.selected]="selectedFilter === 'Paciente'" (click) = "selectFilter('Paciente')">PACIENTES</button>
+                <button appBotonAnimado class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialista'" (click) = "selectFilter('Especialista')">ESPECIALISTAS</button>
+                <button appBotonAnimado class = "btn-filter-users" [class.selected]="selectedFilter === 'Admin'" (click) = "selectFilter('Admin')">ADMINISTRADORES</button>
+                <button appBotonAnimado class = "btn-filter-users" [class.selected]="selectedFilter === 'Especialidades'" (click) = "selectFilter('Especialidades')">ESPECIALIDADES</button>
                 
-                <button class = "btn-open-register" (click) = "showContainer('register')" ><img class = "img-add-user"src= "/images/addUser.png"></button>
+                <button appBotonAnimado class = "btn-open-register" (click) = "showContainer('register')" ><img class = "img-add-user"src= "/images/addUser.png"></button>
             </div>
-            <table *ngIf="!loading && (selectedFilter === 'Paciente' || selectedFilter === 'Admin')">
+            <table *ngIf="!loading &&selectedFilter === 'Admin'">
                 <thead>
                     <tr>
                     <th>Nombre</th>
@@ -18,9 +18,8 @@
                     <th>Email</th>
                     <th>Edad</th>
                     <th>Documento</th>
-                    <th *ngIf = "selectedFilter === 'Paciente'">Obra social</th>
+
                     <th>Perfil</th>
-                    <th *ngIf = "selectedFilter != 'Admin'">Autorización</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,11 +29,10 @@
                     <td>{{ user.emailUser }}</td>
                     <td>{{ user.ageUser }}</td>
                     <td >{{ user.documentUser }}</td>
-                    <td *ngIf = "selectedFilter === 'Paciente'">{{ user.socialWorkUser }}</td>
+                   
                     <td>{{ user.profile }}</td>
-                    <td *ngIf = "selectedFilter != 'Admin'"><button class="btn-autorizate-user btn-delete-user"><img class = "img-delete-user"src = "/images/deleteUser.png"></button></td>
-                    
-        
+                   
+    
                     </tr>
                 </tbody>
             </table>
@@ -79,12 +77,14 @@
             }
 
             <td id="td-autorizate-user">
-                <button class="btn-autorizate-user btn-delete-user">
+                <button class="btn-autorizate-user btn-delete-user"
+                appBotonAnimado>
                 <img class="img-delete-user" src="/images/deleteUser.png">
                 </button>
 
                 @if (user.autorization == false) {
                 <button
+                    appBotonAnimado
                     class="btn-autorizate-user btn-accept-user"
                     (click)="autorizateUser(user.uid)"
                 >
@@ -121,9 +121,23 @@
                 hidden 
                 #fileInput>
                 
-                <button (click)="fileInput.click()" >Subir logo</button>
+                <button appBotonAnimado (click)="fileInput.click()" >Subir logo</button>
             </div>
         </div>
+        
+        </div>
+        <div class="patients-container" *ngIf="!loading && selectedFilter == 'Paciente'">
+            <div *ngFor="let patient of usersList">
+                <div class = "patients-img-container">
+
+                 
+                <img (click) = "downloadPDFPatients(patient)"[src] ='patient.imageSelected' width="170" height="170"/>
+                <p>{{patient | nombreFormateado}}</p>
+             
+                    
+                </div>
+            </div>
+        
         </div>
          <div *ngIf="loading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px; margin-top: 8%;">
             <svg
@@ -132,6 +146,7 @@
                 viewBox="0 0 50 50"
                 xmlns="http://www.w3.org/2000/svg"
                 stroke="#3498db"
+                style="height: 100px; width: 100px;"
             >
                 <g fill="none" fill-rule="evenodd" stroke-width="4" >
                 <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
@@ -209,8 +224,25 @@
 
         <p [style.color]="colorMensaje">{{ mensaje }}</p>
         </div>
-     
-     <button (click) = "exportExcel()" *ngIf = "selectedFilter == 'Paciente' || selectedFilter == 'Especialista'">Exportar a Excel<img src = "/images/excelIcon.png"></button>
+     <div>
+         <button appBotonAnimado (click) = "exportExcel()" *ngIf = "selectedFilter == 'Paciente' || selectedFilter == 'Especialista'">Exportar a Excel<img src = "/images/excelIcon.png"></button>
+       
+      <button 
+        appBotonAnimado
+        class="btn-head"
+        [routerLink]="'/home/graficos'"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >
+        <span>Gráficos y estadísticas</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#1F2937" viewBox="0 0 24 24">
+            <rect x="3" y="12" width="4" height="9" rx="1"/>
+            <rect x="9" y="7" width="4" height="14" rx="1"/>
+            <rect x="15" y="4" width="4" height="17" rx="1"/>
+        </svg>
+        </button>
+
+     </div>
     </section>
 
 </div>

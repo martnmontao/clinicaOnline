@@ -11,7 +11,7 @@ body
   top: 50%;                     /* opcional, centrado */
   left: 50%;                    /* opcional, centrado */
   transform: translate(-50%, -50%);
- 
+  z-index: 99999999999999;
 }
 
 .my-swal-popup {

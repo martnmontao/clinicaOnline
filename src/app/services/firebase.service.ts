@@ -15,7 +15,16 @@ export class FirebaseService {
   {
     
   }
-
+  async getCollection(col: string): Promise<any[]> {
+    try {
+      const colRef = collection(this.firestore, col);
+      const snapshot = await getDocs(colRef);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error('Error al obtener la colección', col, error);
+      return [];
+    }
+  }
   signIn(email: string, password: string) 
   {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -42,7 +51,24 @@ export class FirebaseService {
       throw error;
     }
   }
+async getAppointmentsByPatientUid(uidPaciente: string): Promise<any[]> {
+  try {
+    const appointmentsRef = collection(this.firestore, 'appointments');
+    const q = query(appointmentsRef, where('patient.uid', '==', uidPaciente));
+    const snapshot = await getDocs(q);
 
+    const appointments = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log(`🔹 Se encontraron ${appointments.length} turnos del paciente UID: ${uidPaciente}`);
+    return appointments;
+  } catch (error) {
+    console.error("❌ Error al obtener los turnos del paciente:", error);
+    throw error;
+  }
+}
   async verifyEmailUser(user: any): Promise<boolean> 
   {
     try 

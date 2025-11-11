@@ -97,11 +97,12 @@ onCaptchaResolved(event: any): void {
     this.captchaValido = false;
   }
 }
-  onSubmitCaptcha(): void {
-  if (!this.captchaValido || !this.captchaToken) {
-    Swal.fire('Debes completar el captcha antes de continuar.');
-    return;
-  }
+
+onSubmitCaptcha(): void {
+if (!this.captchaValido || !this.captchaToken) {
+  Swal.fire('Debes completar el captcha antes de continuar.');
+  return;
+}
 
 
   this.showCaptcha = false;

@@ -4,10 +4,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import Swal from 'sweetalert2';
+import { BotonAnimadoDirective } from '../../directives/boton-animado.directive';
+import { NombreFormateadoPipe } from '../../pipes/nombre-formateado.pipe';
+import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-administration',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BotonAnimadoDirective, NombreFormateadoPipe, RouterModule],
   templateUrl: './administration.component.html',
   styleUrl: './administration.component.css'
 })
@@ -47,9 +52,14 @@ export class AdministrationComponent implements OnInit{
     const input = document.getElementById('input-file') as HTMLInputElement;
     input.click();
   }
-  constructor(private firebaseService: FirebaseService)
+  constructor(private firebaseService: FirebaseService, private router: Router)
   {
 
+  }
+
+  goTo(path:string)
+  {
+    this.router.navigateByUrl(path)
   }
 
   async ngOnInit() {
@@ -339,5 +349,125 @@ async onFileSelectedSpeciality(event: Event, specialityName: string) {
     this.selectFilter("Especialidades");
   }, 1500);
 
+}
+async downloadPDFPatients(patient: any) {
+  const appointmentsList = await this.firebaseService.getAppointmentsByPatientUid(patient.uid);
+
+  if (!appointmentsList || appointmentsList.length === 0) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Sin turnos registrados',
+      text: 'Este paciente aún no tiene turnos cargados en la clínica.',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#004d40',
+      background: '#fafafa',
+    scrollbarPadding: false,
+    backdrop: false,
+    customClass: {
+      container: 'swal2-container-absolute',
+      popup: 'my-swal-popup'
+    }
+    });
+    return;
+  }
+
+  // 🔹 Preguntar si desea descargar el PDF
+  const result = await Swal.fire({
+    title: '¿Desea descargar el historial de turnos?',
+    text: `Se generará un PDF con todos los turnos de ${patient.nameUser} ${patient.lastnameUser}.`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, descargar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#004d40',
+    cancelButtonColor: '#d33',
+    background: '#fafafa',
+    scrollbarPadding: false,
+    backdrop: false,
+    customClass: {
+      container: 'swal2-container-absolute',
+      popup: 'my-swal-popup'
+    }
+  });
+
+  if (!result.isConfirmed) {
+    return; // ❌ Si cancela, no se genera el PDF
+  }
+
+  // ✅ Si confirma, generamos el PDF
+  const { jsPDF } = await import('jspdf');
+  const autoTable = (await import('jspdf-autotable')).default;
+
+  const doc = new jsPDF();
+
+  const logoUrl = '/images/logoClinica.png';
+  const logo = new Image();
+  logo.src = logoUrl;
+
+  await new Promise<void>((resolve) => {
+    logo.onload = () => {
+      doc.addImage(logo, 'PNG', 15, 10, 35, 25);
+      resolve();
+    };
+  });
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(0, 77, 64);
+  doc.text('Clínica Online', 105, 25, { align: 'center' });
+
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 80, 80);
+  doc.text(
+    `Turnos del paciente: ${patient.nameUser} ${patient.lastnameUser}`,
+    105,
+    35,
+    { align: 'center' }
+  );
+
+  const startY = 45;
+  const tableData = appointmentsList.map((turno: any) => [
+    turno.date || '-',
+    turno.hour || '-',
+    turno.speciality || '-',
+    turno.specialist
+      ? `${turno.specialist.lastnameUser || ''}, ${turno.specialist.nameUser || ''}`
+      : '-',
+    turno.state || '-',
+  ]);
+
+  autoTable(doc, {
+    startY,
+    head: [['Fecha', 'Hora', 'Especialidad', 'Especialista', 'Estado']],
+    body: tableData,
+    styles: { fontSize: 10, halign: 'center', valign: 'middle' },
+    headStyles: { fillColor: [0, 77, 64], textColor: [255, 255, 255], fontStyle: 'bold' },
+    alternateRowStyles: { fillColor: [245, 245, 245] },
+    margin: { left: 10, right: 10 },
+  });
+
+  const fechaActual = new Date().toLocaleDateString();
+  doc.setFontSize(10);
+  doc.setTextColor(100);
+  doc.text(`Generado el ${fechaActual}`, 15, 285);
+
+  doc.save(`Turnos_${patient.lastnameUser}_${patient.nameUser}.pdf`);
+
+  // ✅ Mensaje final de éxito
+  Swal.fire({
+    icon: 'success',
+    title: 'PDF generado',
+    text: 'El historial de turnos se descargó correctamente.',
+      confirmButtonText: 'Aceptar',
+    confirmButtonColor: '#004d40',
+    background: '#fafafa',
+    scrollbarPadding: false,
+    backdrop: false,
+    customClass: {
+      container: 'swal2-container-absolute',
+      popup: 'my-swal-popup'
+    }
+  });
 }
 }

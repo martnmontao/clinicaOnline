@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../../services/firebase.service';
 import { AvailableDay } from '../../../interfaces/availableDay';
 import Swal from 'sweetalert2';
+import { NombreFormateadoPipe } from '../../../pipes/nombre-formateado.pipe';
 
 @Component({
   selector: 'app-solicitar-turno',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule, NombreFormateadoPipe],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.css'
 })
@@ -35,20 +36,21 @@ export class SolicitarTurnoComponent implements OnInit {
   }
   
   async ngOnInit() {
+    this.isLoading = true;
     this.user = await this.firebaseService.getUserLogged();
  
 
     this.firebaseService.getSpecifyUsers("profile", "Paciente", "users").then(answer => 
       {
         this.usersList = answer;
-        setTimeout(() => {
-          
-        }, 500);
       }
-      )
- 
+    )
+    
     this.filterSpecialist();
     this.specialistsList = await this.firebaseService.getSpecifyUsers("profile", "Especialista", "users")
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
 
   }
 

@@ -2,9 +2,15 @@ import { Component } from '@angular/core';
 import { FirebaseService } from '../../../services/firebase.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EstadoTurnoDirective } from '../../../directives/estado-turno.directive';
+import { NombreFormateadoPipe } from '../../../pipes/nombre-formateado.pipe';
+import Swal from 'sweetalert2';
+
+import { FiltrarPacientesPipe } from '../../../pipes/filtrar-pacientes.pipe';
+import { OrdenarPorFechaPipe } from '../../../pipes/ordenar-por-fecha.pipe';
 @Component({
   selector: 'app-mis-turnos-especialista',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EstadoTurnoDirective, NombreFormateadoPipe, FiltrarPacientesPipe, OrdenarPorFechaPipe],
   templateUrl: './mis-turnos-especialista.component.html',
   styleUrl: './mis-turnos-especialista.component.css'
 })
@@ -41,12 +47,14 @@ export class MisTurnosEspecialistaComponent {
   medicalHistoryAppointment: any;
   filterValue: string = "";
   titleReview: string = "";
+  isLoading = false;
   constructor(private firebaseService: FirebaseService)
   {
     
   }
 
   async ngOnInit(){
+    this.isLoading = true;
     this.userLogged = await this.firebaseService.getUserLogged();
     this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'specialist.uid', value: this.userLogged.uid }],
@@ -56,97 +64,11 @@ export class MisTurnosEspecialistaComponent {
 
     this.appointmentsFiltered = this.patientsAppointment;
 
-    
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
   } 
 
-filterAppointments() {
-  const value = this.filterValue.toLowerCase().trim();
-
-  if (!value) {
-    this.appointmentsFiltered = [...this.patientsAppointment];
-    return;
-  }
-
-  console.log(this.appointmentsFiltered)
-
-this.appointmentsFiltered.forEach((a: any, i: number) => {
-  if (typeof a.speciality !== 'string') {
-    console.warn('⚠️ Turno con speciality no string en índice', i, a.speciality);
-  }
-});
- this.appointmentsFiltered = this.appointmentsFiltered.filter((a: any) => {
-  const patientName = a.patient.nameUser?.toLowerCase() || '';
-  const speciality = a.speciality?.toLowerCase() || '';
-  const day = a.date?.toLowerCase() || '';
-  const time = a.hour?.toLowerCase() || '';
-  const status = a.state?.toLowerCase() || '';
-  const patientLastname = a.patient.lastnameUser?.toLowerCase() || '';
-  return (
-    patientLastname.includes(value) ||
-    patientName.includes(value) ||
-    speciality.includes(value) ||
-    day.includes(value) ||
-    time.includes(value) ||
-    status.includes(value)
-  );
-});
-console.log(this.patientsAppointment)
-console.log(this.appointmentsFiltered)
-}
-  async filterSpecialities(speciality: string) 
-  {
-    this.filterSpecialitySelected = speciality;
-     const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.speciality === speciality);
-    
-    this.appointmentsFiltered = filteredAppointments;
- 
-  }
-
-
-  async filterPatient(patient: string)
-  {
-    
-    this.filterPatientSelected = patient;
-    const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.patient.nameUser === patient);
-
-    this.appointmentsFiltered = filteredAppointments;
-
-  }
-
-  async filterHour(hour: string)
-  {
-    
-    this.filterPatientSelected = hour;
-    const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.hour === hour);
-
-    this.appointmentsFiltered = filteredAppointments;
-
-  }
-
-  async filterDate(date: string)
-  {
-    
-    this.filterPatientSelected = date;
-    const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.date === date);
-
-    this.appointmentsFiltered = filteredAppointments;
-
-  }
-
-  async filterState(state: string)
-  {
-    
-    this.filterPatientSelected = state;
-    const filteredAppointments = this.patientsAppointment.filter(
-    (appointment: any) => appointment.state === state);
-
-    this.appointmentsFiltered = filteredAppointments;
-
-  }
 
 
   async changeStateAppointment()
@@ -202,33 +124,137 @@ console.log(this.appointmentsFiltered)
   }
 
 
-  async sendMedicalHistory()
-  {
-    
-  this.firebaseService.updateDocument('appointments', this.patientSelected.id, 
-    {
-      medicalHistory: {
-        weight: this.patientWeight,
-        height: this.patientHeight,
-        temperature: this.patientTemperature,
-        pressure: this.patientPressure,
-        keyAdditionalData1: this.patientAdditionalData1,
-        keyAdditionalData2: this.patientAdditionalData2,
-        keyAdditionalData3: this.patientAdditionalData3,
-        valueAdditionalData1: this.valueAdditionalData1,
-        valueAdditionalData2: this.valueAdditionalData2,
-        valueAdditionalData3: this.valueAdditionalData3,
-      }
-      }
-    )
-    this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
-    [{ key: 'specialist.uid', value: this.userLogged.uid }],
-      'appointments' 
-    );
+async sendMedicalHistory() {
 
-
-    this.appointmentsFiltered = this.patientsAppointment;
+  if (!this.patientHeight || isNaN(Number(this.patientHeight)) || Number(this.patientHeight) < 1) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'La altura debe ser un número positivo válido.',
+      confirmButtonColor: '#d33',
+      confirmButtonText: "Aceptar",    
+      backdrop: false,
+      scrollbarPadding: false,
+      customClass: {
+        container: 'swal2-container-absolute',
+        popup: 'my-swal-popup'
+      }
+    });
+    return;
   }
+
+  if (!this.patientWeight || isNaN(Number(this.patientWeight)) || Number(this.patientWeight) < 1) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'El peso debe ser un número positivo válido.',
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: '#d33',
+      backdrop: false,
+      scrollbarPadding: false,
+      customClass: {
+        container: 'swal2-container-absolute',
+        popup: 'my-swal-popup'
+      }
+    });
+    return;
+  }
+
+  if (!this.patientPressure || isNaN(Number(this.patientPressure)) || Number(this.patientPressure) < 1) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'La presión debe ser un número positivo válido.',
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: '#d33',
+      backdrop: false,
+      scrollbarPadding: false,
+      customClass: {
+        container: 'swal2-container-absolute',
+        popup: 'my-swal-popup'
+      }
+    });
+    return;
+  }
+
+  if (!this.patientTemperature || isNaN(Number(this.patientPressure)) || Number(this.patientTemperature) < 1) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'La temperatura debe ser un número positivo válido.',
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: '#d33',
+      backdrop: false,
+      scrollbarPadding: false,
+      customClass: {
+        container: 'swal2-container-absolute',
+        popup: 'my-swal-popup'
+      }
+    });
+    return;
+  }
+
+  if (
+    (this.patientAdditionalData1 == "" && this.valueAdditionalData1 == "") ||
+    (this.patientAdditionalData2 == "" && this.valueAdditionalData2 == "") ||
+    (this.patientAdditionalData3 == "" && this.valueAdditionalData3 == "")
+  ) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Complete todos los campos.',
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: '#d33',
+      backdrop: false,
+      scrollbarPadding: false,
+      customClass: {
+        container: 'swal2-container-absolute',
+        popup: 'my-swal-popup'
+      }
+    });
+    return;
+  }
+
+
+  await this.firebaseService.updateDocument('appointments', this.patientSelected.id, {
+    medicalHistory: {
+      weight: this.patientWeight,
+      height: this.patientHeight,
+      temperature: this.patientTemperature,
+      pressure: this.patientPressure,
+      keyAdditionalData1: this.patientAdditionalData1,
+      keyAdditionalData2: this.patientAdditionalData2,
+      keyAdditionalData3: this.patientAdditionalData3,
+      valueAdditionalData1: this.valueAdditionalData1,
+      valueAdditionalData2: this.valueAdditionalData2,
+      valueAdditionalData3: this.valueAdditionalData3,
+    }
+  });
+
+
+  this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
+    [{ key: 'specialist.uid', value: this.userLogged.uid }],
+    'appointments'
+  );
+  this.appointmentsFiltered = this.patientsAppointment;
+
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Datos guardados',
+    text: 'La historia clínica se guardó correctamente.',
+    timer: 2000,
+    showConfirmButton: false,
+    backdrop: false,
+    scrollbarPadding: false,
+    customClass: {
+      container: 'swal2-container-absolute',
+      popup: 'my-swal-popup'
+    }
+  });
+
+  this.showMedicalHistory = false;
+}
 
   
 

@@ -6,7 +6,7 @@ import { trigger, transition, style, query, group, animate } from '@angular/anim
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  animations: [
+ animations: [
     trigger('routeAnimations', [
       transition('* <=> *', [
         query(':enter, :leave', [
@@ -19,13 +19,15 @@ import { trigger, transition, style, query, group, animate } from '@angular/anim
         ], { optional: true }),
 
         group([
+         
           query(':leave', [
-            animate('300ms ease', style({ transform: 'translateX(-100%)', opacity: 0 }))
+            animate('400ms ease-in-out', style({ transform: 'translateY(-100%)', opacity: 0 }))
           ], { optional: true }),
 
+        
           query(':enter', [
-            style({ transform: 'translateX(100%)', opacity: 0 }),
-            animate('300ms ease', style({ transform: 'translateX(0)', opacity: 1 }))
+            style({ transform: 'translateY(100%)', opacity: 0 }),
+            animate('400ms ease-in-out', style({ transform: 'translateY(0)', opacity: 1 }))
           ], { optional: true })
         ])
       ])
@@ -34,7 +36,7 @@ import { trigger, transition, style, query, group, animate } from '@angular/anim
 })
 export class AppComponent {
   title = 'clinica';
-   prepareRoute(outlet: RouterOutlet) {
+  prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
 }

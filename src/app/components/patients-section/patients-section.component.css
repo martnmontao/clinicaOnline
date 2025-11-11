@@ -1,0 +1,117 @@
+.principal-container
+{
+  
+    margin: 0 auto;
+    height: 87%;
+    width: 80%;
+    display: flex;
+    
+    align-items: center;
+    overflow-y: hidden;
+    flex-direction: column;
+    
+}
+
+svg
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+::-webkit-scrollbar {
+  width: 10px;              
+  height: 10px;            
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;      
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;     
+  border-radius: 10px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #415b93;      
+}
+.patients-container
+{
+    position: relative;
+    padding: 16px;
+    overflow-x: auto;
+    width: 80%;
+    min-height: 700px;
+    background-color: rgb(255, 255, 255,0.6);
+    border: 2px solid #1F2937;
+    border-radius: 5px;
+    margin: 3% 0;
+}
+
+.patients-container > div:nth-child(1)
+{    gap: 16px;
+    justify-content: space-evenly;
+    width: 100%;
+    height: auto;
+    
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.patient-container img
+{
+    border-radius: 5px;
+    height: 220px;
+    width: 100%;
+}
+
+
+
+ul
+{
+   
+    padding: 0;
+}
+
+li
+{
+    color: white;
+    list-style: none;
+    text-align: center;
+}
+
+.patient-container p
+{
+    color: white;
+    text-align: center;
+    font-size: 24px;    
+    margin: 8px 0; 
+}
+
+.patient-container button
+{
+    width: 100%;
+    border: none;
+    height: 55px;
+    border-radius: 5px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: #1F2937;
+    font-size: 20px;
+    background-color: rgb(93, 240, 93);
+}
+
+
+.patient-container
+{
+    background-color: #1F2937;
+    border-radius: 5px;
+    padding: 16px;
+    height: auto;
+    width: 340px;
+}
+

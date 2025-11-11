@@ -3,14 +3,17 @@
 
     </div>
 
-    <div class  = "input-filter-container">
-        <input placeholder="Buscar por nombre, apellido, especialidad, día, horario o estado..." [(ngModel)] = "filterValue"(ngModelChange)="filterAppointments()">
-        <img src = "/images/searchIcon.png"> 
+    <div class="input-filter-container">
+        <input
+            placeholder="Buscar por nombre, apellido, especialidad, día, horario o estado..."
+            [(ngModel)]="filterValue"
+        />
+        <img src="/images/searchIcon.png">
     </div>
     
-    <div id = "patients-shifts-container" *ngIf = "!showFilters"> 
+    <div id = "patients-shifts-container" > 
         
-        <table>
+        <table *ngIf = "!isLoading">
                 <thead>
                     <tr>
                         <th>Especialista</th>
@@ -25,9 +28,9 @@
                     </tr>
                 </thead>
                <tbody>
-                <tr *ngFor="let appointment of appointmentsFiltered">
+                <tr *ngFor="let appointment of (patientsAppointment | filtrarTurnos: filterValue | ordenarPorFecha:'date':false)" [appEstadoTurno]="appointment.state">
                     <td data-label="Especialista">
-                    <img [src]="appointment.specialist.imageSelected">
+                    <img [src]="appointment.specialist.imageSelected" />
                     </td>
                     <td data-label="Nombre">{{ appointment.specialist.nameUser }}</td>
                     <td data-label="Apellido">{{ appointment.specialist.lastnameUser }}</td>
@@ -35,10 +38,34 @@
                     <td data-label="Día">{{ appointment.date }}</td>
                     <td data-label="Horario">{{ appointment.hour }}</td>
                     <td data-label="Estado">{{ appointment.state }}</td>
-                     <td><button class="btn-action-patient" (click) = "appointmentSelected = appointment; showContainer('details')">Ver detalles</button></td>
+                    <td>
+                    <button
+                        class="btn-action-patient"
+                        (click)="appointmentSelected = appointment; showContainer('details')"
+                    >
+                        Ver detalles
+                    </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
+
+             <div *ngIf="isLoading" class="spinner-container">
+                <svg width="80" height="80" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#3498db">
+                  <g fill="none" stroke-width="4">
+                    <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+                    <path d="M25 5a20 20 0 0 1 0 40" stroke="#3498db" stroke-linecap="round">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 25 25"
+                        to="360 25 25"
+                        dur="1s"
+                        repeatCount="indefinite"/>
+                    </path>
+                  </g>
+                </svg>
+          </div>
     </div>
     <div id = "specialist-action-container" *ngIf = "showDetails">
                 <div>
@@ -46,7 +73,7 @@
                         <img class="arrow-img" src="/images/backArrow.png">
                     </button>
                     <img [src]="appointmentSelected.specialist.imageSelected" alt="">
-                    <span class = "span-big">Especialista:<br>{{appointmentSelected.specialist.nameUser}} {{appointmentSelected.specialist.lastnameUser}}</span>
+                    <span class = "span-big">Especialista:<br>{{appointmentSelected.specialist | nombreFormateado}}</span>
                     <span class = "span-big">Especialidad:<br>{{appointmentSelected.speciality}}</span>
                     <span class = "span-big">Estado:<br>{{appointmentSelected.state}}</span>
                     <span class = "span-little">Horario: {{appointmentSelected.hour}}</span>

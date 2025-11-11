@@ -2,10 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../../../services/firebase.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NombreFormateadoPipe } from '../../../pipes/nombre-formateado.pipe';
+import { FiltrarTurnosPipe } from '../../../pipes/filtrar-turnos.pipe';
+import { EstadoTurnoDirective } from '../../../directives/estado-turno.directive';
+import { OrdenarPorFechaPipe } from '../../../pipes/ordenar-por-fecha.pipe';
 
 @Component({
   selector: 'app-mis-turnos-paciente',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NombreFormateadoPipe, FiltrarTurnosPipe, EstadoTurnoDirective, OrdenarPorFechaPipe],
   templateUrl: './mis-turnos-paciente.component.html',
   styleUrl: './mis-turnos-paciente.component.css'
 })
@@ -18,7 +22,7 @@ export class MisTurnosPacienteComponent implements OnInit {
   datesFilters: any = [];
   statesFilters: any = [];
   hoursFilters: any = [];
-
+  isLoading: boolean = false;
   appointmentsFiltered: any = [];
   showFilters: boolean = false;
   filterSelected:any;
@@ -37,13 +41,17 @@ export class MisTurnosPacienteComponent implements OnInit {
   }
 
   async ngOnInit(){
+
+    this.isLoading = true;
     this.userLogged = await this.firebaseService.getUserLogged();
     this.patientsAppointment = await this.firebaseService.getDocumentsWithFilters(
     [{ key: 'patient.uid', value: this.userLogged.uid }],
       'appointments' 
     );
     this.appointmentsFiltered = this.patientsAppointment;
-    
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000); 
   }
 
 
@@ -57,43 +65,6 @@ export class MisTurnosPacienteComponent implements OnInit {
 
   }
 
- filterAppointments() {
-  const value = this.filterValue?.toLowerCase().trim();
-
-  if (!value) {
-    this.appointmentsFiltered = [...this.patientsAppointment];
-    return;
-  }
-
-  this.appointmentsFiltered = this.patientsAppointment.filter((a: any) => {
-    const specialistName = a.specialist.nameUser?.toLowerCase() || '';
-    const specialistLastname = a.specialist.lastnameUser?.toLowerCase() || '';
-    const speciality = a.speciality?.toLowerCase() || '';
-    const day = a.date?.toLowerCase() || '';
-    const time = a.hour?.toLowerCase() || '';
-    const status = a.state?.toLowerCase() || '';
-
-  
-    let medicalMatch = false;
-    if (a.medicalHistory) {
-      const historyValues = Object.values(a.medicalHistory)
-        .filter(v => typeof v === 'string') 
-        .map(v => v.toLowerCase());
-
-      medicalMatch = historyValues.some((v: string) => v.includes(value));
-    }
-
-    return (
-      specialistName.includes(value) ||
-      specialistLastname.includes(value) ||
-      speciality.includes(value) ||
-      day.includes(value) ||
-      time.includes(value) ||
-      status.includes(value) ||
-      medicalMatch
-    );
-  });
-}
 
   async filterSpecialist(specialist: string)
   {

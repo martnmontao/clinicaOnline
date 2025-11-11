@@ -1,0 +1,154 @@
+.principal-container
+{
+    height: 70%;
+    margin: 3% auto;
+    width: 70%;
+    background-color: rgb(255, 255, 255, 0.8);
+    border-radius: 5px;
+    border: 2px solid #1F2937;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+*
+{
+    color: #1F2937;
+
+}
+::-webkit-scrollbar {
+  width: 10px;              
+  height: 10px;            
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;      
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;     
+  border-radius: 10px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #415b93;      
+}
+.graphics-container
+{
+    height: 400px;
+    width: 100%;
+    display: flex;
+
+    border-bottom: 2px solid #1F2937;
+
+    justify-content: space-evenly;
+}
+h3, h1
+{
+    text-align: center;
+
+}
+
+h1
+{
+        width: 100%;
+    border-bottom: 2px solid #1F2937;
+    padding: 10px 0;
+    margin: 0;
+}
+
+
+
+
+li
+{
+    font-size: 16px;
+    text-align: center;
+}
+
+.barchart-users
+{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.barchart-users button
+{
+     border-radius: 5px;
+    background-color: #1F2937;
+    border: none;
+    color: white;
+    font-size: 18px;
+    margin: 10px auto;
+    cursor: pointer;
+    width: 50%;
+    height: 55px;
+}
+
+.filters-date-container
+{
+    height: 100%;
+    min-width: 40%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+
+}
+
+label
+{
+    text-align: center;
+    font-size: 18px;
+
+}
+
+
+.filters-date-container input
+{
+    width: 70%;
+    height: 40px;
+    border-radius: 5px;
+    text-align: center;
+    border: 2px solid #1F2937;
+    background-color: transparent;
+    font-size: 18px;
+    
+}
+
+.filters-date-container button
+{
+    width: 50%;
+    height: 55px;
+    border-radius: 5px;
+    background-color: #1F2937;
+    border: none;
+    color: white;
+    font-size: 18px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.users-list
+{
+    border-radius: 5px;
+
+
+    height: 100%;
+    overflow-y: auto;
+    min-width: 40%;
+}
+
+strong
+{
+    margin: 0 24px;
+}

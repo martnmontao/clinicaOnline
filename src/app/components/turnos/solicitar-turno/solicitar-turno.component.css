@@ -14,15 +14,15 @@
 
 .table-users-container
 {
-    background-color: rgb(255, 255, 255, 0.6);
-    min-height: 400px;
-    max-height: 450px;
+    background-color: rgb(255, 255, 255, 0.8);
+    min-height: 700px;
+
     border-radius: 5px;
     margin-top: 5%;
     width: 100%;
     padding: 20px;
-    min-height: 500px;
-    height: auto;
+   
+    height: 750px;
     min-width: 700px;
     display: flex;
     flex-direction: column;
@@ -32,7 +32,7 @@
    
 }
 
-
+.scroll-speacialists-container
 
 th, td
 {
@@ -75,7 +75,7 @@ td > button
 
 .specialist-list-container
 {
-    width: 100%;
+    width: 95%;
     display: flex;
     justify-content: space-evenly;
     padding: 16px;
@@ -94,6 +94,7 @@ td > button
     justify-content: space-evenly;
     display: flex;
     overflow-x: auto;
+    flex-direction: column;
 }
 
 
@@ -135,16 +136,7 @@ td > button
     align-items: center;
 }
 
-.form-book-appointment > div:nth-child(1)::after {
-  content: "▼";              
-  position: absolute;
-  top: 50%;
-  right: 0.7em;
-  transform: translateY(-50%);
-  pointer-events: none;       
-  color: white;             
-  font-size: 0.8em;
-}
+
 
 
 select
@@ -180,7 +172,7 @@ select:focus
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    height: 65%; 
+    height: 80%; 
     background-color: rgb(255, 255, 255,0.8);
     padding: 16px;
     border: 2px solid #1F2937;

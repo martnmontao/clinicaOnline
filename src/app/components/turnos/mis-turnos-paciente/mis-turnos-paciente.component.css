@@ -10,6 +10,32 @@
     flex-direction: column;
 }
 
+::-webkit-scrollbar {
+  width: 10px;              
+  height: 10px;            
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;      
+  border-radius: 10px;
+}
+.spinner-container
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;     
+  border-radius: 10px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #415b93;      
+}
 
 @keyframes showContainer {
     to {
@@ -334,7 +360,7 @@ th, td
     border-radius: 5px;
     color: #1F2937;
     text-align: center;
-    background-color: 	white ;
+
      font-size: clamp(1rem, 1vw, 1.5rem);
     
 }

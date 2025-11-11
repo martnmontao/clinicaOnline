@@ -8,12 +8,13 @@ import {
   query,
   group
 } from '@angular/animations';
+import { PermisosUsuarioDirective } from '../../directives/permisos-usuario.directive';
 import { FirebaseService } from '../../services/firebase.service';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, CommonModule],
+  imports: [RouterOutlet, RouterModule, CommonModule, PermisosUsuarioDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   animations: [

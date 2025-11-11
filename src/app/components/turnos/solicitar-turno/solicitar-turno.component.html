@@ -1,7 +1,8 @@
 
   <div class = "form-book-appointment"*ngIf = "!showAppointment && !specialistSelected">
 
-    <div class = "table-users-container" *ngIf = "user?.profile == 'Admin' && !patientSelected">
+    
+    <div class = "table-users-container" style = "background-color: rgb(255, 255, 255, 0.8); height: 700px; width: 100%;border-radius: 5px; border: 2px solid #1F2937;"*ngIf = "user?.profile == 'Admin' && !patientSelected">
             <table >
                 <thead>
                     <tr>
@@ -33,6 +34,22 @@
                     </tr>
                 </tbody>
             </table>
+             <div *ngIf="isLoading" class="spinner-container">
+                <svg width="80" height="80" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#3498db">
+                  <g fill="none" stroke-width="4">
+                    <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+                    <path d="M25 5a20 20 0 0 1 0 40" stroke="#3498db" stroke-linecap="round">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 25 25"
+                        to="360 25 25"
+                        dur="1s"
+                        repeatCount="indefinite"/>
+                    </path>
+                  </g>
+                </svg>
+          </div>
     </div>
 
 
@@ -44,7 +61,7 @@
                       <div class = "specialists-container">
                         <div>
                           <img [src] = "specialist.imageSelected" class = "img-specialist">
-                          <p class = "p-name-specialist">{{specialist.nameUser}} {{specialist.lastnameUser}}</p>
+                          <p class = "p-name-specialist">{{specialist.nameUser | nombreFormateado}}</p>
                         </div>
                         <div>
                           <button class="btn-book" (click)="showContainer('solicitud', specialist, specialist.specialityName); specialistSelected = specialist">
@@ -54,19 +71,17 @@
                       </div>
                   </div>
               </div>
-          </div>
-            <div *ngIf="isLoading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px;">
-                <svg
-                    width="80"
-                    height="80"
-                    viewBox="0 0 50 50"
-                    xmlns="http://www.w3.org/2000/svg"
-                    stroke="#3498db"
-                >
-                    <g fill="none" fill-rule="evenodd" stroke-width="4" >
+            </div>
+            <button class="btn-cancel-book" (click) = "patientSelected = null" style="margin: 16px auto;">
+                  <img class = "img-book"src = "/images/declineBook.png">
+
+            </button>
+            <div *ngIf="isLoading" class="spinner-container">
+                <svg width="80" height="80" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#3498db">
+                  <g fill="none" stroke-width="4">
                     <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
-                    <path d="M45 25c0-11.046-8.954-20-20-20">
-                        <animateTransform
+                    <path d="M25 5a20 20 0 0 1 0 40" stroke="#3498db" stroke-linecap="round">
+                      <animateTransform
                         attributeName="transform"
                         type="rotate"
                         from="0 25 25"
@@ -74,16 +89,16 @@
                         dur="1s"
                         repeatCount="indefinite"/>
                     </path>
-                    </g>
+                  </g>
                 </svg>
-            </div>
+          </div>
       </div>
 
 </div>
 
 <div class = "specialities-images-container" *ngIf = "specialistSelected && !showAppointment">
   <div>
-    <p>{{specialistSelected.nameUser}} {{specialistSelected.lastnameUser}}</p>
+    <p>{{specialistSelected | nombreFormateado}}</p>
 
   </div>
   <div  class = "nd-specialities-images-container">
@@ -116,7 +131,7 @@
  
   <div>
     <p class="p-info-specialist">
-      {{ specialistSelected.nameUser }} {{ specialistSelected.lastnameUser }}
+      {{ specialistSelected | nombreFormateado }}
     </p>
     <p class="p-info-specialist">{{ specialitySelected.name }}</p>
   </div>

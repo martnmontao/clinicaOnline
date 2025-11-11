@@ -1,0 +1,53 @@
+<div class = "principal-container">
+    <div class = "patients-container"> 
+        <div *ngIf = "!loading">
+            <div *ngFor = "let patient of patientsList">
+                <div class = "patient-container">
+                    <p>{{patient | nombreFormateado}}</p>
+                    <img [src] = "patient.imageSelected">
+                    <button appBotonAnimado (click) = "alterToggle(patient)">Ver últimos turnos</button>
+                        <div class="appointments-list" *ngIf="patient.showAppointments">
+                            <p *ngIf="patient.lastAppointments?.length > 0" class="appointments-title">
+                                Últimos turnos realizados:
+                            </p>
+                            <ul *ngIf="patient.lastAppointments?.length > 0; else noAppointments">
+                                <li *ngFor="let turno of patient.lastAppointments">
+                                    🗓️ {{ turno.date }} - 🕒 {{ turno.hour }} - {{ turno.speciality }}
+                                </li>
+                            </ul>
+                            <ng-template #noAppointments>
+                                <p class="no-appointments">Sin turnos realizados</p>
+                            </ng-template>
+                        </div>
+
+                    <button appBotonAnimado (click) = "downloadPDFPatients(patient)">Ver historia clínica</button>
+                </div>
+    
+            </div>
+        </div>
+        
+        
+        <div *ngIf="loading" class="spinner-container" style="display:flex; justify-content:center; align-items:center; height:100px; margin-top: 8%;">
+           <svg
+               width="80"
+               height="80"
+               viewBox="0 0 50 50"
+               xmlns="http://www.w3.org/2000/svg"
+               stroke="#3498db"
+           >
+               <g fill="none" fill-rule="evenodd" stroke-width="4" >
+               <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+               <path d="M45 25c0-11.046-8.954-20-20-20">
+                   <animateTransform
+                   attributeName="transform"
+                   type="rotate"
+                   from="0 25 25"
+                   to="360 25 25"
+                   dur="1s"
+                   repeatCount="indefinite"/>
+               </path>
+               </g>
+           </svg>
+       </div>
+    </div>
+</div>

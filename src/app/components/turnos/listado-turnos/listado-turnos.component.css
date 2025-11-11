@@ -2,40 +2,72 @@
 {
     height: 80%;
     margin: 2% auto;
-    width: 95%;
+    width: 70%;
     background-color: rgb(255, 255, 255,0.8);
     display: flex;
+    flex-direction: column;
     border: 2px solid #1F2937;
     border-radius: 5px;
-}
-#second-container
-{
-    width: 90%;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
+    min-height: 750px;
+    overflow-y: hidden;
 }
 
-#filters-specialists
+::-webkit-scrollbar {
+  width: 10px;              
+  height: 10px;            
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;      
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F2937;     
+  border-radius: 10px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #415b93;      
+}
+.input-filter-container
 {
-    height: 30%;
+    width: 45%;
+    background-color: white;
+    border: 2px solid #1F2937;
+    border-radius: 10px;
+    height: 45px;
+    padding: 4px;
+    margin: 2% auto;
     position: relative;
-    border-bottom: 2px solid #1F2937;
-
-}
-
-#btn-container
-{
-    height: 100%;
-    width: 100%;
-    padding: 10px;
-    
-    flex-wrap: wrap;
-
+    min-width: 500px;
     display: flex;
-    justify-content: space-evenly;
+    align-items: center;
+    justify-content: space-between;
+
 }
+
+.input-filter-container input
+{
+    width: 95%;
+    border: none;
+    border-radius: 10px;
+    height: 93%;
+    padding-left: 10px;
+    font-size: clamp(0.95em, 0.95vw, 3rem);
+    
+}
+
+.input-filter-container img
+{
+    height: 50px;
+    width: 50px;
+
+}
+
+
+
 
 td img
 {
@@ -48,6 +80,7 @@ td img
 #appointment-container
 {
     height: 100%;
+    min-height: 100%;
     padding: 50px;
     position: relative;
     
@@ -55,6 +88,11 @@ td img
 }
 #appointment-container::-webkit-scrollbar {
     display: none;
+}
+
+input:focus
+{
+    outline: none;
 }
 
 

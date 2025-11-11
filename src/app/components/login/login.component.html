@@ -30,12 +30,31 @@
           formControlName="passwordUser"
           autocomplete="off"
         />
-        <button type="submit">INGRESAR</button>
+        <button type="submit" appBotonAnimado>INGRESAR</button>
       </div>
 
       <div>
-        <p>{{ textUserChoice }}</p>
+        <p *ngIf = "!isLoading">{{ textUserChoice }}</p>
+
+            <div *ngIf="isLoading" class="spinner-container">
+                <svg width="80" height="80" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#3498db">
+                  <g fill="none" stroke-width="4">
+                    <circle cx="25" cy="25" r="20" stroke-opacity="0.2"/>
+                    <path d="M25 5a20 20 0 0 1 0 40" stroke="#3498db" stroke-linecap="round">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 25 25"
+                        to="360 25 25"
+                        dur="1s"
+                        repeatCount="indefinite"/>
+                    </path>
+                  </g>
+                </svg>
+          </div>
       </div>
+
+      
     </form>
 
     <div>

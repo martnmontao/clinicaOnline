@@ -1,0 +1,81 @@
+
+<div class="principal-container">
+
+         <h1>Gráficos y estadísticas</h1>
+    <div class="graphics-container">
+
+        <div class="barchart-users">
+            <canvas #barChartLoginsRef></canvas>
+        <button (click) = "generatePDFLogins()" *ngIf = "chartLogins">Descargar PDF</button>
+
+        </div>
+
+        <div class="users-list">
+            <h3>Usuarios, fecha y hora de ingreso</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li *ngFor="let login of userLogins" style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                    <strong>{{ login.nombre }}</strong>
+                    {{ login.fechaHora }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="graphics-container">
+        <div class="barchart-users">
+            <canvas #barChartTurnosRef ></canvas>
+        <button (click) = "generatePDFSpecialities()" *ngIf = "chartTurnos">Descargar PDF</button>
+
+        </div>
+         <div class="users-list">
+            <h3>Especialidades</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li *ngFor="let speciality of specialities" style="margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                    <strong>{{ speciality.name }}</strong>
+          
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="graphics-container">
+
+        <div class="barchart-users">
+        <canvas #barChartTurnosPorDiaRef></canvas>
+        <button (click) = "generatePDFTurnosPorDia()" *ngIf = "chartTurnosPorDia">Descargar PDF</button>
+
+        </div>
+
+    </div>
+
+    <div class="graphics-container">
+
+    <div class="barchart-users">
+        
+            <canvas #barChartTurnosPorMedicoRef></canvas>
+        <button (click) = "generatePDFTurnosPorMedico()" *ngIf = "chartTurnosPorMedico">Descargar PDF</button>
+       
+        
+    </div>
+    <div class = "filters-date-container">
+        <label>Desde: <br><input type="date" [(ngModel)]="fechaInicio"></label>
+        <label>Hasta: <br><input type="date" [(ngModel)]="fechaFin"></label>
+        <button (click)="filtrarTurnos()">Filtrar</button>
+
+    </div>
+    </div>
+    
+    <div class="graphics-container">
+
+    <div class="barchart-users">
+        
+        <canvas #barChartTurnosCompletadosRef></canvas>
+        <button (click) = "generatePDFTurnosCompletados()" *ngIf = "chartTurnosCompletadosPorMedico">Descargar PDF</button>
+    </div>
+    <div class = "filters-date-container" style="border-bottom: none;">
+        <div class="filters-date-container">
+        <label>Desde: <br><input type="date" [(ngModel)]="fechaInicioTurno"></label>
+        <label>Hasta: <br><input type="date" [(ngModel)]="fechaFinTurno"></label>
+        <button (click)="filtrarTurnosFinalizados()">Filtrar</button>
+        </div>
+
+    </div>
+</div>

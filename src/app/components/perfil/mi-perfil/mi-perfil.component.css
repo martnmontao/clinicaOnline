@@ -15,17 +15,82 @@
     
 }
 
+#filters-container
+{
+    
+  
+    width: 100%;
+    height: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scaleY(0);
+    background-color: rgb(255, 255, 255,0.8);
+    border: 2px solid #1F2937;
+    animation: showFilter 200ms ease forwards;
+    overflow-y: auto;
+    font-size: clamp(0.8rem, 1vw, 3rem);
+    border-radius: 5px;
+    padding: 0 16px 0 0;
+    gap: 16px;
+}
+
+.input-filter-container
+{
+    
+    background-color: white;
+ 
+    max-width: 900px;
+    border: 2px solid #1F2937;
+    border-radius: 10px;
+    height: auto;
+
+    margin: 2% auto;
+    position: relative;
+    
+
+}
+
+.input-filter-container input
+{
+    width: 95%;
+    border: none;
+    border-radius: 10px;
+    height: 55px;
+    padding-left: 10px;
+    font-size: clamp(0.95em, 0.95vw, 3rem);
+    
+}
+
+.input-filter-container img
+{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    border: none;
+}
+
+input:focus
+{
+    outline: none;
+}
 .table-container
 {
+
     height: 100%;
 }
 .table-container > div:nth-child(1)
 {
-    height: 90%;
+    height: 73.5%;
+   
     overflow-y: auto;
     border-bottom: 2px solid #1F2937;
 }
-
+.btn-download {
+  transition: transform 0.1s ease-in-out;
+}
 .table-container > div:nth-child(2)
 {
     height: 10%;

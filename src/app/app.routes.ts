@@ -10,6 +10,8 @@ import { MisTurnosPacienteComponent } from './components/turnos/mis-turnos-pacie
 import { SolicitarTurnoComponent } from './components/turnos/solicitar-turno/solicitar-turno.component';
 import { MiPerfilComponent } from './components/perfil/mi-perfil/mi-perfil.component';
 import { MisHorariosComponent } from './components/perfil/mis-horarios/mis-horarios.component';
+import { PatientsSectionComponent } from './components/patients-section/patients-section.component';
+import { GraficosComponent } from './components/graficos/graficos.component';
 export const routes: Routes = [
   {
     path: '',
@@ -35,10 +37,17 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     children: [
+
+      {
+        path: 'graficos',
+        component: GraficosComponent,
+        data: { animation: 'GraficosPage' }
+      },
+  
       {
         path: 'administration',
         component: AdministrationComponent,
-        data: { animation: 'AdministrationPage' }
+        data: { animation: 'AdministrationPage' },
       },
       {
         path: 'mi-perfil',
@@ -69,6 +78,11 @@ export const routes: Routes = [
         path: 'mis-horarios',
         component: MisHorariosComponent,
         data: { animation: 'HorariosPage' }
+      },
+      {
+        path: 'patients-section',
+        component: PatientsSectionComponent,
+        data: {animation: 'PatientSectionPage'}
       },
       {
         path: '',

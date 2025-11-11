@@ -12,57 +12,46 @@
     <button (click)="showAside = false">
         <img class="arrow-img" src="/images/backArrow.png">
     </button>
-
-    <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
+        <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
         <a routerLink="mi-perfil">
             <img class="img-user" [src]="userLogged.imageSelected">
         </a>
         <p>Perfil</p>
-    </button>
-
-   
-    <button class="btn-head" *ngIf="userLogged.profile == 'Paciente'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
-        <a routerLink="mis-turnos-paciente">MIS TURNOS</a>
-    </button>
-
-    <button class="btn-head" *ngIf="userLogged.profile != 'Especialista'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
-        <a routerLink="solicitar-turno">SOLICITAR TURNO</a>
-    </button>
-
-   
-    <button class="btn-head" *ngIf="userLogged.profile == 'Especialista'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
-        <a routerLink="mis-turnos-especialista">MIS TURNOS</a>
-    </button>
-
-    <button class="btn-head" *ngIf="userLogged.profile == 'Especialista'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
-        <a routerLink="mis-horarios">MIS HORARIOS</a>
-    </button>
-
-   
-    <button class="btn-head" *ngIf="userLogged.profile == 'Admin'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
-        <a routerLink="listado-turnos">TURNOS</a>
-    </button>
-
-    <button class="btn-head" *ngIf="userLogged.profile == 'Admin'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click) = "showAside = false">
-        <a routerLink="administration">ADMINISTRACIÓN</a>
-    </button>
-
-   
-    <button class="btn-head" (click)="logOut(); showAside = false">
-        <a routerLink="login">CERRAR SESIÓN</a>
-    </button>
+        </button>
+        <ng-container *appPermisosUsuario="'Paciente'">
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="mis-turnos-paciente">MIS TURNOS</a>
+            </button>
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="solicitar-turno">SOLICITAR TURNO</a>
+            </button>
+        </ng-container>
+        <ng-container *appPermisosUsuario="'Especialista'">
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="mis-turnos-especialista">MIS TURNOS</a>
+            </button>
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="mis-horarios">MIS HORARIOS</a>
+            </button>
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="patients-section">PACIENTES</a>
+            </button>
+        </ng-container>
+        <ng-container *appPermisosUsuario="'Admin'">
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="listado-turnos">TURNOS</a>
+            </button>
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="solicitar-turno">SOLICITAR TURNO</a>
+            </button>
+            <button class="btn-head" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="showAside = false">
+                <a routerLink="administration">ADMINISTRACIÓN</a>
+            </button>
+        </ng-container>
+        <button class="btn-head" (click)="logOut(); showAside = false">
+            <a routerLink="login">CERRAR SESIÓN</a>
+        </button>
 </aside>
-
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class = "left-svg"(click) = "navigateRoutes(-1)">
-            <circle cx="24" cy="24" r="22" stroke="#1F2937" stroke-width="2" fill="white"/>
-            <path d="M30 32L18 24L30 16" stroke="#1F2937" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class = "right-svg" (click) = "navigateRoutes(1)">
-            <circle cx="24" cy="24" r="22" stroke="#1F2937" stroke-width="2" fill="white"/>
-            <path d="M30 32L18 24L30 16" stroke="#1F2937" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
         <router-outlet #outlet="outlet"></router-outlet>
     </main>
 </div>

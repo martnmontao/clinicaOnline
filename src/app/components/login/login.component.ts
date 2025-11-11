@@ -4,10 +4,12 @@ import { FirebaseService } from '../../services/firebase.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { BotonAnimadoDirective } from '../../directives/boton-animado.directive';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, BotonAnimadoDirective, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -18,9 +20,10 @@ export class LoginComponent {
   passwordUser: string = "martin";
   textUserChoice: string = "";
   optionsLogins = "PACIENTE";
+  isLoading = false;
   constructor(private router: Router, private firebaseService: FirebaseService,  private fb: FormBuilder)
   {
-
+    this.isLoading = false;
   }
 
  
@@ -60,6 +63,8 @@ goTo(route: string) {
   }
 
   async loginUser() {
+
+    this.isLoading = true;
     this.loginForm.markAllAsTouched();
 
     if (this.loginForm.invalid) {
@@ -96,9 +101,17 @@ goTo(route: string) {
         await this.firebaseService.signOut();
         return;
       }
-
+      const now = new Date();
+      const fecha = now.toLocaleDateString();   
+      const hora = now.toLocaleTimeString(); 
       const perfil = this.optionsLogins;
-
+          await this.firebaseService.addDocument({
+          uid: user.uid,
+          email: user.email,
+          perfil: this.optionsLogins,
+          fecha: fecha,
+          hora: hora
+        }, 'logins');
       if (perfil === 'PACIENTE') {
         const userDoc = await this.firebaseService.getUserByUID(user.uid, 'users');
 
@@ -112,7 +125,7 @@ goTo(route: string) {
           await this.firebaseService.signOut();
           return;
         }
-
+        this.isLoading = false;
         this.router.navigateByUrl('home');
       } 
       else if (perfil === 'ESPECIALISTA') {

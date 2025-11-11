@@ -4,7 +4,7 @@
                 <button class = "btn-img-user"><img [src] = "user?.imagesUser[0]"></button>
             </div>
             <div>
-                <p class = "p-name-user">{{user.nameUser}} {{user.lastnameUser}}</p>
+                <p class = "p-name-user">{{user | nombreFormateado }}</p>
             </div>
             
     </div>
@@ -34,36 +34,35 @@
             Ver historias clínicas
         </button>
     </div>
+    <div class  = "input-filter-container" *ngIf = "showMedicalHistory">
+       <input placeholder="Buscar especialidad" [(ngModel)] = "filterValue"(ngModelChange)="filterAppointments()">
+       <img src = "/images/searchIcon.png"> 
+   </div>
+    <div class = "table-container"*ngIf = "showMedicalHistory">
 
-    <div class = "table-container">
         <div>
 
-            <table *ngIf = "showMedicalHistory">
+            <table >
                      <thead>
                          <tr>
                              <th>Especialista</th>
                              <th>Nombre</th>
                              <th>Apellido</th>
                              <th>Especialidad</th>
-                             <th>Día</th>
-                             <th>Horario</th>
-                             <th>Estado</th>
                              <th>Historia clínica</th>
      
                          </tr>
                      </thead>
                     <tbody>
-                     <tr *ngFor="let appointment of patientsAppointment">
+                     <tr *ngFor="let appointment of appointmentsFiltered">
                          <td data-label="Especialista">
                          <img class = "img-specialist"[src]="appointment.specialist.imageSelected">
                          </td>
                          <td data-label="Nombre">{{ appointment.specialist.nameUser }}</td>
                          <td data-label="Apellido">{{ appointment.specialist.lastnameUser }}</td>
                          <td data-label="Especialidad">{{ appointment.speciality }}</td>
-                         <td data-label="Día">{{ appointment.date }}</td>
-                         <td data-label="Horario">{{ appointment.hour }}</td>
-                         <td data-label="Estado">{{ appointment.state }}</td>
-                          <td><button class = "btn-download" (click) = "onGeneratePDF(appointment)">
+                          <td><button class = "btn-download" (click) = "downloadPDFByAppointment(appointment)"
+                            appBotonAnimado>
                              Descargar en PDF
                               <svg xmlns="http://www.w3.org/2000/svg"
                                  width="64" height="64"
